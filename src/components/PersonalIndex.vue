@@ -26,7 +26,7 @@
 	import Loading from './Loading.vue'
 	import LeftSidebar from './sidebar/LeftSidebar'
 	import RightSidebar from './sidebar/RightSidebar'
-	/*import TopSidebar from './sidebar/TopSidebar'*/
+	import TopSidebar from './sidebar/TopSidebar'
 	import TopResponsive from './sidebar/TopResponsive'
 	
 	import HeaderProfile from './container/HeaderProfile'
