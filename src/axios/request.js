@@ -4,16 +4,22 @@ import { Message } from 'element-ui'
 
 // create an axios instance
 const service = axios.create({
-   baseURL: 'http://127.0.0.1:9658',
+   baseURL: 'http://121.43.230.40/:9658',
    timeout: 15000
 })
 
 // 添加一个请求拦截器
 
  service.interceptors.request.use((config) => {
-  if (store.getters.token) {
-    config.headers.Authorization =store.getters.token// 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-  }
+
+
+		if(config.url.indexOf("/oauth/token") != -1){
+			config.headers.Authorization =store.getters.basic_auth// 登陆时候携带这个
+		}else{
+			config.headers.Authorization =store.getters.token// 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+		}
+  
+ 
   return config;  //添加这一行
 }, (error) => {
   return Promise.reject(error);

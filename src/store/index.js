@@ -6,14 +6,15 @@ import { Message } from 'element-ui'
 
 Vue.use(Vuex);
 
-
+ 
 let this_store = this
 let vue_route = route
 
 
 const store = new Vuex.Store({
     state: {  // 初始化数据，只要有可能的用到的最好都初始化
-		token: "Basic Y2xpZW50XzI6NjY2",
+		basic_auth: "Basic Y2xpZW50XzI6NjY2",
+		token: "",
 		refresh_token:"",
 		field_msg:[],
 		friend_list:[
@@ -24,12 +25,20 @@ const store = new Vuex.Store({
 			{id:1001,name:'bob',cover:"static/img/author-page.jpg"},
 			{id:404,name:"未知联系人",cover:"/static/img/avatar3-sm.jpg"}
 		],
-		now_friend:{},
-		recent_contacts:[],
+		now_friend:null,
+		//一个测试的
+		recent_contacts:[
+			{sender:{
+				id:"1",
+				name:"测试联系人",
+				cover:"/static/img/avatar3-sm.jpg"
+			},msg:"测试消息",sendTime:13524215424},
+			
+		],
 		websock: null,
 		me:{
 			id:1001,
-			name:"bob",
+			username:"游客",
 			cover:'static/img/author-page.jpg'
 		}
     },
@@ -51,6 +60,10 @@ const store = new Vuex.Store({
 		},
 		set_refresh_token(state,obj){
 			state.refresh_token = obj
+		},
+		set_me(state,obj){
+			obj.cover ='static/img/author-page.jpg'
+			state.me = obj
 		}
 		
     },
@@ -74,14 +87,25 @@ const store = new Vuex.Store({
 		token:function(state){
 			return state.token
 		},
-		my_id:function(state){
-			return state.me.id
+		me:function(state){
+			return state.me
+		},
+		basic_auth:function(state){
+			return state.basic_auth;
 		}
 	},
+	
+	//方法
     actions: {
 		//页面跳转
 		toindex(content){
-			vue_route.push("/index")
+			console.log("登陆成功")
+			if(vue_route.currentRoute.query.redirect){
+				vue_route.push(vue_route.currentRoute.query.redirect)
+			}else{
+				vue_route.push("/index")
+			}
+			//
 		},
 		
 		
@@ -99,6 +123,13 @@ const store = new Vuex.Store({
 		//登陆
 		login(context,user){
 			request.login(user)
+		},
+		//注册
+		register(context,user){
+			request.register(user)
+		},
+		check(context,value){
+			return request.check(value);
 		},
 		
 		//  websocketl连接方法 
@@ -130,6 +161,10 @@ const store = new Vuex.Store({
 			msg['fromId']=context.getters.my_id
 			msg['toId']=context.getters.now_friend.id
 			var websock = context.state.websock
+			if(websock == null){
+				errorMsg("聊天服务器连接异常，请重新登录重试")
+				return 
+			}
 			var sendContent = JSON.stringify(msg)
 			websock.send(sendContent);
 			
@@ -168,7 +203,8 @@ var websocketonmessage = function (e) {
 	  da = formatUnReadMsg(da)
 	  console.log("当前store如下")
 	  //this_store = this_store.a
-	  this_store.a.state.recent_contacts = da
+		if(da.length > 0)
+			this_store.a.state.recent_contacts = da
 	  
 	  console.log(this_store)
 	  console.log("当前route如下")

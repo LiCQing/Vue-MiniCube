@@ -50,7 +50,7 @@
 		
 				<div class="col col-xl-7 col-lg-6 col-md-12 col-sm-12 col-12 padding-l-0">
 			
-					<ChatField v-if="field_msg.length > 0" />
+					<ChatField v-if="now_friend?true:false" />
 				
 					<div v-else style="height: 526px;border-left: 1px solid #e6ecf5;"> 请选择联系人	 </div>
 						
@@ -75,7 +75,7 @@
 	import {mapGetters} from 'vuex'
 	export default {
 		computed:{
-			...mapGetters(['field_msg','recent_contacts'])
+			...mapGetters(['field_msg','recent_contacts','now_friend'])
 		},
 		components:{
 			ContectItem,ChatField

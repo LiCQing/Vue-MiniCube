@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store';
+
 Vue.use(Router)
 
 //引入组件
@@ -24,8 +26,9 @@ import Notifications from '../components/Profile/Notifications'
 import FavSetting from '../components/Profile/FavSetting'
 //
 
-export default new Router({
-    routes: [
+
+
+const routes=[
     {
         path: '/login',
         component: Login
@@ -37,6 +40,7 @@ export default new Router({
 	{
 		path:'/personalIndex',
 		component:PersonalIndex,
+		meta: { requireAuth: true },
 		children:[
 		{
 			path:"/",
@@ -54,6 +58,7 @@ export default new Router({
 	{
 		path: '/persionalDashboard',
 		component:PersionalDashboard,
+		meta: { requireAuth: true },
 		 children:[
         {
 			path:'info',
@@ -110,5 +115,46 @@ export default new Router({
 		path : '',
 		component:ErrorResult404
 	}
-    ]
-})
+]
+
+
+
+//拦截
+const VueRouter = new Router ({
+  routes,
+ 
+});
+
+VueRouter.beforeEach((to, from, next) => {
+	
+  if (to.matched.some((r) => r.meta.requireAuth)) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (store.state.token) {   //判断是否已经登录
+      console.log('这是通过拦截后到处理',from);
+      next();
+    } else {
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath}   //登录成功后重定向到当前页面
+      });
+    }
+  } else {
+    console.log('未登陆');
+    next();
+  }
+  //如果本地 存在 token 则 不允许直接跳转到 登录页面
+  if(to.fullPath === "/login"){
+    if(store.state.token){
+      next({
+        path:from.fullPath
+      });
+    }else {
+      next();
+    }
+  }
+});
+
+
+
+
+export default VueRouter;

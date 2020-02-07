@@ -29,11 +29,12 @@ export default {
 			if(data.success){//登陆成功
 			store.commit("set_token",data.access_token)
 			store.commit("set_refresh_token",data.refresh_token)
+			store.commit("set_me",data.user)
 			store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"}) //连接聊天服务
 			successMsg("登陆成功，即将跳转到首页")
 			setTimeout(()=>{	
 				store.dispatch("toindex")
-			},2000)
+			},2000) 
 			
 			}else{
 				//console.log(res.data)
@@ -41,6 +42,33 @@ export default {
 				//alert(data.data)
 			}
 		})
+	},
+	//注册
+	register(user){
+		//console.log(user)
+		service.post("/sign",user).then((res)=>{
+			
+			var data = res.data;
+			if(data.success){//注册成功
+		/* 	store.commit("set_token",data.access_token)
+			store.commit("set_refresh_token",data.refresh_token)
+			store.commit("set_me",data.user)
+			store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"}) //连接聊天服务 */
+			successMsg("注册成功")
+			setTimeout(()=>{	
+				//store.dispatch("toindex")
+			},2000) 
+			
+			}else{
+				//console.log(res.data)
+				errorMsg(data.data)
+				//alert(data.data)
+			}
+		})
+	},
+	check(value){
+		var url ="/sign/check/"+value
+		return service.get(url);
 	}
 }
 

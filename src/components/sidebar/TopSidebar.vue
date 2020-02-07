@@ -4,7 +4,7 @@
 	<header class="header" id="site-header">
 	
 		<div class="page-title">
-			<h6>XX的个人主页</h6>
+			<h6>MiniCube</h6>
 		</div>
 	
 		<div class="header-content-wrapper">
@@ -173,7 +173,7 @@
 	
 				<div class="author-page author vcard inline-items more">
 					<div class="author-thumb">
-						<img alt="author" src="static/img/author-page.jpg" class="avatar">
+						<img alt="author" :src="me.cover" class="avatar">
 						<span class="icon-status online"></span>
 						<div class="more-dropdown more-with-triangle">
 							<div class="mCustomScrollbar" data-mcs-theme="dark">
@@ -278,12 +278,12 @@
 	
 						</div>
 					</div>
-					<a href="02-ProfilePage.html" class="author-name fn">
+					<router-link to="/personalIndex" class="author-name fn">
 						<div class="author-title">
-							狂野男孩 <svg class="olymp-dropdown-arrow-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
+							{{me.username}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
 						</div>
-						<span class="author-subtitle">太空牛仔</span>
-					</a>
+						<span class="author-subtitle">{{me.desc?me.desc:"什么也没有留下"}}</span>
+					</router-link>
 				</div>
 	
 			</div>
@@ -298,11 +298,16 @@
 	import FriendRequestItem from '../Friend/FriendRequestItem'
 	import ContectItem from '../ChatMessage/ContectItem'
 	import NoticeItem from '../Notification/NoticeItem'
-
+	 
+	import {mapGetters} from 'vuex'
+	
 	export default {
 	  components: {
 	     FriendRequestItem,ContectItem,NoticeItem
-	  }
+	  },
+		computed: {
+			...mapGetters(['me','token'])
+		},
 	}
 </script>
 
