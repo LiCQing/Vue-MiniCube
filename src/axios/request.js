@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 
 // create an axios instance
 const service = axios.create({
-   baseURL: 'http://121.43.230.40/:9658',
+   baseURL: 'http://121.43.230.40:9658',
    timeout: 15000
 })
 
