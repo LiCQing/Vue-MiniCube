@@ -8,16 +8,16 @@
 		</div>
 	
 		<div class="header-content-wrapper">
-			<form class="search-bar w-search notification-list friend-requests">
+			<form class="search-bar" > <!-- w-search notification-list friend-requests"> -->
 				<div class="form-group with-button">
-					<input class="form-control js-user-search" placeholder="搜索他的微博……" type="text">
-					<button>
+					<input class="form-control" v-model="keyword" placeholder="搜索……" type="text">
+					<button @click="search">
 						<svg class="olymp-magnifying-glass-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon"></use></svg>
 					</button>
 				</div>
 			</form>
 	
-			<a href="#" class="link-find-friend">查找朋友</a>
+			<!-- <a href="#" class="link-find-friend">查找朋友</a> -->
 	
 			<div class="control-block">
 	
@@ -29,13 +29,13 @@
 						<div class="ui-block-title ui-block-title-small">
 							<h6 class="title">好友申请</h6>
 							<a href="#">查找好友</a>
-							<router-link to="/persionalDashboard/setting">设置</router-link>
+							<router-link to="/profile/setting">设置</router-link>
 						</div>
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
 							<ul class="notification-list friend-requests">
 								
-								<FriendRequestItem/>
+								<FriendRequestItem v-for="(request,key) in friend_request" :request="request" :key = "key" :i="key"/>
 								
 								<li>
 									<div class="author-thumb">
@@ -102,7 +102,7 @@
 							</ul>
 						</div>
 	
-						<router-link to="/persionalDashboard/request"  class="view-all bg-blue">查看所有消息</router-link>
+						<router-link to="/profile/request"  class="view-all bg-blue">查看所有消息</router-link>
 					</div>
 				</div>
 	
@@ -145,7 +145,7 @@
 							</ul>
 						</div>
 	
-						<router-link to="/persionalDashboard/chat" class="view-all bg-purple">查看所有消息</router-link>
+						<router-link to="/profile/chat" class="view-all bg-purple">查看所有消息</router-link>
 					</div>
 				</div>
 	
@@ -167,7 +167,7 @@
 							</ul>
 						</div>
 	
-						<router-link to="/persionalDashboard/notification" class="view-all bg-primary">查看所有通知</router-link>
+						<router-link to="/profile/notification" class="view-all bg-primary">查看所有通知</router-link>
 					</div>
 				</div>
 	
@@ -183,7 +183,7 @@
 	
 								<ul class="account-settings">
 									<li>
-										<router-link to='/persionalDashboard'>
+										<router-link to='/profile'>
 											<svg class="olymp-menu-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-menu-icon"></use></svg>
 											<span>个人设置</span>
 										</router-link>
@@ -278,7 +278,7 @@
 	
 						</div>
 					</div>
-					<router-link to="/personalIndex" class="author-name fn">
+					<router-link to="/profile" class="author-name fn">
 						<div class="author-title">
 							{{me.username}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
 						</div>
@@ -298,16 +298,38 @@
 	import FriendRequestItem from '../Friend/FriendRequestItem'
 	import ContectItem from '../ChatMessage/ContectItem'
 	import NoticeItem from '../Notification/NoticeItem'
+
 	 
 	import {mapGetters} from 'vuex'
+	 import PubSub from 'pubsub-js' 
 	
 	export default {
+		data(){
+			return {
+				keyword:""
+			}
+		},
 	  components: {
 	     FriendRequestItem,ContectItem,NoticeItem
 	  },
 		computed: {
-			...mapGetters(['me','token'])
+			...mapGetters(['me','token','friend_request'])
 		},
+		methods: {
+			search() {
+			/* 	if(this.keyword == ""){
+					return 
+				} */
+				if(this.$router.currentRoute.path != "/result")
+					this.$router.push("/result")
+				PubSub.publish("search",this.keyword)
+				//console.log(router)
+			}
+		},
+		mounted: function(){
+			$('.selectpicker').selectpicker();
+			$.material.init();
+		}
 	}
 </script>
 

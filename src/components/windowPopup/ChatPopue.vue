@@ -227,6 +227,7 @@
 		},
 		mounted() {
             PubSub.subscribe('openChat',(msg,data)=> {
+								//alert(data)
                 this.openCss = data
             })
         }

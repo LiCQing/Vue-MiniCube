@@ -75,10 +75,30 @@
 	import {mapGetters} from 'vuex'
 	export default {
 		computed:{
-			...mapGetters(['field_msg','recent_contacts','now_friend'])
+			...mapGetters(['field_msg','recent_contacts','now_friend','friend_list'])
 		},
 		components:{
 			ContectItem,ChatField
+		},
+		mounted(){
+			//绑定和某人聊天事件
+			PubSub.subscribe("chat-with-friend",(msg,index)=>{
+				var user = this.friend_list[index]
+				
+				var contect = {sender:user,msg:"",sendTime:""}
+				//设定当前聊天是某人
+				console.log(this.recent_contacts)
+
+				this.recent_contacts.unshift(contect)
+		
+				this.$store.state.now_friend =  user
+				
+				/* var req = request.search(key)
+				 req.then((res)=>{
+					 console.log(res)
+				 })
+				 this.result.keyword = key */
+			})
 		}
 	}
 	

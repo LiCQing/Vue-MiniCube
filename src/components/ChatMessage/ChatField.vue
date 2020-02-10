@@ -3,7 +3,7 @@
 	
 	<div class="chat-field">
 		<div class="ui-block-title">
-			<h6 class="title">{{now_friend.name}}</h6>
+			<h6 class="title">{{now_friend.username}}</h6>
 			<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
 		</div>
 		<div class="" data-mcs-theme="dark">

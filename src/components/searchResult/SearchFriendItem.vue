@@ -53,6 +53,8 @@
 									</a>
 								</div>
 								<div class="control-block-button" data-swiper-parallax="-100">
+					 
+									
 									<a href="#" class="btn btn-control bg-blue">
 										<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
 									</a>
@@ -88,8 +90,7 @@
 
 <script>
 	export default {
-		
-		data() { 
+		data() {
 			return {
 				
 			};

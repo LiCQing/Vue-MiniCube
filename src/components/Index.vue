@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<TopSidebar/>
+		<top-sidebar/>
 		
 		<div class="header-spacer"></div>
 		
@@ -1577,10 +1577,10 @@
 
 <script>
 	import BlogItem from './container/mainComponent/blogMain/BlogItem'
-	import TopSidebar from './sidebar/TopSidebar'
+	//import TopSidebar from './sidebar/TopSidebar'
 	export default {
 	  components: {
-		BlogItem,TopSidebar
+		BlogItem
 	  },
 	  methods : {
 		  get(e){

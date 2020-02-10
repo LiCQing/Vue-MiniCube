@@ -16,31 +16,31 @@ const store = new Vuex.Store({
 		basic_auth: "Basic Y2xpZW50XzI6NjY2",
 		token: "",
 		refresh_token:"",
+		//聊天的条数
 		field_msg:[],
-		friend_list:[
-			{id:4,name:"张三",cover:"/static/img/avatar8-sm.jpg"},
-			{id:7,name:"小米",cover:"/static/img/avatar2-sm.jpg"},
-			{id:8,name:"君越",cover:"/static/img/avatar16-sm.jpg"},
-			{id:9,name:"大伟",cover:"/static/img/avatar3-sm.jpg"},
-			{id:1001,name:'bob',cover:"static/img/author-page.jpg"},
-			{id:404,name:"未知联系人",cover:"/static/img/avatar3-sm.jpg"}
-		],
-		now_friend:null,
-		//一个测试的
-		recent_contacts:[
-			{sender:{
-				id:"1",
-				name:"测试联系人",
-				cover:"/static/img/avatar3-sm.jpg"
-			},msg:"测试消息",sendTime:13524215424},
-			
-		],
+		//最近联系用户
+		recent_contacts:[],
 		websock: null,
 		me:{
 			id:1001,
 			username:"游客",
 			cover:'static/img/author-page.jpg'
-		}
+		},
+		//好友
+		now_friend:null,
+		friend_request:[
+			{username:"wuwu",cover:"/static/img/avatar3-sm.jpg",fid:1}
+		],
+		friend_list:[
+			{id:4,username:"张三",cover:"/static/img/avatar8-sm.jpg"},
+			{id:7,username:"小米",cover:"/static/img/avatar2-sm.jpg"},
+			{id:8,username:"君越",cover:"/static/img/avatar16-sm.jpg"},
+			{id:9,username:"大伟",cover:"/static/img/avatar3-sm.jpg"},
+			{id:1001,username:'bob',cover:"static/img/author-page.jpg"},
+			{id:404,username:"未知联系人",cover:"/static/img/avatar3-sm.jpg"}
+		],
+		
+		
     },
     mutations: {
         set_websoket (state, obj) {  // store中的数据只能通过commit mutation来改变
@@ -62,8 +62,14 @@ const store = new Vuex.Store({
 			state.refresh_token = obj
 		},
 		set_me(state,obj){
-			obj.cover ='static/img/author-page.jpg'
+			//obj.cover ='static/img/author-page.jpg'
 			state.me = obj
+		},
+		set_friend_request(state,obj){
+			state.friend_request = obj
+		},
+		remove_friend_req(state,index){
+			state.friend_request.splice(index,1)
 		}
 		
     },
@@ -92,6 +98,9 @@ const store = new Vuex.Store({
 		},
 		basic_auth:function(state){
 			return state.basic_auth;
+		},
+		friend_request:function(state){
+			return state.friend_request;
 		}
 	},
 	
@@ -130,6 +139,10 @@ const store = new Vuex.Store({
 		},
 		check(context,value){
 			return request.check(value);
+		},
+		//好友处理
+		removeRequest(context,value){
+			 context.commit("remove_friend_req",value)
 		},
 		
 		//  websocketl连接方法 

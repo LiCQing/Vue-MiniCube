@@ -4,7 +4,7 @@
 			<img :src="item.sender.cover" alt="author">
 		</div>
 		<div class="notification-event" @click="getFieldMsgApi(item.sender.id)">
-			<a href="javaScript:void(0);" class="h6 notification-friend">{{item.sender.name}}</a>
+			<a href="javaScript:void(0);" class="h6 notification-friend">{{item.sender.username}}</a>
 			<span class="chat-message-item" v-html="item.msg"></span>
 			<span class="notification-date"><time class="entry-date updated " >{{sendTime}}</time></span>
 		</div>

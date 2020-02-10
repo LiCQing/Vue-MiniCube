@@ -11,7 +11,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld'
-import PersionalDashboard from './components/PersionalDashboard'
+/* import PersionalDashboard from './components/PersionalDashboard' */
 import Login from './components/Login'
 import ErrorResult404 from './components/ErrorResult/ErrorResult404'
 import ErrorResult500 from './components/ErrorResult/ErrorResult500'
@@ -25,7 +25,7 @@ import UpdateHeaderPhoto from './components/windowPopup/UpdateHeaderPhoto'
 export default {
   name: 'App',
   components: {
-    HelloWorld,PersionalDashboard,Login,ErrorResult404,ErrorResult500,UpdateHeaderPhoto,ChoosefromMyPhoto
+    HelloWorld,Login,ErrorResult404,ErrorResult500,UpdateHeaderPhoto,ChoosefromMyPhoto
   },
   data(){
 	return {

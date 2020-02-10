@@ -13,11 +13,12 @@ Vue.use(ElementUI);
 
 
 /* require('./mock/mock.js') */
-
+import TopSidebar from './components/sidebar/TopSidebar'
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+Vue.component('top-sidebar',TopSidebar)
 var vue = new Vue({
   el: '#app',
 	router,

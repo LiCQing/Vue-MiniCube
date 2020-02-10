@@ -31,10 +31,10 @@ export default {
 			store.commit("set_refresh_token",data.refresh_token)
 			store.commit("set_me",data.user)
 			store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"}) //连接聊天服务
-			successMsg("登陆成功，即将跳转到首页")
+			successMsg("登陆成功，即将跳转")
 			setTimeout(()=>{	
 				store.dispatch("toindex")
-			},2000) 
+			},1000) 
 			
 			}else{
 				//console.log(res.data)
@@ -66,10 +66,49 @@ export default {
 			}
 		})
 	},
-	check(value){
+	//检查是否重复
+	check(value){  
 		var url ="/sign/check/"+value
 		return service.get(url);
-	}
+	},
+	//搜索用户和微博
+	search(value){
+		var url ="/friend/search/"+value
+		return service.get(url);
+	},
+	//添加用户
+	addFriend(id){
+		var url ="/friend/add/"+id
+		return service.get(url).then((res)=>{
+				 if(res.data.success){
+					 successMsg("请求成功，请静候佳音")
+				 }else{
+					 errorMsg(res.data.message)
+				 }
+			})
+	},
+	//获取好友请求
+	getFriendRequest(){
+		var url ="/friend/request"
+		return service.get(url).then((res)=>{
+				console.log(res)
+			})
+	},
+	//确认好友通过
+	acceptRequest(id){
+		var url ="/friend/accept/"+id
+		return service.get(url).then((res)=>{
+				console.log(res)
+			})
+	},
+	//拒绝好友申请
+	refuseRequest(id){
+		var url ="/friend/refuse/"+id
+		return service.get(url).then((res)=>{
+				console.log(res)
+			})
+	},
+	
 }
 
 //消息处理
