@@ -17,7 +17,7 @@
 										<router-link to="/personalIndex/timeline" class="active">时间轴</router-link>
 									</li>
 									<li>
-										<a href="05-ProfilePage-About.html">About</a>
+										<a href="javaScript:void(0)">About</a>
 									</li>
 									<li>
 										<router-link to="/personalIndex/friend">我的好友</router-link>
@@ -27,10 +27,10 @@
 							<div class="col col-lg-5 ml-auto col-md-5 col-sm-12 col-12">
 								<ul class="profile-menu">
 									<li>
-										<a href="07-ProfilePage-Photos.html">照片墙</a>
+										<a href="javaScript:void(0)">照片墙</a>
 									</li>
 									<li>
-										<a href="09-ProfilePage-Videos.html">视频墙</a>
+										<a href="javaScript:void(0)">视频墙</a>
 									</li>
 									<li>
 										<div class="more">
@@ -50,9 +50,9 @@
 						</div>
 
 						<div class="control-block-button">
-							<a href="35-YourAccount-FriendsRequests.html" class="btn btn-control bg-blue">
+							<router-link to="/profile/request" class="btn btn-control bg-blue">
 								<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-							</a>
+							</router-link>
 
 							<a href="#" class="btn btn-control bg-purple">
 								<svg class="olymp-chat---messages-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
@@ -69,18 +69,18 @@
 										<a href="#" data-toggle="modal" data-target="#update-header-photo">修改头像</a>
 									</li>
 									<li>
-										<a href="29-YourAccount-AccountSettings.html">账号设置</a>
+										<router-link to="/profile/setting">账号设置</router-link>
 									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
 					<div class="top-header-author">
-						<a href="02-ProfilePage.html" class="author-thumb">
+						<router-link to="/profile" class="author-thumb">
 							<img src="static/img/author-main1.jpg" alt="author">
-						</a>
+						</router-link>
 						<div class="author-content">
-							<a href="02-ProfilePage.html" class="h4 author-name">狂野男孩</a>
+							<a href="javaScript:void(0)" class="h4 author-name">狂野男孩</a>
 							<div class="country">湖北 武汉</div>
 						</div>
 					</div>

@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import request from "../axios/index.js";
+import common from '../common'
 import route from '../router/index.js' 
 import { Message } from 'element-ui'
+
 
 Vue.use(Vuex);
 
@@ -14,14 +16,15 @@ let vue_route = route
 const store = new Vuex.Store({
     state: {  // 初始化数据，只要有可能的用到的最好都初始化
 		basic_auth: "Basic Y2xpZW50XzI6NjY2",
-		token: "",
-		refresh_token:"",
+		
+		token: common.getInfoFromLocal("token") || "",
+		//refresh_token: common.getInfoFromLocal("refresh_token") || "",
 		//聊天的条数
 		field_msg:[],
 		//最近联系用户
 		recent_contacts:[],
 		websock: null,
-		me:{
+		me:common.getInfoFromLocal2Json("myinfo") || {
 			id:1001,
 			username:"游客",
 			cover:'static/img/author-page.jpg'
@@ -42,10 +45,12 @@ const store = new Vuex.Store({
 		
 		
     },
+		
+		
     mutations: {
-        set_websoket (state, obj) {  // store中的数据只能通过commit mutation来改变
-            state.websock = obj
-        },
+    set_websoket (state, obj) {  // store中的数据只能通过commit mutation来改变
+      state.websock = obj
+     },
 		set_field_msg(state,obj){
 			state.field_msg = obj
 		},
@@ -56,14 +61,26 @@ const store = new Vuex.Store({
 			state.now_friend = obj
 		},
 		set_token(state,obj){
-			state.token = "Bearer " + obj 
+			var token = "Bearer " + obj 
+			setInfoToLoca("token",token)
+			state.token = token
 		},
 		set_refresh_token(state,obj){
+			setInfoToLoca("refresh_token",obj)
 			state.refresh_token = obj
 		},
 		set_me(state,obj){
 			//obj.cover ='static/img/author-page.jpg'
+			setJsonInfoToLoca("myinfo",obj)
 			state.me = obj
+		},
+		clear_login_info(state,obj){
+			removeInfoFromLocal("token")
+			removeInfoFromLocal("myinfo")
+			removeInfoFromLocal("refresh_token")
+			state.token = ""
+			state.refresh_token = ""
+			state.me = {}
 		},
 		set_friend_request(state,obj){
 			state.friend_request = obj
@@ -133,6 +150,14 @@ const store = new Vuex.Store({
 		login(context,user){
 			request.login(user)
 		},
+		//退出
+		logout(context){
+			context.commit("clear_login_info")
+			successMsg("退出成功")
+			setTimeout(()=>{	
+				vue_route.push("/login")
+			},1000) 
+		},
 		//注册
 		register(context,user){
 			request.register(user)
@@ -144,6 +169,8 @@ const store = new Vuex.Store({
 		removeRequest(context,value){
 			 context.commit("remove_friend_req",value)
 		},
+		//--------------微博相关
+	
 		
 		//  websocketl连接方法 
 		conect_msg_server(context, obj){
@@ -285,6 +312,7 @@ var getFriend = function(id){
 	return friend == null ? {id:id,name:"未知联系人",cover:"/static/img/avatar3-sm.jpg"} : friend
 	
 }
+
 
 
 //时间函数

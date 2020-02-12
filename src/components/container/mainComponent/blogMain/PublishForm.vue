@@ -10,11 +10,15 @@
 				<div class="tab-pane active" id="home-1" role="tabpanel" aria-expanded="true">
 					<form>
 						<div class="author-thumb">
-							<img src="static/img/author-page.jpg" alt="author">
+							<img :src="me.cover" alt="author">
 						</div>
 						<div class="form-group with-icon label-floating is-empty">
-							<label class="control-label">Share what you are thinking here...</label>
-							<textarea class="form-control" placeholder=""></textarea>
+					<!-- 		<textarea  v-model="share_content"  class="form-control" placeholder=""></textarea>
+							 -->
+					 		<div @keydown="input" ref="inputdiv"  class="form-control" contentEditable="true" style="height: 110px;padding: 5px; margin-left: 70px">
+								<img src="static/img/icon-chat1.png" alt="icon">
+							</div> 
+							
 						</div>
 						
 						
@@ -35,19 +39,164 @@
 								</svg>
 							</a>
 							
-						<!-- 	<a data-toggle="modal" data-target="#create-friend-group-add-friends" href="#" class="btn btn-breez btn-sm">Open Popup</a> -->
+						<!-- 	<a data-toggle="modal" data-target="#create-friend-group-add-friends" href="javaScript:void(0)" class="btn btn-breez btn-sm">Open Popup</a> -->
 							
 							<a href="javaScript:void(0)" data-toggle="modal" data-target="#create-friend-group-add-friends" class="options-message"  data-placement="top"   data-original-title="TAG YOUR FRIENDS">
 								<svg class="olymp-computer-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-computer-icon"></use></svg>
 							</a>
 		
-							<a href="javaScript:void(0)" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD LOCATION">
+				<!-- 			<a href="javaScript:void(0)" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD LOCATION">
 								<svg class="olymp-small-pin-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-small-pin-icon"></use></svg>
 								湖南
-							</a>
+							</a> -->
+							
+							
+								<div class="options-message smile-block">
+									<svg class="olymp-happy-sticker-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-sticker-icon"></use></svg>
+							
+									<ul class="more-dropdown more-with-triangle triangle-bottom-right" style="right: -50px;">
+										<li>
+											<a href="javascript:void(0);">
+												<img @click="addImg" src="static/img/icon-chat1.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat2.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat3.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat4.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat5.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat6.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat7.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat8.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat9.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat10.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat11.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat12.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat13.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat14.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat15.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat16.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat17.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat18.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat19.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat20.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat21.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat22.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat23.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat24.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat25.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat26.png" alt="icon">
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">
+												<img  @click="addImg" src="static/img/icon-chat27.png" alt="icon">
+											</a>
+										</li>
+									</ul>
+								</div>
+								
+							
 		
-							<button class="btn btn-primary btn-md-2">确认发送</button>
-							<button   class="btn btn-md-2 btn-border-think btn-transparent c-grey">预览</button>
+							<button type="button" @click="send" class="btn btn-primary btn-md-2">确认发送</button>
+							<!-- <button type="button"   class="btn btn-md-2 btn-border-think btn-transparent c-grey">预览</button> -->
 		
 						</div>
 						
@@ -66,9 +215,14 @@
 </template>
 
 <script>
+	import {mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
+				share_content:{
+					msg:"",
+					type:""
+				},
 				form: {
 		 
 				},
@@ -78,6 +232,7 @@
 			}
 		},
 		computed :{
+			...mapGetters(['me']),
 			hasImg : {
 				get(){
 					return this.imgs.length > 0 
@@ -136,6 +291,33 @@
 			},
 			remove(i){
 				this.imgs.splice(i,1);
+			},
+			send(){
+				this.share_content.msg = this.$refs.inputdiv.innerHTML
+				if(this.share_content.msg == ""){
+					alert("未输入消息");
+					return ;
+				}
+				var share_content = this.share_content.msg
+				
+				this.$refs.inputdiv.innerHTML = ""
+				
+				//添加一条新博客到blog_list --> mainContent
+				PubSub.publish("publish_blog",share_content)
+
+			},
+			clear(){
+				this.share_content.msg = ""
+				this.$refs.inputdiv.innerHTML = ""
+				//console.log(this.$refs.inputdiv.innerHTML);
+			},
+			input(e){
+				this.share_content.msg = e.target.innerHTML;
+			},
+			addImg(e){
+				var msg = this.$refs.inputdiv.innerHTML
+				this.$refs.inputdiv.innerHTML = msg + e.target.outerHTML
+				this.share_content.msg = msg + e.target.outerHTML;
 			}
 		}
 	}

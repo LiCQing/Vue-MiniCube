@@ -8,11 +8,11 @@
 		</div>
 									
 		<div class="video-content">
-			<a href="#" class="h4 title">Iron Maid - ChillGroves</a>
+			<a href="javaScript:void(0)" class="h4 title">Iron Maid - ChillGroves</a>
 				<p>Lorem ipsum dolor sit amet, consectetur ipisicing elit, sed do eiusmod tempor incididunt
 					ut labore et dolore magna aliqua...
 				</p>
-			<a href="#" class="link-site">YOUTUBE.COM</a>
+			<a href="javaScript:void(0)" class="link-site">YOUTUBE.COM</a>
 		</div>
 	</div>
 									

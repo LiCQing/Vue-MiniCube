@@ -13,7 +13,7 @@
 							<a href="#">support@olympus.com</a>
 						</p>
 					</div>
-					<a href="index.html" class="btn btn-primary btn-lg">Go to Homepage</a>
+					<a href="javaScript:void(0)" class="btn btn-primary btn-lg">Go to Homepage</a>
 				</div>
 			</div>
 		</div>

@@ -6,7 +6,7 @@
 		<PublishForm/>
 		
 		<div id="newsfeed-items-grid">
-			<BlogItem/>
+			<BlogItem v-for="(blog,key) in blog_list" :blog="blog" :index="key" :key="key"/>
 			
 			<div class="ui-block">
 				
@@ -18,7 +18,7 @@
 							<img src="static/img/author-page.jpg" alt="author">
 				
 							<div class="author-date">
-								<a class="h6 post__author-name fn" href="02-ProfilePage.html">狂野男孩</a> 分享了一个
+								<a class="h6 post__author-name fn" href="javaScript:void(0)">狂野男孩</a> 分享了一个
 								<a href="#">链接</a>
 								<div class="post__date">
 									<time class="published" datetime="2017-03-24T18:18">
@@ -165,7 +165,7 @@
 							<img src="static/img/author-page.jpg" alt="author">
 				
 							<div class="author-date">
-								<a class="h6 post__author-name fn" href="02-ProfilePage.html">James Spiegel</a> shared
+								<a class="h6 post__author-name fn" href="javaScript:void(0)">James Spiegel</a> shared
 								<a href="#">Diana Jameson</a>’s <a href="#">photo</a>
 								<div class="post__date">
 									<time class="published" datetime="2017-03-24T18:18">
@@ -311,7 +311,7 @@
 		</div>
 		
 		
-		<a id="load-more-button" href="#" class="btn btn-control btn-more" data-load-link="items-to-load.html" data-container="newsfeed-items-grid">
+		<a id="load-more-button" href="#" class="btn btn-control btn-more" data-load-link="javaScript:void(0)" data-container="newsfeed-items-grid">
 			<svg class="olymp-three-dots-icon">
 				<use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
 			</svg>
@@ -325,6 +325,10 @@
 <script>
 	import BlogItem from './blogMain/BlogItem'
 	import PublishForm from './blogMain/PublishForm'
+	import common from '../../../common'
+	
+	import req from '../../../axios'
+	import {mapGetters} from 'vuex'
 	export default {
 	  components: {
 		BlogItem,PublishForm
@@ -333,7 +337,8 @@
 		  return{
 			  images:[
 				  {src:"static/img/post-photo6.jpg"},
-			  ]
+			  ],
+				blog_list:[]
 		  }
 	  },
 	  methods : {
@@ -342,6 +347,7 @@
 		  }
 	  },
 	  computed :{
+				...mapGetters(['me']),
 	 		  imgClass: function(){
 				 var size = this.images.length
 				//4(6-9) - 6(2-5) - 12(1)
@@ -353,7 +359,27 @@
 				 }
 				return "col-md-4"
 	 		  }
-	 }
+	 },
+	 mounted(){
+		   req.getBlogListOfFriend().then((res)=>{
+				  console.log(res)
+				  if(res.data.success)
+						this.blog_list = res.data.data
+			 })
+			 
+			 PubSub.subscribe("publish_blog",(msg,data) =>{
+				 var blog={
+				 	'blogContent':data,
+					'blogSendTime':common.CurrentTime()
+				 }
+				 //调用api保存到数据库
+				 //req.publish_blog(blog)
+				 
+				 blog.sender = this.me
+				 this.blog_list.unshift(blog)
+				 
+			 })
+		}
 	}
 </script>
 

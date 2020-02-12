@@ -13,14 +13,14 @@
 			
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
 						<div class="form-group label-floating">
-							<label class="control-label">昵称</label>
-							<input class="form-control" placeholder="" type="text" value="James">
+							<label class="control-label">用户名</label>
+							<input class="form-control" placeholder="" readonly="true" type="text" value="James">
 						</div>
 			
-						<div class="form-group label-floating">
+					<!-- 	<div class="form-group label-floating">
 							<label class="control-label">邮箱</label>
 							<input class="form-control" placeholder="" type="email" value="jspiegel@yourmail.com">
-						</div>
+						</div> -->
 			
 						<div class="form-group date-time-picker label-floating">
 							<label class="control-label">生日</label>
@@ -33,14 +33,14 @@
 			
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
 						<div class="form-group label-floating">
-							<label class="control-label">姓名</label>
+							<label class="control-label">昵称</label>
 							<input class="form-control" placeholder="" type="text" value="Spiegel">
 						</div>
 			
-						<div class="form-group label-floating">
+					<!-- 	<div class="form-group label-floating">
 							<label class="control-label">社交主页</label>
 							<input class="form-control" placeholder="" type="email" value="daydreamzagency.com">
-						</div>
+						</div> -->
 			
 			
 						<div class="form-group label-floating is-empty">
@@ -83,14 +83,6 @@
 							<textarea class="form-control" placeholder="">Hi, I’m James, I’m 36 and I work as a Digital Designer for the  “Daydreams” Agency in Pier 56</textarea>
 						</div>
 			
-						<div class="form-group label-floating is-select">
-							<label class="control-label">性别</label>
-							<select class="selectpicker form-control">
-								<option value="MA">保密</option>
-								<option value="MA">男</option>
-								<option value="FE">女</option>
-							</select>
-						</div>
 			
 				<!-- 		<div class="form-group label-floating is-empty">
 							<label class="control-label">宗教信仰</label>
@@ -98,14 +90,23 @@
 						</div> -->
 					</div>
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-						<div class="form-group label-floating is-empty">
+						<!-- <div class="form-group label-floating is-empty">
 							<label class="control-label">出生地点</label>
 							<input class="form-control" placeholder="" type="text">
-						</div>
+						</div> -->
 			
 						<div class="form-group label-floating">
 							<label class="control-label">职业</label>
 							<input class="form-control" placeholder="" type="text" value="UI/UX Designer">
+						</div>
+						
+						<div class="form-group label-floating is-select">
+							<label class="control-label">性别</label>
+							<select class="selectpicker form-control">
+								<option value="MA">保密</option>
+								<option value="MA">男</option>
+								<option value="FE">女</option>
+							</select>
 						</div>
 			
 					<!-- 	<div class="form-group label-floating is-select">
@@ -127,26 +128,7 @@
 							<input class="form-control" type="text" value="www.facebook.com/james-spiegel95321">
 							<i class="fab fa-facebook-f c-facebook" aria-hidden="true"></i>
 						</div>
-						<div class="form-group with-icon label-floating">
-							<label class="control-label">Twitter账号</label>
-							<input class="form-control" type="text" value="www.twitter.com/james_spiegelOK">
-							<i class="fab fa-twitter c-twitter" aria-hidden="true"></i>
-						</div>
-						<div class="form-group with-icon label-floating is-empty">
-							<label class="control-label">GitHub</label>
-							<input class="form-control" type="text">
-							<i class="fa fa-rss c-rss" aria-hidden="true"></i>
-						</div>
-						<div class="form-group with-icon label-floating">
-							<label class="control-label">新浪微博</label>
-							<input class="form-control" type="text" value="www.dribbble.com/thecowboydesigner">
-							<i class="fab fa-dribbble c-dribbble" aria-hidden="true"></i>
-						</div>
-						<div class="form-group with-icon label-floating is-empty">
-							<label class="control-label">知乎</label>
-							<input class="form-control" type="text">
-							<i class="fab fa-spotify c-spotify" aria-hidden="true"></i>
-						</div>
+					
 					</div>
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
 						<button class="btn btn-secondary btn-lg full-width">重置</button>

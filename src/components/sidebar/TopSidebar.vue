@@ -189,16 +189,15 @@
 										</router-link>
 									</li>
 									<li>
-										<a href="36-FavPage-SettingsAndCreatePopup.html">
+										<a href="javaScript:void(0)">
 											<svg class="olymp-star-icon left-menu-icon"  data-toggle="tooltip" data-placement="right"   data-original-title="FAV PAGE"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-star-icon"></use></svg>
 	
 											<span>Create Fav Page</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a @click="logout" href="javaScript:void(0)">
 											<svg class="olymp-logout-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-logout-icon"></use></svg>
-	
 											<span>安全退出</span>
 										</a>
 									</li>
@@ -278,7 +277,7 @@
 	
 						</div>
 					</div>
-					<router-link to="/profile" class="author-name fn">
+					<router-link to="/home" class="author-name fn">
 						<div class="author-title">
 							{{me.username}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
 						</div>
@@ -300,7 +299,7 @@
 	import NoticeItem from '../Notification/NoticeItem'
 
 	 
-	import {mapGetters} from 'vuex'
+	import {mapGetters,mapActions} from 'vuex'
 	 import PubSub from 'pubsub-js' 
 	
 	export default {
@@ -316,6 +315,7 @@
 			...mapGetters(['me','token','friend_request'])
 		},
 		methods: {
+			...mapActions(['logout']),
 			search() {
 			/* 	if(this.keyword == ""){
 					return 

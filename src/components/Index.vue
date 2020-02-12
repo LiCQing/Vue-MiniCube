@@ -269,7 +269,7 @@
 												<img src="static/img/author-page.jpg" alt="author">
 									
 												<div class="author-date">
-													<a class="h6 post__author-name fn" href="02-ProfilePage.html">James Spiegel</a>
+													<a class="h6 post__author-name fn" href="javaScript:void(0)">James Spiegel</a>
 													<div class="post__date">
 														<time class="published" datetime="2004-07-24T18:18">
 															38 mins ago
@@ -616,7 +616,7 @@
 											<img src="static/img/author-page.jpg" alt="author">
 									
 											<div class="author-date">
-												<a class="h6 post__author-name fn" href="02-ProfilePage.html">James Spiegel</a>
+												<a class="h6 post__author-name fn" href="javaScript:void(0)">James Spiegel</a>
 												<div class="post__date">
 													<time class="published" datetime="2017-03-24T18:18">
 														2 hours ago
@@ -752,7 +752,7 @@
 												<img src="static/img/author-page.jpg" alt="author">
 									
 												<div class="author-date">
-													<a class="h6 post__author-name fn" href="02-ProfilePage.html">James Spiegel</a> shared a
+													<a class="h6 post__author-name fn" href="javaScript:void(0)">James Spiegel</a> shared a
 													<a href="#">link</a>
 													<div class="post__date">
 														<time class="published" datetime="2017-03-24T18:18">
@@ -903,7 +903,7 @@
 												<img src="static/img/author-page.jpg" alt="author">
 									
 												<div class="author-date">
-													<a class="h6 post__author-name fn" href="02-ProfilePage.html">James Spiegel</a>
+													<a class="h6 post__author-name fn" href="javaScript:void(0)">James Spiegel</a>
 													<div class="post__date">
 														<time class="published" datetime="2017-03-24T18:18">
 															19 hours ago
@@ -1311,7 +1311,7 @@
 										<div class="content">
 											<h4 class="title">OLYMPUS</h4>
 											<span>THE BEST SOCIAL NETWORK THEME IS HERE!</span>
-											<a href="01-LandingPage.html" class="btn btn-bg-secondary btn-md">Register Now!</a>
+											<a href="javaScript:void(0)" class="btn btn-bg-secondary btn-md">Register Now!</a>
 										</div>
 									</div>
 									
@@ -1557,7 +1557,7 @@
 										<div class="content">
 											<h4 class="title">OLYMPUS</h4>
 											<span>THE BEST SOCIAL NETWORK THEME IS HERE!</span>
-											<a href="01-LandingPage.html" class="btn btn-bg-secondary btn-md">Register Now!</a>
+											<a href="javaScript:void(0)" class="btn btn-bg-secondary btn-md">Register Now!</a>
 										</div>
 									</div>
 									

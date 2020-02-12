@@ -1,7 +1,7 @@
 <template>
 	<div>
 				<!-- ... end Comments -->
-		<a href="#" class="more-comments">查看更多评论 <span>+</span></a>
+		<a href="javaScript:void(0)" class="more-comments">查看更多评论 <span>+</span></a>
 		
 		<!-- Comment Form  -->
 		
@@ -13,7 +13,7 @@
 				<div class="form-group with-icon-right ">
 					<textarea class="form-control" placeholder=""></textarea>
 					<div class="add-options-message">
-						<a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
+						<a href="javaScript:void(0)" class="options-message" data-toggle="modal" data-target="#update-header-photo">
 							<svg class="olymp-camera-icon">
 								<use xlink:href="static/svg-icons/sprites/icons.svg#olymp-camera-icon"></use>
 							</svg>

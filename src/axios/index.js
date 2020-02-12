@@ -1,14 +1,15 @@
 import {service} from './request.js'
 import axios from 'axios'
 import store from '@/store'
-import {vue} from '@/main.js'
+import common from '@/common'
+
 
 function errorMsg(msg){
-	vue.$message.error({ message: msg, center: true, offset:300});
+	common.alertErrorMsg(msg)
 }
 
 function successMsg(msg){
-	vue.$message.success({ message: msg, center: true, offset:300});
+	common.alertSuccessMsg(msg)
 }
 
 export default {
@@ -28,7 +29,7 @@ export default {
 			var data = res.data;
 			if(data.success){//登陆成功
 			store.commit("set_token",data.access_token)
-			store.commit("set_refresh_token",data.refresh_token)
+			//store.commit("set_refresh_token",data.refresh_token)
 			store.commit("set_me",data.user)
 			store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"}) //连接聊天服务
 			successMsg("登陆成功，即将跳转")
@@ -109,6 +110,30 @@ export default {
 			})
 	},
 	
+	//---------------微博相关
+	//获得好友的微博
+	getBlogListOfFriend(){
+		return service.get("/blog/list/friend")
+	},
+	//发送微博
+	publish_blog(blog){
+		service.post("/blog/insert",blog).then()
+	},
+	
+	//
+	async uploadhead(data){
+		await service.post("/oauth/user/head",data,{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then((res)=>{
+			  console.log(res)
+		}).catch(e=>{
+			 console.error(e)
+		})
+	}
+	
+	
 }
 
 //消息处理
@@ -148,6 +173,7 @@ var dateLong2String = function(time){
        month = month < 10 ? "0"+month:month;
        day = day < 10 ? "0"+day:day;
        return year+"-"+month+"-"+day;
+			
 }
 
 var CurrentTime = function() {

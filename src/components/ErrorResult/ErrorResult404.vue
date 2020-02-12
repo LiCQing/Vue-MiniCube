@@ -229,7 +229,7 @@
 								</p>
 							</div>
 		
-							<a href="index.html" class="btn btn-primary btn-lg">Go to Homepage</a>
+							<a href="javaScript:void(0)" class="btn btn-primary btn-lg">Go to Homepage</a>
 						</div>
 					</div>
 				</div>
@@ -444,7 +444,7 @@
 						
 						<div class="widget w-about">
 						
-							<a href="02-ProfilePage.html" class="logo">
+							<a href="javaScript:void(0)" class="logo">
 								<div class="img-wrap">
 									<img src="static/img/logo-colored.png" alt="Olympus">
 								</div>
@@ -587,7 +587,7 @@
 						
 						<div class="sub-footer-copyright">
 							<span>
-								Copyright <a href="index.html">Olympus Buddypress + WP</a> All Rights Reserved 2017
+								Copyright <a href="javaScript:void(0)">Olympus Buddypress + WP</a> All Rights Reserved 2017
 							</span>
 						</div>
 						

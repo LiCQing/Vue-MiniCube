@@ -4,7 +4,7 @@
 	<div class="fixed-sidebar">
 		<div class="fixed-sidebar-left sidebar--small" id="sidebar-left">
 	
-			<a href="02-ProfilePage.html" class="logo">
+			<a href="javaScript:void(0)" class="logo">
 				<div class="img-wrap">
 					<img src="static/img/logo.png" alt="Olympus">
 				</div>
@@ -18,12 +18,12 @@
 						</a>
 					</li>
 					<li>
-						<a href="03-Newsfeed.html">
+						<a href="javaScript:void(0)">
 							<svg class="olymp-newsfeed-icon left-menu-icon" data-toggle="tooltip" data-placement="right"   data-original-title="NEWSFEED"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-newsfeed-icon"></use></svg>
 						</a>
 					</li>
 					<li>
-						<a href="16-FavPagesFeed.html">
+						<a href="javaScript:void(0)">
 							<svg class="olymp-star-icon left-menu-icon"  data-toggle="tooltip" data-placement="right"   data-original-title="FAV PAGE"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-star-icon"></use></svg>
 						</a>
 					</li>

@@ -1,11 +1,13 @@
 import axios from 'axios'
+import router from '@/router'
 import store from '@/store'
+import common from '@/common'
 import { Message } from 'element-ui'
 
 // create an axios instance
 const service = axios.create({
-   baseURL: 'http://121.43.230.40:9658',
-   //baseURL: 'http://127.0.0.1:9658',
+   //baseURL: 'http://121.43.230.40:9658',
+   baseURL: 'http://127.0.0.1:9658',
 	 timeout: 15000
 })
 
@@ -28,7 +30,7 @@ const service = axios.create({
 
 // 再添加一个返回拦截器
 service.interceptors.response.use(
-    response => {
+    async (response) => {
 			var errMsg = "未知错误"
 			switch(response.data.status){
 				case 200: return response;
@@ -45,7 +47,12 @@ service.interceptors.response.use(
 					errMsg = "请求资源不存在"
 					break
 				case 500:
-					errMsg = "服务器开小差了，请稍后重试"
+				  errMsg = "服务器开小差了，请稍后重试"
+				 	if(response.data.data=="Token has expired"){
+					   await refresh_token()
+						 errMsg = "登陆或已过期，请重新登陆"
+					}
+					
 					break
 			}
 			Message({
@@ -92,5 +99,31 @@ service.interceptors.response.use(
 			return Promise.reject(error.response)
 	  }
 )
+
+async function refresh_token(){
+	try {
+	  const refreshToken = common.getInfoFromLocal('refresh_token');
+				var param={refresh_token: refreshToken,
+						grant_type:"refresh_token" }
+				
+        const { code, data } = await service.post('/oauth/token?grant_type=refresh_token&refresh_token='+refreshToken);
+        
+				if (code == 410) {
+            return router.replace({ path: '/login', query: { redirect: router.currentRoute.fullPath } });
+        } else {
+					console.log(data)
+            const { access_token, refresh_token } = data;
+            if (access_token && refresh_token) {
+							console.log(store)
+						    store.state.token = "Bearer " + access_token
+                common.setInfoToLoca("token","Bearer " + access_token)//jwt
+                common.setInfoToLoca("refresh_token",refresh_token)//刷新token
+            }
+        }
+        return { code, data }
+			} catch (error) {
+        console.log(error);
+    }
+}
 
 export {service}

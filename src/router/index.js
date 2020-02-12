@@ -64,9 +64,9 @@ const routes = [{
 	{
 		path: '/profile',
 		component: Profile,
-		/* meta: {
+		 meta: {
 			requireAuth: true
-		}, */
+		}, 
 		children: [{
 				path: 'info',
 				component: Infomation,
@@ -111,7 +111,10 @@ const routes = [{
 	},
 	{
 		path: '/home',
-		component: PersonalHome
+		component: PersonalHome,
+		meta: {
+			requireAuth: true
+		}, 
 	},
 	{
 		path: '/',
