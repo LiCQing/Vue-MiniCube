@@ -1,24 +1,36 @@
 <template>
 	<div class="post-video">
-		<div class="video-thumb">
+		<!-- <div class="video-thumb">
 			<img src="static/img/video-youtube1.jpg" alt="photo">
 			<a href="https://youtube.com/watch?v=excVFQ2TWig" class="play-video">
 				<svg class="olymp-play-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-play-icon"></use></svg>
 			</a>
-		</div>
-									
-		<div class="video-content">
+		</div> -->
+		<video :src="url" controls="controls"  style="max-width: 100%; max-height: 500px;"></video>							
+		<!-- <div class="video-content">
 			<a href="javaScript:void(0)" class="h4 title">Iron Maid - ChillGroves</a>
 				<p>Lorem ipsum dolor sit amet, consectetur ipisicing elit, sed do eiusmod tempor incididunt
 					ut labore et dolore magna aliqua...
 				</p>
 			<a href="javaScript:void(0)" class="link-site">YOUTUBE.COM</a>
-		</div>
+		</div> -->
 	</div>
 									
 </template>
 
 <script>
+	import util  from '../../../../common'
+	export default {
+		props:['videourl'],
+		data() {
+			return { }
+			},
+		computed: {
+			url: function(){
+ 					return util.VAR().imgurl + this.videourl 
+			}
+		},
+		}
 </script>
 
 <style>

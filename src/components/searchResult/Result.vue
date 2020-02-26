@@ -5,128 +5,31 @@
 				<div class="col col-xl-8 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
 					<div class="ui-block">
 						<div class="ui-block-title">
-							<div class="h6 title">共搜索到{{result.count}}条结果: “<span class="c-primary">{{result.keyword}}</span>”</div>
+							<div  v-if="blogresult.length>0" class="h6 title">共搜索到{{blogresult.length}}条“<span class="c-primary">{{keyword}}</span>”相关微博</div>
+							<div v-else class="h6 title">未搜到“<span class="c-primary">{{keyword}}</span>”相关微博</div>
 						</div>
 					</div>
 		
-					<div id="search-items-grid">
-		
-						<div class="ui-block">
-		
-							<!-- Search Result -->
-							
-							<article class="hentry post searches-item">
-							
-								<div class="post__author author vcard inline-items">
-									<img src="static/img/avatar7-sm.jpg" alt="author">
-							
-									<div class="author-date">
-										<a class="h6 post__author-name fn" href="javaScript:void(0)">Marina Valentine</a>
-										<div class="country">Long Island, NY</div>
-									</div>
-							
-									<span class="notification-icon">
-										<a href="#" class="accept-request">
-											<span class="icon-add without-text">
-												<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-											</span>
-										</a>
-							
-										<a href="#" class="accept-request chat-message">
-											<svg class="olymp-chat---messages-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
-										</a>
-									</span>
-							
-									<div class="more">
-										<svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-										<ul class="more-dropdown">
-											<li>
-												<a href="#">Edit Post</a>
-											</li>
-											<li>
-												<a href="#">Delete Post</a>
-											</li>
-											<li>
-												<a href="#">Turn Off Notifications</a>
-											</li>
-											<li>
-												<a href="#">Select as Featured</a>
-											</li>
-										</ul>
-									</div>
-							
-								</div>
-							
-								<p class="user-description">
-									<span class="title">About Me:</span> Hi!, I’m Marina and I’m a Community Manager for “Gametube”. Gamer and full-time mother.
-									<span class="title">Favourite TV Shows:</span> Breaking Good, RedDevil, People of Interest, The...
-								</p>
-							
-								<div class="post-block-photo js-zoom-gallery">
-									<a href="static/img/post-photo3.jpg" class="col col-3-width"><img src="static/img/post-photo3.jpg" alt="photo"></a>
-									<a href="static/img/post-photo4.jpg" class="col col-3-width"><img src="static/img/post-photo4.jpg" alt="photo"></a>
-									<a href="static/img/post-photo5.jpg" class="more-photos col-3-width">
-										<img src="static/img/post-photo5.jpg" alt="photo">
-										<span class="h2">+352</span>
-									</a>
-								</div>
-							
-								<div class="post-additional-info">
-							
-									<ul class="friends-harmonic">
-										<li>
-											<a href="#">
-												<img src="static/img/friend-harmonic9.jpg" alt="friend">
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<img src="static/img/friend-harmonic10.jpg" alt="friend">
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<img src="static/img/friend-harmonic7.jpg" alt="friend">
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<img src="static/img/friend-harmonic8.jpg" alt="friend">
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<img src="static/img/friend-harmonic11.jpg" alt="friend">
-											</a>
-										</li>
-									</ul>
-									<div class="names-people-likes">
-										You and Marina have
-										<a href="#">4 Friends in Common</a>
-									</div>
-							
-									<div class="friend-count">
-										<a href="#" class="friend-count-item">
-											<div class="h6">189</div>
-											<div class="title">Friends</div>
-										</a>
-										<a href="#" class="friend-count-item">
-											<div class="h6">254</div>
-											<div class="title">Photos</div>
-										</a>
-										<a href="#" class="friend-count-item">
-											<div class="h6">16</div>
-											<div class="title">Videos</div>
-										</a>
-									</div>
-							
-								</div>
-							
-							</article>
-							<!-- ... end Search Result -->
-						</div>
-		
+					<div v-if="blogresult.length>0"  id="search-items-grid">
+					   
+					    <BlogItem v-for="(blog,index) in blogresult" :blog = "blog"  :key="index"/>
+						
 					</div>
+					
+					<!-- 推荐微博 -->
+					
+					<div  class="ui-block">
+						<div class="ui-block-title">
+							<div  class="h6 title">推荐微博</div>
+						</div>
+					</div>
+		
+					<!-- <div v-if="blogresult.length>0"  id="search-items-grid">
+					
+						<BlogItem v-for="(blog,index) in blogresult" :blog = "blog"  :key="index"/>
+						
+					</div> -->
+					
 		
 					<a id="load-more-button" href="javaScript:void(0)" class="btn btn-control btn-more" data-load-link="search-items-to-load.html" data-container="search-items-grid">
 						<svg class="olymp-three-dots-icon">
@@ -134,7 +37,6 @@
 						</svg>
 					</a>
 				</div>
-		
 				<!-- ... end Main Content -->
 		
 		
@@ -148,16 +50,57 @@
 					
 					<div class="ui-block">
 						<div class="ui-block-title">
-							<h6 class="title">用户搜索结果</h6>
-						<!-- 	<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
-						 -->
+							<h6 v-if="friendresult.length>0" class="title">共搜索到{{friendresult.length}}个“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
+							<h6 v-else class="title">未搜索到{{friendresult.length}}个“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
 						</div>
 		
-						
-						
 						<!-- 好友搜索结果 -->
-						
-						<ul class="widget w-friend-pages-added notification-list friend-requests">
+						<ul v-if="friendresult.length > 0" class="widget w-friend-pages-added notification-list friend-requests">
+							<li v-for="friend in friendresult"  class="inline-items">
+								<div class="author-thumb">
+									<img :src="friend.cover" alt="author">
+								</div>
+								<div class="notification-event">
+									<a href="#" class="h6 notification-friend">{{friend.nick || friend.username}}</a>
+									<span class="chat-message-item">8个共同好友</span>
+								</div>
+								<span class="notification-icon">
+									<a v-if="friend.id != me.id"  href="javaScript:void(0)" @click="addFriend(5)" class="accept-request">
+										<span class="icon-add without-text">
+											<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+										</span>
+									</a>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<!-- 加入平台 -->
+					<div  v-if="!me.id" class="ui-block">
+				  		
+				  		<!-- W-Action -->
+				  		
+				  		<div class="widget w-action">
+				  		
+				  			<img src="static/img/logo.png" alt="Olympus">
+				  			<div class="content">
+				  				<h4 class="title">MINICUBE</h4>
+				  				<span>THE BEST SOCIAL NETWORK THEME IS HERE!</span>
+				  				<router-link to="/login" class="btn btn-bg-secondary btn-md">加入我们!</router-link>
+				  		</div>
+				  		
+				  		<!-- ... end W-Action -->
+				  	</div>
+					</div>
+							
+							<!-- 推荐用户 -->
+							
+					<div class="ui-block">
+						<div class="ui-block-title">
+							<h6 class="title">热门用户</h6>
+						</div>
+		
+						<!-- 好友搜索结果 -->
+						<ul  class="widget w-friend-pages-added notification-list friend-requests">
 							<li class="inline-items">
 								<div class="author-thumb">
 									<img src="static/img/avatar38-sm.jpg" alt="author">
@@ -174,32 +117,10 @@
 									</a>
 								</span>
 							</li>
-						
-		
-						
 						</ul>
-						
-						<!-- ... end W-Action -->
-					</div>
-					<!-- 加入平台 -->
-							<div class="ui-block">
-					
-									
-									<!-- W-Action -->
-									
-									<div class="widget w-action">
-									
-										<img src="static/img/logo.png" alt="Olympus">
-										<div class="content">
-											<h4 class="title">MINICUBE</h4>
-											<span>THE BEST SOCIAL NETWORK THEME IS HERE!</span>
-											<router-link to="/login" class="btn btn-bg-secondary btn-md">Register Now!</router-link>
-										</div>
-									</div>
-									
-									<!-- ... end W-Action -->
-								</div>
-				</div>
+					</div>	
+							
+			</div>
 		
 				<!-- ... end Right Sidebar -->
 	</div>
@@ -207,28 +128,47 @@
 
 <script>
 	import request from '../../axios/index.js'
+	import util from '../../common'
+	
+	import BlogItem from '../container/mainComponent/blogMain/BlogItem'
+	
+	import {mapGetters} from 'vuex'
 	
 	export default {
 		data() {
 			return {
-				result:{
-					keyword:"li",
-					count:"5"
-				}
+				friendresult:[],
+				blogresult:[],
+				keyword:""
 			}
+		},
+		components:{
+		 	BlogItem
 		},
 		methods: {
 			addFriend(id) {
-				request.addFriend(id)
+				var param = {
+					receiveId:id,
+					requestMsg:"你好有趣啊"}
+					
+				request.addFriend(param)
 			}
 		},
+		computed:{
+			...mapGetters(['me'])
+		}
+		,
 		mounted(){
 			PubSub.subscribe("search",(m,key)=>{
-				 var req = request.search(key)
-				 req.then((res)=>{
-					 console.log(res)
+				 request.search(key).then((res)=>{
+					 this.friendresult = res.data.data
 				 })
-				 this.result.keyword = key 
+				 
+				 request.searchBlog(key).then((res)=>{
+					this.blogresult = res.data.data
+				 })
+				 
+				 this.keyword = key	
 			})
 		}
 	}

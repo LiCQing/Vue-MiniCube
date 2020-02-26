@@ -14,7 +14,7 @@
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
 						<div class="form-group label-floating">
 							<label class="control-label">用户名</label>
-							<input class="form-control" placeholder="" readonly="true" type="text" value="James">
+							<input class="form-control" placeholder="" readonly="true" type="text" :value="me.username">
 						</div>
 			
 					<!-- 	<div class="form-group label-floating">
@@ -24,17 +24,17 @@
 			
 						<div class="form-group date-time-picker label-floating">
 							<label class="control-label">生日</label>
-							<input name="datetimepicker" value="10/24/1984" />
+							<input name="datetimepicker" v-model="birthday"  />
 							<span class="input-group-addon">
-													<svg class="olymp-month-calendar-icon icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-month-calendar-icon"></use></svg>
-												</span>
+								<svg class="olymp-month-calendar-icon icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-month-calendar-icon"></use></svg>
+							</span>
 						</div>
 					</div>
 			
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-						<div class="form-group label-floating">
+						<div class="form-group label-floating " :class = "nick?'':'is-empty'">
 							<label class="control-label">昵称</label>
-							<input class="form-control" placeholder="" type="text" value="Spiegel">
+							<input class="form-control" placeholder="" v-model="nick" type="text">
 						</div>
 			
 					<!-- 	<div class="form-group label-floating">
@@ -43,9 +43,9 @@
 						</div> -->
 			
 			
-						<div class="form-group label-floating is-empty">
+						<div class="form-group label-floating " :class = "phone?'':'is-empty'">
 							<label class="control-label">手机号</label>
-							<input class="form-control" placeholder="" type="text">
+							<input v-model="phone" class="form-control" placeholder="" type="text">
 						</div>
 					</div>
 			
@@ -102,10 +102,10 @@
 						
 						<div class="form-group label-floating is-select">
 							<label class="control-label">性别</label>
-							<select class="selectpicker form-control">
-								<option value="MA">保密</option>
-								<option value="MA">男</option>
-								<option value="FE">女</option>
+							<select v-model="gender" class="selectpicker form-control">
+								<option value="0">保密</option>
+								<option value="1">男</option>
+								<option value="2">女</option>
 							</select>
 						</div>
 			
@@ -130,11 +130,11 @@
 						</div>
 					
 					</div>
-					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-						<button class="btn btn-secondary btn-lg full-width">重置</button>
+					<div class="col col-lg-6 col-md-6 col-sm-12 col-12 ">
+						<button type="button" class="btn btn-secondary btn-lg full-width">重置</button>
 					</div>
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-						<button class="btn btn-primary btn-lg full-width">保存修改</button>
+						<button  type="button" @click="submit_update" class="btn btn-primary btn-lg full-width">保存修改</button>
 					</div>
 			
 				</div>
@@ -146,6 +146,49 @@
 </template>
 
 <script>
+	import {mapGetters} from 'vuex'
+	import util from '../../common'
+	import req from '../../axios'
+	
+	export default{
+		data() {
+			return {
+				nick:"",	
+				phone:"",
+				gender:"",
+				birthday:"",
+			}
+		},
+		computed: {
+			...mapGetters(['me']),
+			name() {
+				return  util.today()
+			}
+		},
+		methods: {
+			submit_update() {
+				var user ={
+					id:this.me.id,
+					nick:this.nick,	
+					phone:this.phone,
+					gender:this.gender,
+					birthday:this.birthday,
+				}
+				
+			    req.update_info(user)
+				 
+			}
+		},
+		mounted(){
+			//js > libs-init > libs-init.js 28行
+			CRUMINA.Bootstrap();
+			this.nick = this.me.nick||this.me.username
+			this.phone = this.me.phone
+			this.gender = this.me.gender || 0
+			this.birthday = util.getDateOfNum(this.me.birthday) || util.today()
+		}
+	}
+	
 </script>
 
 <style>

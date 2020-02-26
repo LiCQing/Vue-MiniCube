@@ -23,7 +23,7 @@
 	
 				<div class="control-icon more has-items">
 					<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-					<div class="label-avatar bg-blue">6</div>
+					<div v-show="friend_request.length" class="label-avatar bg-blue">{{friend_request.length}}</div>
 	
 					<div class="more-dropdown more-with-triangle triangle-top-center">
 						<div class="ui-block-title ui-block-title-small">
@@ -35,69 +35,9 @@
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
 							<ul class="notification-list friend-requests">
 								
-								<FriendRequestItem v-for="(request,key) in friend_request" :request="request" :key = "key" :i="key"/>
+								<div v-if="!friend_request.length">暂无</div>
 								
-								<li>
-									<div class="author-thumb">
-										<img src="static/img/avatar55-sm.jpg" alt="author">
-									</div>
-									<div class="notification-event">
-										<a href="#" class="h6 notification-friend">Tamara Romanoff</a>
-										<span class="chat-message-item">共同好友: Sarah、Hetfield</span>
-									</div>
-									<span class="notification-icon">
-										<a   href="#" class="accept-request">
-											<span class="icon-add without-text">
-												<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-											</span>
-										</a>
-	
-										<a   href="#" class="accept-request request-del">
-											<span class="icon-minus">
-												<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-											</span>
-										</a>
-	
-									</span>
-									<div   class="more">
-										<svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-									</div>
-								</li>
- 
-	
-								<li class="accepted">
-									<div class="author-thumb">
-										<img src="static/img/avatar57-sm.jpg" alt="author">
-									</div>
-									<div class="notification-event">
-										你和 <a href="#" class="h6 notification-friend">Mary Jane Stark</a> 已经好朋友了. Write on <a href="#" class="notification-link">her wall</a>.
-									</div>
-									<span class="notification-icon">
-										<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-									</span>
-	
-									<div class="more">
-										<svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-										<svg class="olymp-little-delete"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
-									</div>
-								</li>
-								<li class="accepted">
-									<div class="author-thumb">
-										<img src="static/img/avatar57-sm.jpg" alt="author">
-									</div>
-									<div class="notification-event">
-										你拒绝了 <a href="#" class="h6 notification-friend">Mary Jane Stark</a> 的好友请求
-									</div>
-									<span class="notification-icon">
-										<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-									</span>
-	
-									<div class="more">
-										<svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-										<svg class="olymp-little-delete"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
-									</div>
-								</li>
-							
+								<FriendRequestItem v-for="(request,key) in friend_request" :request="request" :key = "key" :i="key"/>
 	
 							</ul>
 						</div>
@@ -113,8 +53,8 @@
 					<div class="more-dropdown more-with-triangle triangle-top-center">
 						<div class="ui-block-title ui-block-title-small">
 							<h6 class="title">消息</h6>
-							<a href="#">标记所有已读</a>
-							<a href="#">设置</a>
+							<a href="javaScript:void(0)">标记所有已读</a>
+							<router-link to="/profile/setting">设置</router-link>
 						</div>
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
@@ -132,7 +72,7 @@
 									<div class="notification-event">
 										<a href="#" class="h6 notification-friend">相亲相爱一家人</a>
 										<span class="last-message-author">XX:</span>
-										<span class="chat-message-item">震惊，一小伙子插了一晚上，第二天……</span>
+										<span class="chat-message-item">震惊……</span>
 										<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">7月21 10:23</time></span>
 									</div>
 										<span class="notification-icon">
@@ -157,8 +97,8 @@
 					<div class="more-dropdown more-with-triangle triangle-top-center">
 						<div class="ui-block-title ui-block-title-small">
 							<h6 class="title">通知</h6>
-							<a href="#">标记所有已读</a>
-							<a href="#">设置</a>
+							<a href="javaScript:void(0)">标记所有已读</a>
+							<router-link to="/profile/setting">设置</router-link>
 						</div>
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
@@ -279,9 +219,9 @@
 					</div>
 					<router-link to="/home" class="author-name fn">
 						<div class="author-title">
-							{{me.username}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
+							{{me.nick||me.username}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
 						</div>
-						<span class="author-subtitle">{{me.desc?me.desc:"什么也没有留下"}}</span>
+						<span class="author-subtitle">{{ me.desc||"什么也没有留下"}}</span>
 					</router-link>
 				</div>
 	
@@ -302,6 +242,7 @@
 	import {mapGetters,mapActions} from 'vuex'
 	 import PubSub from 'pubsub-js' 
 	
+	import req from '../../axios'
 	export default {
 		data(){
 			return {
@@ -322,11 +263,15 @@
 				} */
 				if(this.$router.currentRoute.path != "/result")
 					this.$router.push("/result")
+					//SearchResult - > result
 				PubSub.publish("search",this.keyword)
+				this.keyword = ""
 				//console.log(router)
 			}
 		},
 		mounted: function(){
+			req.getFriendRequest();
+			
 			$('.selectpicker').selectpicker();
 			$.material.init();
 		}

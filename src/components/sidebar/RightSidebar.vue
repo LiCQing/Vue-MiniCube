@@ -124,7 +124,7 @@
 						</div>
 	
 						<div class="author-status">
-							<a href="javascript:void(0);" class="h6 author-name">{{friend.username}}</a>
+							<a href="javascript:void(0);" class="h6 author-name">{{friend.nick ||friend.username}}</a>
 							<span class="status">ONLINE</span>
 						</div>
 	
@@ -175,6 +175,8 @@
 <script>
 	import PubSub from 'pubsub-js'
 	import {mapGetters,mapActions} from 'vuex'
+	import req from '../../axios'
+	
 	export default{ 
 		methods : {
 			openFriend(css){
@@ -204,6 +206,9 @@
 		},
 		mounted: function(){
 			CRUMINA.perfectScrollbarInit()
+			
+			req.getFriendList();
+			
 		},
 		computed: {
 			...mapGetters(['friend_list']),
@@ -211,6 +216,8 @@
 				return 1;//this.${2:data} 
 			}
 		},
+		
+		
 	}
 </script>
 

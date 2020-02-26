@@ -29,7 +29,7 @@ export default {
 			var data = res.data;
 			if(data.success){//登陆成功
 			store.commit("set_token",data.access_token)
-			//store.commit("set_refresh_token",data.refresh_token)
+			store.commit("set_refresh_token",data.refresh_token)
 			store.commit("set_me",data.user)
 			store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"}) //连接聊天服务
 			successMsg("登陆成功，即将跳转")
@@ -78,9 +78,8 @@ export default {
 		return service.get(url);
 	},
 	//添加用户
-	addFriend(id){
-		var url ="/friend/add/"+id
-		return service.get(url).then((res)=>{
+	addFriend(param){
+		return service.post("/friend/add/",param).then((res)=>{
 				 if(res.data.success){
 					 successMsg("请求成功，请静候佳音")
 				 }else{
@@ -90,48 +89,138 @@ export default {
 	},
 	//获取好友请求
 	getFriendRequest(){
-		var url ="/friend/request"
-		return service.get(url).then((res)=>{
-				console.log(res)
+		return service.get("/friend/request").then((res)=>{
+				 if(res.data.success){
+				 	  store.commit("set_friend_request",res.data.data);
+				 }else{
+				 	errorMsg(res.data.message)
+				 }
+			})
+	},
+	getFriendList(){
+		return service.get("/friend/list").then((res)=>{
+				if(res.data.success){
+						store.commit("set_friend_list",res.data.data);
+				}else{
+					errorMsg(res.data.message)
+				}
 			})
 	},
 	//确认好友通过
-	acceptRequest(id){
-		var url ="/friend/accept/"+id
-		return service.get(url).then((res)=>{
+	acceptRequest(param){
+		return service.post("/friend/accept",param).then((res)=>{
 				console.log(res)
 			})
 	},
 	//拒绝好友申请
 	refuseRequest(id){
-		var url ="/friend/refuse/"+id
-		return service.get(url).then((res)=>{
+		return service.post("/friend/refuse").then((res)=>{
 				console.log(res)
 			})
 	},
 	
+	
 	//---------------微博相关
-	//获得好友的微博
-	getBlogListOfFriend(){
-		return service.get("/blog/list/friend")
-	},
-	//发送微博
-	publish_blog(blog){
-		service.post("/blog/insert",blog).then()
+	searchBlog(key){
+		return service.get("/blog/search/"+key)
 	},
 	
-	//
-	async uploadhead(data){
-		await service.post("/oauth/user/head",data,{
+	//获得好友的微博
+	getBlogListOfFriend(page){
+		return service.post("/blog/list/friend",page)
+	},
+	async getBlogOfId(id){
+		let data =  await service.get("/blog/get/"+id)
+		return data
+	},
+	//发送微博
+	 publish_blog(blog){
+		return service.post("/blog/insert",blog) //返回插入的微博
+	},
+	del_blog(id){
+		return service.delete("/blog/delete/"+id)
+	},
+	//点赞
+	async likeBlog(bid){
+		  let data = await service.put("/blog/operate/like/"+bid)
+			return data
+	},
+	async islike(bid){
+			let data = await service.get("/blog/operate/islike/"+bid)
+			return data
+	},
+	//取消点赞
+	async unlikeBlog(bid){
+		let data = await service.put("/blog/operate/unlike/"+bid)
+		return data
+	},
+	//转发
+	repeat(blog){
+		 service.post("/blog/insert",blog).then((res=>{
+		 	successMsg("转发成功")
+		 }))
+	},
+	//评论
+	sendComment(comment){
+		return service.post("/blog/comment/reply",comment)
+	},
+	async getCommentbyBid(bid){
+		 let res = await service.get("/blog/comment/list/" + bid);
+		 return res.data
+	},
+	//删除评论
+	delComment(id){
+		return service.post("/blog/comment/delete/" + id);
+	},
+	
+	
+	//上传文件
+	async uploadFile(param){
+		var res =  await service.post("/blog/file/add",param,{
+					headers: { 'Content-Type': 'multipart/form-data' }}) 
+		//返回地址
+		//console.log(code,data)
+		return res
+	},
+	
+	//----------------个人信息
+	//const { code, data } = await service.post('/oauth/token?grant_type=refresh_token&refresh_token='+refreshToken);
+	async uploadhead(param){
+		/* const { code, data } = await axios.post("http://localhost:8634/oauth/user/head/update",param,{ headers: {
+						'Content-Type': 'multipart/form-data'
+					}}) */
+	 	const { code, data } = await service.post("/oauth/user/head/update",param,{
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					}
-				}).then((res)=>{
-			  console.log(res)
-		}).catch(e=>{
-			 console.error(e)
-		})
+				}) 
+		
+		console.log(code)
+		store.state.cover = data.data
+	},
+	
+	async update_info(user){
+		const { code, data } = await service.put("/user/info/update",user)
+		console.log(data)
+		if(data.success){ 
+			store.commit("set_me",data.data)
+			successMsg("修改成功");
+		}
+	},
+	
+	async check_pwd(user){
+		const {code,data} = await service.post("/sign/check/pwd",user)
+		if(code == 200) return data
+		return {}
+	},
+	
+	//获取某人信息
+	async getUserInfo(id){
+ 
+		 const {code,data} = await service.get("/user/"+id)
+		 return data
 	}
+	
 	
 	
 }

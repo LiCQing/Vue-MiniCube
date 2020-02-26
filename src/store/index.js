@@ -32,16 +32,9 @@ const store = new Vuex.Store({
 		//好友
 		now_friend:null,
 		friend_request:[
-			{username:"wuwu",cover:"/static/img/avatar3-sm.jpg",fid:1}
+			/* {username:"wuwu",cover:"/static/img/avatar3-sm.jpg",fid:1} */
 		],
-		friend_list:[
-			{id:4,username:"张三",cover:"/static/img/avatar8-sm.jpg"},
-			{id:7,username:"小米",cover:"/static/img/avatar2-sm.jpg"},
-			{id:8,username:"君越",cover:"/static/img/avatar16-sm.jpg"},
-			{id:9,username:"大伟",cover:"/static/img/avatar3-sm.jpg"},
-			{id:1001,username:'bob',cover:"static/img/author-page.jpg"},
-			{id:404,username:"未知联系人",cover:"/static/img/avatar3-sm.jpg"}
-		],
+		friend_list:[],
 		
 		
     },
@@ -62,22 +55,22 @@ const store = new Vuex.Store({
 		},
 		set_token(state,obj){
 			var token = "Bearer " + obj 
-			setInfoToLoca("token",token)
+			common.setInfoToLoca("token",token)
 			state.token = token
 		},
 		set_refresh_token(state,obj){
-			setInfoToLoca("refresh_token",obj)
+			common.setInfoToLoca("refresh_token",obj)
 			state.refresh_token = obj
 		},
 		set_me(state,obj){
 			//obj.cover ='static/img/author-page.jpg'
-			setJsonInfoToLoca("myinfo",obj)
+			common.setJsonInfoToLoca("myinfo",obj)
 			state.me = obj
 		},
 		clear_login_info(state,obj){
-			removeInfoFromLocal("token")
-			removeInfoFromLocal("myinfo")
-			removeInfoFromLocal("refresh_token")
+			common.removeInfoFromLocal("token")
+			common.removeInfoFromLocal("myinfo")
+			common.removeInfoFromLocal("refresh_token")
 			state.token = ""
 			state.refresh_token = ""
 			state.me = {}
@@ -87,6 +80,9 @@ const store = new Vuex.Store({
 		},
 		remove_friend_req(state,index){
 			state.friend_request.splice(index,1)
+		},
+		set_friend_list(state,list){
+			state.friend_list = list
 		}
 		
     },
@@ -125,11 +121,17 @@ const store = new Vuex.Store({
     actions: {
 		//页面跳转
 		toindex(content){
-			console.log("登陆成功")
-			if(vue_route.currentRoute.query.redirect){
-				vue_route.push(vue_route.currentRoute.query.redirect)
+			console.log("登陆成功" , route)
+			
+			
+		/* 	request.getRequestList().then(res=>{
+				
+			})
+			 */
+			if(route.currentRoute.query.redirect){
+				route.push(route.currentRoute.query.redirect)
 			}else{
-				vue_route.push("/index")
+				route.push("/index")
 			}
 			//
 		},

@@ -10,7 +10,7 @@
 		
 		<ul class="notification-list friend-requests">
 			
-			<FriendRequestItem/>
+<!-- 			<FriendRequestItem/> -->
 		
 			<li class="accepted">
 				<div class="author-thumb">

@@ -46,6 +46,8 @@
 
 <script>
 	import req from '../../axios'
+	import {mapGetters} from 'vuex'
+	
 	export default{
 		data() {
 			return {
@@ -59,14 +61,12 @@
 			close_this(){
 				this.$refs.close.dispatchEvent(new MouseEvent('click'))
 			},
-			async upload_head(){
+			upload_head(){
 				let form = new FormData();
-				form.append('file', this.img);
+				form.append('file', this.$refs.fileInput.files[0]);
+				form.append('id',this.me.id);
 				//接口部分
-				await req.uploadhead(form).then(response => {
-					console.log(response)
-					
-				})
+				req.uploadhead(form)
 				this.close_this()
 			},
 			getFile(){
@@ -83,6 +83,9 @@
 				}
 	
 			}
+		},
+		computed: {
+			...mapGetters(['me'])
 		},
 	}
 	

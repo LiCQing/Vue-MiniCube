@@ -6,8 +6,9 @@ import { Message } from 'element-ui'
 
 // create an axios instance
 const service = axios.create({
-   //baseURL: 'http://121.43.230.40:9658',
    baseURL: 'http://127.0.0.1:9658',
+   //baseURL: 'http://127.0.0.1:9658',
+	 
 	 timeout: 15000
 })
 
@@ -55,14 +56,14 @@ service.interceptors.response.use(
 					
 					break
 			}
-			Message({
+			/* Message({
 				message: errMsg,
 				type: 'error',
 				duration: 3 * 1000,
 				showClose: true,
 				offset:300,
 				center:true
-			})
+			}) */
       return response
     },
     error => {
@@ -85,7 +86,9 @@ service.interceptors.response.use(
 					  case 500:
 							errMsg = "服务器开小差了，请稍后重试"
 							break
-       
+						case 503:
+							errMsg = "服务器还没睡醒，正在紧急唤醒"
+							break
           } 
         }
 			 Message({

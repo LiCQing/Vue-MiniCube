@@ -46,7 +46,7 @@
 						</div>
 				
 						<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<button class="btn btn-primary btn-lg full-width">确认修改</button>
+							<button type="button" @click="check_pwd" class="btn btn-primary btn-lg full-width">确认修改</button>
 						</div>
 				
 					</div>
@@ -59,6 +59,31 @@
 </template>
 
 <script>
+	import req from "../../axios"
+	import {mapGetters} from 'vuex'
+	export default{
+		data() {
+			return {
+				oldPwd: "",
+				newPwd:""
+			}
+		},
+		methods: {
+			async check_pwd() {
+				var user={
+					id:this.me.id,
+					password:this.oldPwd
+					
+				}
+			 const {data} = await req.check_pwd(user)
+			 console.log(data)
+			}
+		},
+		computed: {
+			...mapGetters(['me'])
+		},
+		
+	}
 </script>
 
 <style>
