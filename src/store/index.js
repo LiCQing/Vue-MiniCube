@@ -40,10 +40,7 @@ const store = new Vuex.Store({
     },
 		
 		
-    mutations: {
-    set_websoket (state, obj) {  // store中的数据只能通过commit mutation来改变
-      state.websock = obj
-     },
+  mutations: {
 		set_field_msg(state,obj){
 			state.field_msg = obj
 		},
@@ -83,19 +80,51 @@ const store = new Vuex.Store({
 		},
 		set_friend_list(state,list){
 			state.friend_list = list
+		},
+		set_cover(state,url){
+			state.me.cover = url
+			common.setJsonInfoToLoca("myinfo",obj)
+		},
+		set_recent_contacts(state,list){
+			state.recent_contacts = list
+			common.setJsonInfoToLoca("recent_contacts",obj)
+		},
+		add_recent_contacts(state,obj){ //添加一条未读消息
+			//判断是否已存在
+			var rc =  state.recent_contacts
+			var olditem;
+			for(var i = 0 ; i < rc.length ;i++){
+				 if(rc[i].friend.id  == obj.friend.id){
+					  olditem = state.recent_contacts[i];
+						state.recent_contacts.splice(i,1);
+				 }
+			}
+			if(!olditem){olditem = obj }
+			else{
+				 obj.noreadcount = olditem.noreadcount + 1
+				 olditem = obj
+			}
+			state.recent_contacts.unshift(olditem)
+			common.setJsonInfoToLoca("recent_contacts",state.recent_contacts)
+		},
+		clear_recents(state){
+			state.recent_contacts = []
 		}
 		
     },
 	//获取方法
 	getters:{
 		websock:function(state){
-			return state.websock
+			return window.mySocket
+		},
+		websock_states:function(state){
+			return window.mySocket.readyState == 0 || window.mySocket.readyState == 1
 		},
 		field_msg:function(state){
 			return state.field_msg
 		},
 		recent_contacts:function(state){
-			return state.recent_contacts
+			 return state.recent_contacts || common.getInfoFromLocal2Json("recent_contacts")
 		},
 		friend_list:function(state){
 			return state.friend_list
@@ -147,7 +176,9 @@ const store = new Vuex.Store({
 			context.commit("set_now_friend",friend)
 			//context.commit("set_field_msg",msgList)
 		},
-		
+		clear_recents(context){
+			context.commit("clear_recents")
+		},
 		//登陆
 		login(context,user){
 			request.login(user)
@@ -175,26 +206,8 @@ const store = new Vuex.Store({
 	
 		
 		//  websocketl连接方法 
-		conect_msg_server(context, obj){
-			window.WebSocket = window.WebSocket || window.MozWebSocket;
-			if (!window.WebSocket) { // 检测浏览器支持  			
-				console.error('错误: 浏览器不支持websocket');
-				return;
-			}
-			//协议
-			const protocol = (window.location.protocol == 'http:') ? 'ws://' : 'wss://';
-			//身份信息
-			const arg = '?Authorization=' +  encodeURI(context.state.token) + '&transport=websocket'
-			//接口地址url
-			const url = protocol + obj["uri"]+arg
-			console.log(url);
-			//连接
-			var websock = new WebSocket(url);
-			websock.onopen = websocketonopen
-			websock.onmessage = websocketonmessage
-			websock.onerror = websocketonerror
-			websock.onclose = websocketclose
-			context.commit('set_websoket', websock)
+		conect_msg_server(context){
+			window.mySocket = websocketConnect(context.state.token)
 		},
 		send_msg(context,msg){
 			msg['time']=CurrentTime()
@@ -202,13 +215,12 @@ const store = new Vuex.Store({
 			//补充个人信息                    
 			msg['fromId']=context.getters.my_id
 			msg['toId']=context.getters.now_friend.id
-			var websock = context.state.websock
-			if(websock == null){
-				errorMsg("聊天服务器连接异常，请重新登录重试")
-				return 
+			
+			if(window.mySocket == null || window.mySocket.readyState != 1){
+				 window.mySocket = websocketConnect(context.state.token)
 			}
-			var sendContent = JSON.stringify(msg)
-			websock.send(sendContent);
+			var sendContent = JSON.stringify(msg)	
+			window.mySocket.send(sendContent);
 			
 			msg['sender'] = context.state.me
 			var newMsg =Object.assign({}, msg);
@@ -229,10 +241,34 @@ var successMsg = function(msg){
 
 //websoket 事件方法
 
+var websocketConnect = function(token){
+		window.WebSocket = window.WebSocket || window.MozWebSocket;
+		if (!window.WebSocket) { // 检测浏览器支持  			
+			console.error('错误: 浏览器不支持websocket');
+			return;
+		}
+		//协议
+		const protocol = (window.location.protocol == 'http:') ? 'ws://' : 'wss://';
+		//身份信息
+		const arg = '?Authorization=' +  encodeURI(token) + '&transport=websocket'
+		//接口地址url
+		const url = protocol + '106.13.49.70:9658/chat/imserver/identify'+arg
+		//console.log(url);
+		//连接
+		var websock = new WebSocket(url);
+		websock.onopen = websocketonopen
+		websock.onmessage = websocketonmessage
+		websock.onerror = websocketonerror
+		websock.onclose = websocketclose
+		return websock
+}
+
+
 var websocketonopen = function () {
 		//console.log(this.websock)
 		//this.$store.dispatch('saveForm',{'sock':this.websock});
         console.log("WebSocket连接成功");
+				window.mySocket.send("")
    }
 	  
 var websocketonerror = function (e) {
@@ -240,45 +276,35 @@ var websocketonerror = function (e) {
  }
 	  
 var websocketonmessage = function (e) {
-      var da = JSON.parse(e.data);
-	  console.log("收到消息如下:",da)
-	  da = formatUnReadMsg(da)
+		console.log("收到消息如下:", e.data)
+		
+    var data = JSON.parse(e.data);
+
+	/*  da = formatUnReadMsg(da)
 	  console.log("当前store如下")
 	  //this_store = this_store.a
 		if(da.length > 0)
-			this_store.a.state.recent_contacts = da
-	  
+			this_store.a.state.recent_contacts = da 
 	  console.log(this_store)
 	  console.log("当前route如下")
-	  console.log(route)
-	  var path = vue_route.currentRoute.fullPath
-	  if(path.endsWith("chat")){
-		   var field_msg = this_store.a.state.field_msg 
-		   if(field_msg.length ==0 ){
-			   console.log("未选择联系人")
-			   //加入到未读消息里面
-		   }else{
-			   var isme = false
-			   field_msg.forEach((i,msg) =>{
-				   if(msg.sender.id == msg.fromId){
-					   isme = true
-				   }
-			   })
-			   if(isme){
-				   console.log("当前窗口是发送人")
-				   //加入到field聊天窗口
-			   }else{
-				   //加入到未读消息
-				   console.log("当前聊天的人不是我")
-			   }
-		   }
-		   
-	  }else{
-		  console.log("未打开聊天页面");
-		  //直接加入未读
-		  
+	  console.log(route)*/
+		
+	  var path = route.currentRoute.fullPath 
+		
+		
+		//把消息完整的传过去
+		
+	  if(path.endsWith("chat")){ //打开了聊天界面，交给聊天组件处理
+			 			 PubSub.publish("re-msg",data)
+	  }else{  //console.log("未打开聊天页面");
+		  //直接加入未读 
+			//开启通知
+			//successMsg(data.msg)
+			let user = getFriend(data.fromId)
+			var contect = {friend:user,msg:data.msg,sendTime:data.time,noreadcount:1}
+      store.commit("add_recent_contacts",contect)
 	  }
-        //this.msg_data.unshift(da);
+      
 	}
 
 var toUnRead = function(data){
@@ -297,21 +323,25 @@ var formatUnReadMsg = function(data){
 } 
 
 var websocketclose =  function (e) {
-      console.log("connection closed ()" + e);
+      console.log("websocket 连接关闭");
+			console.log(e)
 	}
 
 //朋友函数
 var getFriend = function(id){
+	if(id == -10){
+		return {id:id,nick:"server",cover:"/static/img/badge7.png"}
+	}
 	//console.log(this_store)
-	var friendList = this_store.a.state.friend_list
+	var friendList = store.state.friend_list
 	var friend = null
 	friendList.forEach((f)=>{
 		if(f.id == id){
 			friend = f;
-			return ;
+			return f;
 		}
 	})
-	return friend == null ? {id:id,name:"未知联系人",cover:"/static/img/avatar3-sm.jpg"} : friend
+	return friend == null ? {id:id,nick:"未知联系人",cover:"/static/img/avatar3-sm.jpg"} : friend
 	
 }
 

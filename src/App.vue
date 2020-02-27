@@ -22,30 +22,32 @@ import ChoosefromMyPhoto from './components/windowPopup/ChoosefromMyPhoto'
 import UpdateHeaderPhoto from './components/windowPopup/UpdateHeaderPhoto'
 /* import ChatPopu from './components/windowPopup/BackToTop' */
 
+import {mapActions,mapGetters} from 'vuex'
+
 export default {
   name: 'App',
   components: {
     HelloWorld,Login,ErrorResult404,ErrorResult500,UpdateHeaderPhoto,ChoosefromMyPhoto
   },
   data(){
-	return {
-		id:100,
-		websock:undefined
-	}  
+		return {
+		}  
   },
+	computed: {
+		...mapGetters(['websock_states'])
+	},
   created() {
-      this.initWebSocket()
+       //console.log( this.util.connectSocket());
+			 if(window.mySocket && window.mySocket.readyState == 1)
+					console.log("已经连接")
+				else
+				  this.conect_msg_server()
     },
   destroyed: function () {
-      this.websocketclose();
+      //this.websocketclose();
    },
    methods: {	
-      initWebSocket: function () {
-			//	console.log(this)
-			 //this.$message('这是一条消息提示');
-		   //this.$store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"});
-		
-      }
+       ...mapActions(['conect_msg_server'])
     }
 }
 </script>

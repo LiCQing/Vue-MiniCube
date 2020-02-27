@@ -1,19 +1,21 @@
 <template>
-	<li>
+	<li @click.stop="chooseItem">
 		<div class="author-thumb">
-			<img :src="item.sender.cover" alt="author">
+			<img :src="item.friend.cover" alt="author">
 		</div>
-		<div class="notification-event" @click="getFieldMsgApi(item.sender.id)">
-			<a href="javaScript:void(0);" class="h6 notification-friend">{{item.sender.username}}</a>
+		<div class="notification-event" >
+			<a href="javaScript:void(0);" class="h6 notification-friend">{{item.friend.nick||item.friend.username}}</a>
 			<span class="chat-message-item" v-html="item.msg"></span>
 			<span class="notification-date"><time class="entry-date updated " >{{sendTime}}</time></span>
 		</div>
-		<span class="notification-icon">
+		<span class="notification-icon" style="position: relative;">
 				<svg class="olymp-chat---messages-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+				<div v-show="item.noreadcount" class="label-avatar bg-purple">{{item.noreadcount}}</div>
 		</span>
 						
 		<div class="more">
 			<svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+			<svg @click.stop="delItem" class="olymp-little-delete"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
 		</div>
 	</li>
 </template>
@@ -22,9 +24,25 @@
 	import {mapGetters,mapActions} from 'vuex'
 	//import PubSub from 'pubsub-js'
 	export default {
-		props:['item'],
+		props:['item','index'],
 		methods:{
-			...mapActions(['getFieldMsgApi'])
+			/* ...mapActions(['getFieldMsgApi']), */
+			chooseItem(){ //将index传给父组件
+			    if(this.index > -1){
+					this.$emit("chooseItem",this.index)
+				}else{
+					//console.log(this.$router) 
+					this.$router.push("/profile/chat")
+				}
+				
+			},
+			getFieldMsgApi(){
+				
+				this.$emit("cho")
+			},
+			delItem(){
+				this.$emit("delItem",this.index)
+			}
 		},
 		computed:{
 			...mapGetters(['friend_list']),
@@ -40,17 +58,7 @@
 				return fr==null ? {id:404,name:"anonymous",cover:"/static/img/avatar3-sm.jpg"} : fr
 			},
 			sendTime(){
-				//console.log(this.item.time)
-				 var time = Math.floor((new Date() - this.item.time)/1000 )//毫秒
-				if(time < 60) return time + "s ago"
-				var mi = time / 60 
-				if(mi < 60) return Math.floor(mi) + "m ago"
-				var hour = mi / 60
-				if(hour < 24) return Math.floor(hour)  +"h ago"
-				var day = hour / 24 
-				if(day < 7 ) return Math.floor(day)  +"day ago"
-				return this.item.time 
-				
+				return this.util.getTimeOfSpace(this.item.sendTime)
 			}
 		},
 	

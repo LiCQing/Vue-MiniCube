@@ -7,10 +7,10 @@
 				</a> -->
 	
 				<div class="modal-header" style="padding:15px 15px">
-					<h6 class="title">更新头像</h6>
+					<h6 class="title">选择图片</h6>
 					<div>
 						<button @click="upload_head" class="btn btn-primary btn-md-2" style="margin: 0px;padding: 10px 15px;">确定</button>
-						<button ref="close" data-dismiss="modal" aria-label="Close" class="btn btn-md-2  btn-border-think btn-transparent c-grey" style="margin: 0px;padding: 10px 15px;">取消</button>
+						<button ref="close" data-dismiss="modal" aria-label="Close" class="btn btn-md-2  btn-border-think btn-transparent c-grey" style="margin: 0px;padding: 10px 15px;">关闭</button>
 					</div>
 				</div>
 	
@@ -59,6 +59,7 @@
 				this.$refs.fileInput.dispatchEvent(new MouseEvent('click'))
 			},
 			close_this(){
+				console.log("close")
 				this.$refs.close.dispatchEvent(new MouseEvent('click'))
 			},
 			upload_head(){
@@ -67,13 +68,13 @@
 				form.append('id',this.me.id);
 				//接口部分
 				req.uploadhead(form)
+								
 				this.close_this()
 			},
 			getFile(){
 				var that = this;
 				const fileList = this.$refs.fileInput.files;
 				var len  = fileList.length
-				console.log(len);
 				if(len > 0){
 					const reader = new FileReader();
 					reader.readAsDataURL(fileList[0]);

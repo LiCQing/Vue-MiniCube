@@ -48,7 +48,7 @@
 	
 				<div class="control-icon more has-items">
 					<svg class="olymp-chat---messages-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
-					<div class="label-avatar bg-purple">2</div>
+					<div v-if="allnoreadcount" class="label-avatar bg-purple">{{allnoreadcount}}</div>
 	
 					<div class="more-dropdown more-with-triangle triangle-top-center">
 						<div class="ui-block-title ui-block-title-small">
@@ -59,7 +59,7 @@
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
 							<ul class="notification-list chat-message">
-								<!-- <ContectItem/> -->
+								<ContectItem v-for="item in recent_contacts" :item ="item" :index = "-1"/>
 	
 	
 								<li class="chat-group">
@@ -253,7 +253,14 @@
 	     FriendRequestItem,ContectItem,NoticeItem
 	  },
 		computed: {
-			...mapGetters(['me','token','friend_request'])
+			...mapGetters(['me','token','friend_request','recent_contacts']),
+			allnoreadcount:function(){
+					var count  = 0 ;
+					for(var i = 0 ; i < this.recent_contacts.length ;i++){
+						 count = count + this.recent_contacts[i].noreadcount
+					}
+					return count;
+			}
 		},
 		methods: {
 			...mapActions(['logout']),

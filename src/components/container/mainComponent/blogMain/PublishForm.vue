@@ -10,7 +10,9 @@
 				<div class="tab-pane active" id="home-1" role="tabpanel" aria-expanded="true">
 					<form>
 						<div class="author-thumb">
-							<img :src="me.cover" alt="author">
+							<a href="javaScript:void(0);" data-toggle="modal" data-target="#update-header-photo">
+								<img :src="me.cover" alt="author">
+							</a>
 						</div>
 						<div class="form-group with-icon label-floating is-empty">
 					<!-- 		<textarea  v-model="share_content"  class="form-control" placeholder=""></textarea>

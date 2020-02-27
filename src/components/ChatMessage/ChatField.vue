@@ -3,7 +3,7 @@
 	
 	<div class="chat-field">
 		<div class="ui-block-title">
-			<h6 class="title">{{now_friend.username}}</h6>
+			<h6 class="title">{{nowfriend.nick||nowfriend.username}}</h6>
 			<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
 		</div>
 		<div class="" data-mcs-theme="dark">
@@ -11,15 +11,18 @@
 				<li class="align-center">
 					查看历史消息
 				</li>
-				<li v-for="msg_item,i in field_msg">
-					<span v-if="field_msg[field_msg.length - i -1].time != ''" class="notification-date" style="text-align: center;width: 100%;"> 
-						<time class="entry-date updated" datetime="2004-07-24T18:18">{{field_msg[field_msg.length - i -1].time}}</time>
+				<li v-for="(msg_item,i) in fieldmsg">
+					<!-- 时间 -->
+					<span class="notification-date" style="text-align: center;width: 100%;"> 
+						<time class="entry-date updated" datetime="2004-07-24T18:18">{{pubtime(msg_item.time)}}</time>
 					</span> 
+					<!-- 头像 -->
 					<div class="author-thumb">
-						<img :src="field_msg[field_msg.length - i -1].sender.cover" alt="author">
+						<img :src="msg_item.sender.cover" alt="author">
 					</div>
+					<!-- 内容 -->
 					<div class="notification-event">
-						<span :class="field_msg[field_msg.length - i -1].sender.id == my_id ? 'my-message': 'other-message'" class="chat-message-item" v-html="field_msg[field_msg.length - i -1].msg"> </span>
+						<span :class="msg_item.sender.id == me.id ? 'my-message': 'other-message'" class="chat-message-item" v-html="msg_item.msg"> </span>
 					</div>
 				</li>
 	
@@ -60,6 +63,7 @@
 	import PubSub from 'pubsub-js'
 	
 	export default {
+		props: ['fieldmsg','nowfriend'],
 		components : {
 			MessageForm
 		},
@@ -68,22 +72,32 @@
 				msg:' Hi Elaine! I have a question, do you think that tomorrow we could talk to  <img  src="static/img/icon-chat3.png" alt="icon">'
 			}
 		},
+		methods: {
+			pubtime(time){
+				return this.util.getTimeOfSpace(time)
+			}
+		},
 		computed:{
-			...mapGetters(['now_friend','field_msg','my_id'])
+			...mapGetters(['now_friend','field_msg','me']),
+		
 		},
 		updated(){
 			var ul = this.$refs.box
 			ul.scrollTop = ul.scrollHeight;
 			
-			PubSub.subscribe("msgbox-buttom",()=>{
+			
+			
+			/* PubSub.subscribe("msgbox-buttom",()=>{
 				setTimeout(()=>{
 				   ul.scrollTop = ul.scrollHeight;
 				},1)
-			})
+			}) */
 		},
 		mounted(){
 			var ul = this.$refs.box
 			ul.scrollTop = ul.scrollHeight;
+			
+			//修改高度
 			PubSub.subscribe("msgbox-buttom",()=>{
 				setTimeout(()=>{
 				   ul.scrollTop = ul.scrollHeight;
@@ -110,7 +124,7 @@
 	.my-message{
 		padding:10px;
 		border-radius:10px;
-		background:#336bec;
+		background:#408dffb3;
 		color:#fff
 	}
 	

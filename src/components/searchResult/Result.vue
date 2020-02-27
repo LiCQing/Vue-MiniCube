@@ -65,7 +65,7 @@
 									<span class="chat-message-item">8个共同好友</span>
 								</div>
 								<span class="notification-icon">
-									<a v-if="friend.id != me.id"  href="javaScript:void(0)" @click="addFriend(5)" class="accept-request">
+									<a v-if="friend.id != me.id"  href="javaScript:void(0)" @click="addFriend(friend.id)" class="accept-request">
 										<span class="icon-add without-text">
 											<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
 										</span>

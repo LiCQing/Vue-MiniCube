@@ -20,9 +20,9 @@
 
 						<div class="row sorting-container" id="clients-grid-1" data-layout="masonry">
 
-							<div ref="a" @click="get" class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 sorting-item recom picture">
+							<!-- <div ref="a" @click="get" class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 sorting-item recom picture">
 								 <BlogItem/>
-							</div>
+							</div> -->
 
 							<div ref="b" class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 sorting-item worlds tag video">
 

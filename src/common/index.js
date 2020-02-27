@@ -14,7 +14,7 @@ export default {
 		return local;
 	},
 	
-	//page参数
+	//page对象参数
 	PAGE(){
 		return {
 			current:1,
@@ -25,9 +25,15 @@ export default {
 			data:{}
 		}
 	},
-	
 	timeName(filename){
 		return Date().getTime() + "";
+	},
+	//------------------------------------获取sender,只要一部分参数
+	toSender(obj){
+		return {
+			cover:obj['cover'],
+			id:obj['id']
+		}
 	},
 	
 	//-------------------------------------时间函数
@@ -134,14 +140,14 @@ export default {
 			return year+"-"+month+"-"+day + " " +h +":"+m
 	},
 	getTimeOfSpace(num){
-		  
+		 if((num+"").length < 10) return "未知"
+		 
 		 var space = (new Date().getTime() - num) / 1000;
 		 if(space < 60) return "刚刚"
 		 space =  space / 60
 		 if(space < 60) return Math.floor(space) + "分钟前"
 		 space = space / 60
 		 if(space < 24) return Math.floor(space) + "小时前"
-		 
 		 return this.getDateTimeOfNum(num)
 		 
 	},
@@ -177,15 +183,15 @@ export default {
 	
 	//---------------------------------------------------------------弹出消息函数
 	alertErrorMsg(msg){
-		Message({ message:msg,  type: 'error', duration: 3 * 1000, showClose: true, offset:300, center:true })
+		Message({ message:msg,  type: 'error', duration: 1 * 1000, showClose: true, offset:300, center:true })
 	},
 	
 	alertSuccessMsg(msg){
-		Message({ message:msg,  type: 'success', duration: 3 * 1000, showClose: true, offset:300, center:true })
+		Message({ message:msg,  type: 'success', duration: 1 * 1000, showClose: true, offset:300, center:true })
 	},
 	
 	alertWarningMsg(msg){
-		Message({ message:msg,  type: 'warning', duration: 3 * 1000, showClose: true, offset:300, center:true })
+		Message({ message:msg,  type: 'warning', duration: 1 * 1000, showClose: true, offset:300, center:true })
 	},
 	
 	//--------------------------------本地读取函数
@@ -197,13 +203,25 @@ export default {
 		return localStorage.getItem(key)
 	},
 	setJsonInfoToLoca(key,value){
-		localStorage.setItem(key, JSON.stringify(value));
+		var b = localStorage.setItem(key, JSON.stringify(value));
 	},
 	setInfoToLoca(key,value){
 		localStorage.setItem(key, value);
 	},
 	removeInfoFromLocal(key){
 		localStorage.removeItem(key)
+	},
+	saveChatHistory(friendId,value){ //每次添加一条记录本地,先读出本地的，然后push, 然后存储
+	  var key = friendId + "chat";
+		var history = this.getInfoFromLocal2Json(key) || []
+		history.push(value)
+		this.setJsonInfoToLoca(key,history)
+	},
+	getChatHistory(friendId){
+		return this.getInfoFromLocal2Json(friendId + "chat") || []
+	},
+	clearChatHistory(friendId){
+		this.removeInfoFromLocal(friendId + "chat")
 	}
 		  
 		  

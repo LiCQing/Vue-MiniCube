@@ -31,7 +31,7 @@ export default {
 			store.commit("set_token",data.access_token)
 			store.commit("set_refresh_token",data.refresh_token)
 			store.commit("set_me",data.user)
-			store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"}) //连接聊天服务
+			store.dispatch('conect_msg_server') //连接聊天服务
 			successMsg("登陆成功，即将跳转")
 			setTimeout(()=>{	
 				store.dispatch("toindex")
@@ -185,18 +185,20 @@ export default {
 	
 	//----------------个人信息
 	//const { code, data } = await service.post('/oauth/token?grant_type=refresh_token&refresh_token='+refreshToken);
-	async uploadhead(param){
+  uploadhead(param){
 		/* const { code, data } = await axios.post("http://localhost:8634/oauth/user/head/update",param,{ headers: {
 						'Content-Type': 'multipart/form-data'
 					}}) */
-	 	const { code, data } = await service.post("/oauth/user/head/update",param,{
+			service.post("/user/info/head",param,{
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					}
-				}) 
+				}).then(res=>{
+					successMsg("修改成功");
+					store.commit("set_cover",res.data.data)
+				})
 		
-		console.log(code)
-		store.state.cover = data.data
+		
 	},
 	
 	async update_info(user){
@@ -220,8 +222,6 @@ export default {
 		 const {code,data} = await service.get("/user/"+id)
 		 return data
 	}
-	
-	
 	
 }
 
