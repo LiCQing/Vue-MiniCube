@@ -1,15 +1,17 @@
 <template>
 	<li>
 		<div class="author-thumb">
-			<img src="static/img/avatar1-sm.jpg" alt="author">
+			<img :src="notice.cover" alt="author">
 		</div>
 		<div class="notification-event">
-			<a href="#" class="h6 notification-friend">谁</a> 动作 <a href="#" class="notification-link">对象</a>.
-			<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">时间</time></span>
+			<a href="#" class="h6 notification-friend">{{notice.operateUserNick}}</a> 
+			{{notice.operateType}} 
+			<a href="javaScript:void(0)" class="notification-link" v-html="notice.beOpContent"> </a>
+			<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">{{util.getTimeOfSpace(notice.time)}}</time></span>
 		</div>
-		<span class="notification-icon">
+	<!-- 	<span class="notification-icon">
 			<svg class="olymp-comments-post-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
-		</span>
+		</span> -->
 		
 		<!-- <div class="comment-photo">
 			<img src="static/img/comment-photo.jpg" alt="photo">
@@ -24,6 +26,10 @@
 </template>
 
 <script>
+	export default{
+		props:['notice'],
+	 
+	}
 </script>
 
 <style>

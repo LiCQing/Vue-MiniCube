@@ -4,10 +4,10 @@
 <div class="container">
 	<div class="row">
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-			<div class="ui-block">
+			<div class="ui-block" v-if="user">
 				<div class="top-header">
 					<div class="top-header-thumb">
-						<img src="static/img/top-header1.jpg" alt="nature">
+						<img src="/static/img/top-header2.jpg" alt="nature">
 					</div>
 					<div class="profile-section">
 						<div class="row">
@@ -58,7 +58,7 @@
 								<svg class="olymp-chat---messages-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
 							</a>
 
-							<div class="btn btn-control bg-primary more">
+						<!-- 	<div class="btn btn-control bg-primary more">
 								<svg class="olymp-settings-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-settings-icon"></use></svg>
 
 								<ul class="more-dropdown more-with-triangle triangle-bottom-right">
@@ -72,16 +72,16 @@
 										<router-link to="/profile/setting">账号设置</router-link>
 									</li>
 								</ul>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="top-header-author">
 						<router-link to="/profile" class="author-thumb">
-							<img src="static/img/author-main1.jpg" alt="author">
+							<img :src="user.cover" alt="author">
 						</router-link>
 						<div class="author-content">
-							<a href="javaScript:void(0)" class="h4 author-name">狂野男孩</a>
-							<div class="country">湖北 武汉</div>
+							<a href="javaScript:void(0)" class="h4 author-name">{{user.nick||user.username}}</a>
+							<div class="country">湖南</div>
 						</div>
 					</div>
 				</div>
@@ -94,6 +94,28 @@
 </template>
 
 <script>
+	import {mapGetters} from 'vuex'
+	export default {
+		
+		data(){
+			return {
+				user:null
+			}
+		},
+		computed:{
+			...mapGetters(['me'])
+		},
+		created(){
+			var uid = this.$router.currentRoute.query.uid
+			this.request.getUserInfo(uid).then(res=>{
+				if(res.data){
+					this.user = res.data
+				}
+			})
+		}
+		
+	}
+	
 </script>
 
 <style>

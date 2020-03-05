@@ -17,7 +17,7 @@
 						<div class="form-group with-icon label-floating is-empty">
 					<!-- 		<textarea  v-model="share_content"  class="form-control" placeholder=""></textarea>
 							 -->
-					 		<div @keydown="input" ref="inputdiv"  class="form-control" contentEditable="true" style="height: 110px;padding: 5px; margin-left: 70px">
+					 		<div @keydown="input" ref="inputdiv"   contentEditable="true" style="height: 110px;padding: 5px; margin-left: 70px">
 								 <!-- 输入区 -->
 							</div> 
 							

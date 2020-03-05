@@ -10,24 +10,7 @@
 		
 		<ul class="notification-list friend-requests">
 			
-<!-- 			<FriendRequestItem/> -->
-		
-			<li class="accepted">
-				<div class="author-thumb">
-					<img src="static/img/avatar17-sm.jpg" alt="author">
-				</div>
-				<div class="notification-event">
-					You and <a href="#" class="h6 notification-friend">Mary Jane Stark</a> just became friends. Write on <a href="#" class="notification-link">his wall</a>.
-				</div>
-				<span class="notification-icon">
-					<svg class="olymp-happy-face-icon">
-						<use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
-					</span>
-				<div class="more">
-					<svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-					<svg class="olymp-little-delete"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
-				</div>
-			</li>
+ 			<FriendRequestItem v-for="(item,key) in local_requst" :ispage="true" :request = "item" :i="key" :key ="key"/>  
 		
 			
 		</ul>
@@ -41,12 +24,43 @@
 	
 	import FriendRequestItem from '../Friend/FriendRequestItem'
 	
+	import {mapGetters} from 'vuex'
 
 	
 	export default {
 	  components: {
 	     FriendRequestItem
-	  }
+	  },
+		data(){
+			return {
+				local_requst:[]
+			}
+		},
+		computed:{
+			...mapGetters(['friend_request'])
+		},
+		mounted(){
+			this.local_requst = JSON.parse(localStorage.getItem("request_item")) || []
+			console.log(this.local_requst)
+			if(this.friend_request){
+				this.friend_request.forEach(item=>{
+						//console.log(item)
+					item.handler = false
+					this.local_requst.unshift(item)
+				})
+			}
+				//重新保存到本地
+			localStorage.setItem("request_item",JSON.stringify(this.local_requst))
+			this.$store.commit("clear_request") //清除全局的通知
+			 
+		},
+		created(){
+			PubSub.subscribe("deal_request",(msg,param)=>{				
+				this.local_requst[param.i].handler = param.result
+				localStorage.setItem("request_item",JSON.stringify(this.local_requst))
+			})
+		}
+		
 	}
 	
 </script>

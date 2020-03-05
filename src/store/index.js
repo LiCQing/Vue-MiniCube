@@ -35,7 +35,7 @@ const store = new Vuex.Store({
 			/* {username:"wuwu",cover:"/static/img/avatar3-sm.jpg",fid:1} */
 		],
 		friend_list:[],
-		
+		notice_list:[],
 		
     },
 		
@@ -78,16 +78,23 @@ const store = new Vuex.Store({
 		remove_friend_req(state,index){
 			state.friend_request.splice(index,1)
 		},
+		clear_request(state){
+			if(state.friend_request.length != 0){
+				request.readedNotice()
+			}
+			state.friend_request = []
+		},
 		set_friend_list(state,list){
 			state.friend_list = list
 		},
+
 		set_cover(state,url){
 			state.me.cover = url
-			common.setJsonInfoToLoca("myinfo",obj)
+			common.setJsonInfoToLoca("myinfo",state.me)
 		},
 		set_recent_contacts(state,list){
 			state.recent_contacts = list
-			common.setJsonInfoToLoca("recent_contacts",obj)
+			common.setJsonInfoToLoca("recent_contacts",list)
 		},
 		add_recent_contacts(state,obj){ //添加一条未读消息
 			//判断是否已存在
@@ -109,6 +116,16 @@ const store = new Vuex.Store({
 		},
 		clear_recents(state){
 			state.recent_contacts = []
+		},
+		clear_notice(state){
+			if(state.notice_list.length != 0){
+				request.readedNotice()
+			}
+			state.notice_list = []
+			
+		},
+		set_notice_list(state,obj){
+			state.notice_list = obj
 		}
 		
     },
@@ -143,6 +160,9 @@ const store = new Vuex.Store({
 		},
 		friend_request:function(state){
 			return state.friend_request;
+		},
+		notice_list:function(state){
+			return state.notice_list;
 		}
 	},
 	
@@ -152,17 +172,16 @@ const store = new Vuex.Store({
 		toindex(content){
 			console.log("登陆成功" , route)
 			
+			//在这里要获取的东西
 			
-		/* 	request.getRequestList().then(res=>{
-				
-			})
-			 */
+	
+		 
 			if(route.currentRoute.query.redirect){
 				route.push(route.currentRoute.query.redirect)
 			}else{
 				route.push("/index")
 			}
-			//
+ 
 		},
 		
 		
@@ -252,7 +271,8 @@ var websocketConnect = function(token){
 		//身份信息
 		const arg = '?Authorization=' +  encodeURI(token) + '&transport=websocket'
 		//接口地址url
-		const url = protocol + '121.43.230.40:9658/chat/imserver/identify'+arg
+		//const url = protocol + '121.43.230.40:9658/chat/imserver/identify'+arg
+		const url = protocol + 'localhost:9658/chat/imserver/identify'+arg
 		//console.log(url);
 		//连接
 		var websock = new WebSocket(url);
@@ -279,7 +299,15 @@ var websocketonmessage = function (e) {
 		console.log("收到消息如下:", e.data)
 		
     var data = JSON.parse(e.data);
-
+		if(data.type == "back"){
+			console.log("反馈",data.msg)
+			return ;
+		}else if(data.type == "notice"){
+			store.state.notice_list.push(JSON.parse(data.msg))
+			return ;
+		}else if(data.type == "request"){
+			return ;
+		}
 	/*  da = formatUnReadMsg(da)
 	  console.log("当前store如下")
 	  //this_store = this_store.a

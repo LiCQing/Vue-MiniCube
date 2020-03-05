@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+//import HelloWorld from './components/HelloWorld'
 /* import PersionalDashboard from './components/PersionalDashboard' */
 import Login from './components/Login'
 import ErrorResult404 from './components/ErrorResult/ErrorResult404'
@@ -27,7 +27,7 @@ import {mapActions,mapGetters} from 'vuex'
 export default {
   name: 'App',
   components: {
-    HelloWorld,Login,ErrorResult404,ErrorResult500,UpdateHeaderPhoto,ChoosefromMyPhoto
+    Login,ErrorResult404,ErrorResult500,UpdateHeaderPhoto,ChoosefromMyPhoto
   },
   data(){
 		return {
@@ -42,6 +42,15 @@ export default {
 					console.log("已经连接")
 				else
 				  this.conect_msg_server()
+					
+			//获取东西
+			//1.通知
+			this.request.getNoticeList()
+
+			//2.好友列表
+			this.request.getFriendList()
+			
+			
     },
   destroyed: function () {
       //this.websocketclose();

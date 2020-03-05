@@ -1,13 +1,13 @@
 <template>
-	<div class="ui-block" >
+	<div  class="ui-block" >
 		<div v-if="blog.blogStatus == -1">
 			   原微博已删除
 		</div>
 		   
-		<article v-if="blog.blogStatus == 0" class="hentry post">
+		<article @click="blogDetail" v-if="blog.blogStatus == 0" class="hentry post">
 		
 		
-				<div  class="post__author author vcard inline-items">
+				<div @click="lookUserIndex" style="cursor: pointer;" class="post__author author vcard inline-items">
 					 <img :src="blog.sender.cover" alt="author">
 			
 						<div class="author-date">
@@ -58,6 +58,12 @@
 		methods: {
 			 getRepeat() {
 				
+			},
+			blogDetail(){
+				//this.$router.push({path:"/detail",query:{blogId:this.blog.id}})
+			},
+			lookUserIndex(){
+					window.open("http://localhost:8080/#/pindex?uid="+this.blog.sender.id)
 			}
 		},
 		computed:{

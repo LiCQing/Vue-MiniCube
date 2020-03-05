@@ -17,7 +17,7 @@
 					
 					<a v-if="comment.replyId" href="javaScript:void(0)"> 回复 </a>
 					 
-					<a v-if="comment.replyId" class="h6 post__author-name fn" href="javaScript:void(0)">{{comment.userNick}}</a>
+					<a v-if="comment.replyId" class="h6 post__author-name fn" href="javaScript:void(0)">{{comment.beReplyUserNick}}</a>
 
 					<div class="post__date">
 						<time class="published" datetime="2017-03-24T18:18">

@@ -3,15 +3,16 @@
 	
 	<header class="header" id="site-header">
 	
-		<div class="page-title">
+		<router-link to="/index" class="page-title">
 			<h6>MiniCube</h6>
-		</div>
+		</router-link>
 	
 		<div class="header-content-wrapper">
-			<form class="search-bar" > <!-- w-search notification-list friend-requests"> -->
+			<form  autocomplete="off" @submit.prevent="" class="search-bar" > <!-- w-search notification-list friend-requests"> -->
 				<div class="form-group with-button">
-					<input class="form-control" v-model="keyword" placeholder="搜索……" type="text">
-					<button @click="search">
+					<!-- <input @keyup.enter.stop.prevent="search" class="form-control" v-model="keyword" placeholder="搜索……" type="text"> -->
+					<input  class="form-control" v-model="keyword" placeholder="搜索……" type="text">
+					<button @click.stop="search">
 						<svg class="olymp-magnifying-glass-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon"></use></svg>
 					</button>
 				</div>
@@ -37,7 +38,7 @@
 								
 								<div v-if="!friend_request.length">暂无</div>
 								
-								<FriendRequestItem v-for="(request,key) in friend_request" :request="request" :key = "key" :i="key"/>
+								<FriendRequestItem v-for="(request,key) in friend_request" :request="request" :ispage="false" :key = "key" :i="key"/>
 	
 							</ul>
 						</div>
@@ -59,7 +60,7 @@
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
 							<ul class="notification-list chat-message">
-								<ContectItem v-for="item in recent_contacts" :item ="item" :index = "-1"/>
+								<ContectItem v-for="(item,key) in recent_contacts" :item ="item" :index = "-1" :key="key"/>
 	
 	
 								<li class="chat-group">
@@ -92,7 +93,7 @@
 				<div class="control-icon more has-items">
 					<svg class="olymp-thunder-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-thunder-icon"></use></svg>
 	
-					<div class="label-avatar bg-primary">8</div>
+					<div v-show="notice_list.length>0" class="label-avatar bg-primary">{{notice_list.length}}</div>
 	
 					<div class="more-dropdown more-with-triangle triangle-top-center">
 						<div class="ui-block-title ui-block-title-small">
@@ -102,8 +103,9 @@
 						</div>
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
-							<ul class="notification-list">
-								<NoticeItem/>
+							<ul class="notification-list"> 
+								<div v-if="!notice_list.length">暂无</div>
+								<NoticeItem v-for="(notice,key) in notice_list" :key ="key" :notice="notice"/>
 							</ul>
 						</div>
 	
@@ -118,7 +120,7 @@
 						<div class="more-dropdown more-with-triangle">
 							<div class="mCustomScrollbar" data-mcs-theme="dark">
 								<div class="ui-block-title ui-block-title-small">
-									<h6 class="title">黎</h6>
+									<h6 class="title">{{me.nick || me.username}}</h6>
 								</div>
 	
 								<ul class="account-settings">
@@ -143,7 +145,7 @@
 									</li>
 								</ul>
 	
-								<div class="ui-block-title ui-block-title-small">
+							<!-- 	<div class="ui-block-title ui-block-title-small">
 									<h6 class="title">聊天设置</h6>
 								</div>
 	
@@ -173,9 +175,9 @@
 											<span>看不见我看不见我</span>
 										</a>
 									</li>
-								</ul>
+								</ul> -->
 	
-								<div class="ui-block-title ui-block-title-small">
+				<!-- 				<div class="ui-block-title ui-block-title-small">
 									<h6 class="title">Custom Status</h6>
 								</div>
 	
@@ -185,9 +187,9 @@
 									<button class="bg-purple">
 										<svg class="olymp-check-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-check-icon"></use></svg>
 									</button>
-								</form>
+								</form> -->
 	
-								<div class="ui-block-title ui-block-title-small">
+							<!-- 	<div class="ui-block-title ui-block-title-small">
 									<h6 class="title">About Olympus</h6>
 								</div>
 	
@@ -212,7 +214,7 @@
 											<span>Contact</span>
 										</a>
 									</li>
-								</ul>
+								</ul> -->
 							</div>
 	
 						</div>
@@ -253,8 +255,8 @@
 	     FriendRequestItem,ContectItem,NoticeItem
 	  },
 		computed: {
-			...mapGetters(['me','token','friend_request','recent_contacts']),
-			allnoreadcount:function(){
+			...mapGetters(['me','token','friend_request','recent_contacts','notice_list']),
+			allnoreadcount:function(){ //所有未读消息总和
 					var count  = 0 ;
 					for(var i = 0 ; i < this.recent_contacts.length ;i++){
 						 count = count + this.recent_contacts[i].noreadcount
@@ -268,19 +270,31 @@
 			/* 	if(this.keyword == ""){
 					return 
 				} */
-				if(this.$router.currentRoute.path != "/result")
-					this.$router.push("/result")
+				//if(this.$router.currentRoute.path != "/result"){
+					this.$router.push({path:"/result",query:{keyword:this.keyword}})
+					//return ;
+				//}
+					
+					//his.$router.push("/result")
 					//SearchResult - > result
 				PubSub.publish("search",this.keyword)
 				this.keyword = ""
 				//console.log(router)
-			}
+			},
+		 async start () {
+			/* 		const { data } = await this.request.getNotice() // 模拟请求
+					this.noticelist = data;
+					setTimeout(this.start, 3000) */
+			},			
+			
 		},
 		mounted: function(){
-			req.getFriendRequest();
+			//req.getFriendRequest();
 			
 			$('.selectpicker').selectpicker();
 			$.material.init();
+			
+			//this.start()
 		}
 	}
 </script>

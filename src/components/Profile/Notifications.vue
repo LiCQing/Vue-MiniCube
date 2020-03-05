@@ -12,7 +12,7 @@
 			
 			<ul class="notification-list">
 				
-				<NoticeItem/>
+				<NoticeItem v-for="(notice,key) in lcoal_notice_list"  :key="key" :notice="notice"/>
 			 
 			</ul>
 			<!-- ... end Notification List -->
@@ -22,7 +22,7 @@
 		
 		<!-- Pagination -->
 		
-		<nav aria-label="Page navigation">
+<!-- 		<nav aria-label="Page navigation">
 			<ul class="pagination justify-content-center">
 				<li class="page-item disabled">
 					<a class="page-link" href="#" tabindex="-1">Previous</a>
@@ -36,7 +36,7 @@
 					<a class="page-link" href="#">Next</a>
 				</li>
 			</ul>
-		</nav>
+		</nav> -->
 		
 		<!-- ... end Pagination -->
 		
@@ -45,9 +45,40 @@
 
 <script>
 	import NoticeItem from "../Notification/NoticeItem"
+	import {mapGetters} from 'vuex'
+	
 	export default{
 		components:{
 			NoticeItem
+		},
+		data(){
+			return {
+				lcoal_notice_list:[]
+			}
+		},
+		computed:{
+			...mapGetters(['notice_list'])
+		},
+		mounted(){
+			//this.request.readedNotice(); //清除服务器的通知
+			
+			
+			this.lcoal_notice_list = JSON.parse(localStorage.getItem("lcoal_notice_list")) || []
+
+			//将新的添加到本地
+			if(this.notice_list){
+				this.notice_list.forEach(item=>{
+					console.log(item)
+					this.lcoal_notice_list.unshift(item)
+				})
+			}
+			//重新保存到本地
+			localStorage.setItem("lcoal_notice_list",JSON.stringify(this.lcoal_notice_list))
+			this.$store.commit("clear_notice") //清除全局的通知
+			//console.log(this.notice_list)	
+		},
+		created(){
+			
 		}
 	}
 </script>

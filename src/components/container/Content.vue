@@ -2,11 +2,11 @@
 	<div class="container">
 		<div class="row">
 	
-			<mainContent/>
+			<mainContent :home='home'/>
 	
 			<!-- Left Sidebar -->
 	
-			<div class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
+			<div v-show="true" class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
 	
 				<div class="ui-block">
 					<div class="ui-block-title">
@@ -416,7 +416,7 @@
 	
 			<!-- Right Sidebar -->
 	
-			<div class="col col-xl-3 order-xl-3 col-lg-6 order-lg-3 col-md-6 col-sm-6 col-12">
+			<div v-show="true"  class="col col-xl-3 order-xl-3 col-lg-6 order-lg-3 col-md-6 col-sm-6 col-12">
 	
 				<div class="ui-block">
 					<div class="ui-block-title">
@@ -917,6 +917,7 @@
 <script>
 	import mainContent from './mainComponent/mainContent'
 	export default {
+		props:['home'],
 	  components: {
 		mainContent
 	  }

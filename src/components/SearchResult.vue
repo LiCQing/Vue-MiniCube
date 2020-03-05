@@ -20,7 +20,7 @@
 </template>
 
 <script>
-	import Loading from './Loading.vue'
+	//import Loading from './Loading.vue'
 	import LeftSidebar from './sidebar/LeftSidebar'
 	import RightSidebar from './sidebar/RightSidebar'
 	//import TopSidebar from './sidebar/TopSidebar'
@@ -36,10 +36,11 @@
 	
 	export default {
 	  components: {
-	    Loading,LeftSidebar,RightSidebar,
+	    LeftSidebar,RightSidebar,
 		Result,
 		BackToTop,FriendPopue
-	  }
+	  },
+		mounted(){}
 	}
 </script>
 

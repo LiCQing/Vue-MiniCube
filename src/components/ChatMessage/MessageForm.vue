@@ -5,7 +5,7 @@
 			<!-- 	<label class="control-label">在此输入回复内容</label>
 			<div></div> -->
 			<!-- <textarea class="form-control" placeholder=""  ></textarea> -->
-			<div @keydown="input" ref="inputdiv" class="form-control" contentEditable="true" style="font-size:16px">
+			<div @keypress.enter="send" @keyup.enter="clear"  @keydown="input" ref="inputdiv" class="form-control" contentEditable="true" style="font-size:16px">
 				<!-- <img src="static/img/icon-chat1.png" alt="icon"> -->
 			</div>
 		</div>
@@ -94,7 +94,6 @@
 
 				//console.log(this.$refs)
 				var div = this.$refs.box;
-
 
 			},
 			clear() {

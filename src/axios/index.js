@@ -32,10 +32,11 @@ export default {
 			store.commit("set_refresh_token",data.refresh_token)
 			store.commit("set_me",data.user)
 			store.dispatch('conect_msg_server') //连接聊天服务
+/* 			store.dispatch('') */
 			successMsg("登陆成功，即将跳转")
 			setTimeout(()=>{	
 				store.dispatch("toindex")
-			},1000) 
+			},500) 
 			
 			}else{
 				//console.log(res.data)
@@ -55,10 +56,10 @@ export default {
 			store.commit("set_refresh_token",data.refresh_token)
 			store.commit("set_me",data.user)
 			store.dispatch('conect_msg_server',{'uri':"localhost:9658/chat/imserver/identify"}) //连接聊天服务 */
-			successMsg("注册成功")
+			successMsg("注册成功,即将跳转")
 			setTimeout(()=>{	
-				//store.dispatch("toindex")
-			},2000) 
+				 this.login({name:user.username,pwd:user.password})
+			},500) 
 			
 			}else{
 				//console.log(res.data)
@@ -74,8 +75,11 @@ export default {
 	},
 	//搜索用户和微博
 	search(value){
-		var url ="/friend/search/"+value
-		return service.get(url);
+		if(value){
+				var url ="/friend/search/"+value
+				return service.get(url);
+		}
+	
 	},
 	//添加用户
 	addFriend(param){
@@ -88,7 +92,7 @@ export default {
 			})
 	},
 	//获取好友请求
-	getFriendRequest(){
+/* 	getFriendRequest(){
 		return service.get("/friend/request").then((res)=>{
 				 if(res.data.success){
 				 	  store.commit("set_friend_request",res.data.data);
@@ -96,7 +100,7 @@ export default {
 				 	errorMsg(res.data.message)
 				 }
 			})
-	},
+	}, */
 	getFriendList(){
 		return service.get("/friend/list").then((res)=>{
 				if(res.data.success){
@@ -108,7 +112,7 @@ export default {
 	},
 	//确认好友通过
 	acceptRequest(param){
-		return service.post("/friend/accept",param).then((res)=>{
+		return service.put("/friend/accept/"+param).then((res)=>{
 				console.log(res)
 			})
 	},
@@ -122,9 +126,15 @@ export default {
 	
 	//---------------微博相关
 	searchBlog(key){
-		return service.get("/blog/search/"+key)
+		if(key)
+			return service.get("/blog/search/"+key)
 	},
-	
+	getHotBlog(type){
+		return service.get("/blog/hot/"+type)
+	},
+	getBlogOfSomeOne(uid){
+		return service.get("/blog/list/"+uid)
+	},
 	//获得好友的微博
 	getBlogListOfFriend(page){
 		return service.post("/blog/list/friend",page)
@@ -172,7 +182,48 @@ export default {
 	delComment(id){
 		return service.post("/blog/comment/delete/" + id);
 	},
+  
+	async getNotice(){
+		const {data} = await service.get("/blog/notice/list" );
+		return data;
+	},
+	//获取通知
+	getNoticeList(){
+		return service.get("/blog/notice/list").then((res)=>{
+			  var data =  res.data.data
+				console.log(data)
+				if(res.data.success){
+					if(!(data && data.length > 0))
+						return ;
+					var notice_list=[],request_list=[]
+					data.forEach((i,d)=>{
+						// console.log(i)
+						 var item =JSON.parse(i)
+						 var tem = JSON.parse(item.msg)
+						 if(item.type == "notice"){
+							  notice_list.push(tem)
+						 }else if(item.type=="request"){
+								request_list.push(tem)
+						 }else{
+							 var contect = {friend:getFriend(tem.fromId),msg:tem.msg,sendTime:tem.time,noreadcount:1}
+						   store.commit("add_recent_contacts",contect);
+						 }
+					})
+					
+					store.commit("set_notice_list",notice_list);
+					
+					store.commit("set_friend_request",request_list);
+					//store.commit("set_friend_request,res.data.data);
+						//var contect = {friend:user,msg:data.msg,sendTime:data.time,noreadcount:1}
+				}else{
+					errorMsg(res.data.message)
+				}
+			})
+	},
 	
+	readedNotice(){
+		service.get("/blog/notice/readed").then(res=>{});
+	},
 	
 	//上传文件
 	async uploadFile(param){

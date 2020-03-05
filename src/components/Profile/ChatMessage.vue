@@ -156,9 +156,10 @@
 					time:new Date().getTime(),
 					fromId:this.me.id
 				}
+				
 				//调用发送接口
-				console.log(JSON.stringify(param))
-				window.mySocket.send(JSON.stringify(param))
+				console.log(JSON.stringify({type:msg,msg:param}))
+				window.mySocket.send(JSON.stringify({type:"msg",msg:param}))
 				//把我发送的消息，添加到那记录表
 				var field = this.util.objectClone(param);
 				field.sender = this.util.toSender(this.me)

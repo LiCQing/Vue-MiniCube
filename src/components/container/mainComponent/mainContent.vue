@@ -3,7 +3,7 @@
 		
 	<div class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
 		
-		<PublishForm/>
+		<PublishForm v-if="home"/>
 		
 		<div id="newsfeed-items-grid">
 			<BlogItem v-for="(blog,key) in blog_list" :blog="blog" :index="key" :key="key"/>
@@ -29,6 +29,7 @@
 	import req from '../../../axios'
 	import {mapGetters} from 'vuex'
 	export default {
+		props:['home'],
 	  components: {
 		BlogItem,PublishForm
 	  },
@@ -72,15 +73,31 @@
 	 },
 	  mounted(){
 			  var that = this
-				//获取好友的博客
-		    req.getBlogListOfFriend(this.page).then((res)=>{
-				  if(res.data.success){
-						this.page = res.data.data
-						var list = this.page.data;
-						if(list)
-								that.blog_list = list
-						}
-			 })
+				
+				if(!this.home){
+					//获取某一个人的博客
+					var uid = this.$router.currentRoute.query.uid
+					req.getBlogOfSomeOne(uid).then(res=>{
+						console.log(res)
+							var list = res.data.data;
+							if(list)
+									that.blog_list = list
+					})
+					
+				}else{
+					//获取好友的博客
+					req.getBlogListOfFriend(this.page).then((res)=>{
+						if(res.data.success){
+							this.page = res.data.data
+							var list = this.page.data;
+							if(list)
+									that.blog_list = list
+							}
+					})
+					
+				}
+				
+				
 			 
 			 PubSub.subscribe("publish_blog",  (msg,blog) =>{
 				 //调用api保存到后台

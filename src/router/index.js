@@ -27,6 +27,7 @@ import FavSetting from '../components/Profile/FavSetting'
 //搜索结果
 import SearchResult from '../components/SearchResult'
 
+import PersonalAllBlog from '../components/PersonalAllBlog'
 
 
 const routes = [{
@@ -38,7 +39,11 @@ const routes = [{
 		component: Index
 	},
 	{
-		path: '/personalIndex',
+		path: '/p',
+		component: PersonalAllBlog
+	},
+	{
+		path: '/pindex',
 		component: PersonalIndex,
 		 meta: {
 			requireAuth: true
@@ -120,7 +125,10 @@ const routes = [{
 		path: '/',
 		redirect: '/index'
 	},
-
+	/* {
+		path: '/detail',
+		component: PersonalHome,
+	}, */
 	{
 		path: '*',
 		component: ErrorResult404

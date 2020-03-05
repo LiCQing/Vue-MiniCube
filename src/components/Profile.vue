@@ -98,7 +98,7 @@
 </template>
 
 <script>
-	import Loading from './Loading.vue'
+	// Loading from './Loading.vue'
 	import LeftSidebar from './sidebar/LeftSidebar'
 	import RightSidebar from './sidebar/RightSidebar'
 	//import TopSidebar from './sidebar/TopSidebar'
@@ -116,7 +116,7 @@
 	
 	export default {
 	  components: {
-	    Loading,LeftSidebar,RightSidebar,
+	    LeftSidebar,RightSidebar,
 		HeaderProfile,Content,RestorePwd,BackToTop,ChatPopue,FriendRequest
 	  }
 	}

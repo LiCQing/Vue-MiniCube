@@ -8,7 +8,7 @@
 			<TopResponsive/>
 			<div class="header-spacer"></div>
 			
-			<Content/>
+			<Content :home = 'true'/>
 			
 			<BackToTop/>
 			<FriendPopue/>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import Loading from './Loading.vue'
+	//import Loading from './Loading.vue'
 	import LeftSidebar from './sidebar/LeftSidebar'
 	import RightSidebar from './sidebar/RightSidebar'
 	import TopSidebar from './sidebar/TopSidebar'
@@ -30,7 +30,7 @@
 	
 	export default {
 	  components: {
-	    Loading,LeftSidebar,RightSidebar,TopSidebar,TopResponsive,
+	   LeftSidebar,RightSidebar,TopSidebar,TopResponsive,
 		HeaderProfile,Content,BackToTop,FriendPopue
 	  }
 	}

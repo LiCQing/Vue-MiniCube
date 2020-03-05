@@ -5,12 +5,12 @@
 				<div class="col col-xl-8 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
 					<div class="ui-block">
 						<div class="ui-block-title">
-							<div  v-if="blogresult.length>0" class="h6 title">共搜索到{{blogresult.length}}条“<span class="c-primary">{{keyword}}</span>”相关微博</div>
+							<div  v-if="blogresult && blogresult.length>0" class="h6 title">共搜索到{{blogresult.length}}条“<span class="c-primary">{{keyword}}</span>”相关微博</div>
 							<div v-else class="h6 title">未搜到“<span class="c-primary">{{keyword}}</span>”相关微博</div>
 						</div>
 					</div>
 		
-					<div v-if="blogresult.length>0"  id="search-items-grid">
+					<div v-if="blogresult && blogresult.length>0"  id="search-items-grid">
 					   
 					    <BlogItem v-for="(blog,index) in blogresult" :blog = "blog"  :key="index"/>
 						
@@ -50,12 +50,12 @@
 					
 					<div class="ui-block">
 						<div class="ui-block-title">
-							<h6 v-if="friendresult.length>0" class="title">共搜索到{{friendresult.length}}个“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
+							<h6 v-if="friendresult&&friendresult.length>0" class="title">共搜索到{{friendresult.length}}个“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
 							<h6 v-else class="title">未搜索到{{friendresult.length}}个“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
 						</div>
 		
 						<!-- 好友搜索结果 -->
-						<ul v-if="friendresult.length > 0" class="widget w-friend-pages-added notification-list friend-requests">
+						<ul v-if="friendresult&&friendresult.length > 0" class="widget w-friend-pages-added notification-list friend-requests">
 							<li v-for="friend in friendresult"  class="inline-items">
 								<div class="author-thumb">
 									<img :src="friend.cover" alt="author">
@@ -156,20 +156,47 @@
 		},
 		computed:{
 			...mapGetters(['me'])
-		}
-		,
-		mounted(){
-			PubSub.subscribe("search",(m,key)=>{
-				 request.search(key).then((res)=>{
+		},
+		updated(){
+			//PubSub.subscribe("search",(m,key)=>{
+			/* 	this.keyword = this.$router.currentRoute.query.keyword	
+				
+				
+				//console.log(this.keyword)
+				 request.search(this.keyword).then((res)=>{
 					 this.friendresult = res.data.data
 				 })
 				 
-				 request.searchBlog(key).then((res)=>{
+				 request.searchBlog(this.keyword).then((res)=>{
 					this.blogresult = res.data.data
-				 })
+				 }) */
 				 
-				 this.keyword = key	
-			})
+				
+			//})
+		},
+		mounted(){
+			
+				this.keyword = this.$router.currentRoute.query.keyword	
+										//console.log(this.keyword)
+							request.search(this.keyword).then((res)=>{
+								this.friendresult = res.data.data
+							})
+							request.searchBlog(this.keyword).then((res)=>{
+								this.blogresult = res.data.data
+							})
+			
+			PubSub.subscribe("search",(m,key)=>{
+				this.keyword = this.$router.currentRoute.query.keyword	
+				//console.log(this.keyword)
+				request.search(this.keyword).then((res)=>{
+					this.friendresult = res.data.data
+				})
+				request.searchBlog(this.keyword).then((res)=>{
+					this.blogresult = res.data.data
+				})
+				
+				
+		})
 		}
 	}
 </script>

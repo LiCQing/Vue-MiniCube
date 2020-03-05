@@ -1,15 +1,18 @@
 <template>
 
-		<div class="ui-block" v-if="blog.sender">
+		<div @click="blogDetail" class="ui-block" v-if="blog.sender">
 			
 		<!-- Post 显示一条post，但是会有不一样的格式  -->
-		<article class="hentry post">
+		<article class="hentry post ">
 		
-				<div class="post__author author vcard inline-items">
+				<div @click="lookUserIndex"  style="cursor: pointer;"   class="post__author author vcard inline-items hot new" >
+					   
+					
 						<img :src="blog.sender.cover" alt="author"> 
-			
+						
+						
 						<div class="author-date">
-							 <router-link class="h6 post__author-name fn" to="/profile">{{blog.sender.nick||blog.sender.username}}</router-link> 
+							 <a href="javaScropt:void(0)" class="h6 post__author-name fn">{{blog.sender.nick||blog.sender.username}}</a> 
 							 <a v-if="blog.blogRepeat" href="javaScript:void(0)">转发</a> 
 							 
 							<div class="post__date">
@@ -19,6 +22,12 @@
 							</div>
 						</div>
 							
+							<a v-if="!isFriend"  href="javaScript:void(0)" @click="addFriend" class="accept-request">
+								<span class="icon-add without-text">
+									<svg class="olymp-happy-face-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+								</span>
+							</a>
+						
 						<!-- 发布者操作按钮 -->
 						<MoreOperation v-if="isAuthor" :index="index" :id="blog.blogId"/>
 				</div>
@@ -46,7 +55,7 @@
 				</div>
 				
 				<!-- 转发 -->
-				<Repeated v-if="blog.blogRepeat" :blog = "blog.repeatedBlog"> </Repeated>
+				<Repeated  v-if="blog.blogRepeat" :blog = "blog.repeatedBlog"> </Repeated>
 				
 			
 				
@@ -107,19 +116,19 @@
 					</a> -->
 					
 				 <!-- 操作 -->
-					<a @click="like" href="javaScript:void(0)" class="btn btn-control " :class="{'is-operated':isliked}">
+					<a @click.stop="like" href="javaScript:void(0)" class="btn btn-control " :class="{'is-operated':isliked}">
 						<svg class="olymp-like-post-icon">
 							<use xlink:href="static/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use>
 						</svg>
 					</a>
 						
-					<a @click="open" href="javaScript:void(0)" class="btn btn-control">
+					<a @click.stop="open" href="javaScript:void(0)" class="btn btn-control">
 						<svg class="olymp-comments-post-icon">
 							<use xlink:href="static/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use>
 						</svg>
 					</a>
 						
-					<a @click="repeat" href="javaScript:void(0)" class="btn btn-control">
+					<a @click.stop="repeat" href="javaScript:void(0)" class="btn btn-control">
 						<svg class="olymp-share-icon">
 							<use xlink:href="static/svg-icons/sprites/icons.svg#olymp-share-icon"></use>
 						</svg>
@@ -158,7 +167,7 @@
 	
 	
 	export default {
-		props:['blog','index'],
+		props:['blog','index','toblank'],
 	  components: {
 		Comment,CommentMore,VideoPost,MoreOperation,OperateButton,Repeated
 	  },
@@ -170,8 +179,18 @@
 	  	}
 	  },
 	  methods: {
+			lookUserIndex(){
+				  window.open("http://localhost:8080/#/pindex?uid="+this.blog.sender.id)
+			},
+			addFriend(){
+				
+			},
 			//打开评论区
 			async open(){	
+				if(this.toblank){
+					window.open("http://localhost:8080/#/detail?bid="+this.blog.blogId)
+					return;
+				}
 				if(!this.openComment){
 					//获取评论
 					let data = await req.getCommentbyBid(this.blog.blogId)
@@ -195,6 +214,11 @@
 				}
 				this.isliked = !this.isliked	
 			},
+			blogDetail(){
+				//let url = "/blogdetail?id="+this.blog.id
+				//this.$router.push({path:"/detail",query:{blogId:this.blog.id}})
+				//window.open(url,'_blank')
+			},
 
 			repeat(){
 				
@@ -215,24 +239,38 @@
 	  },
 	  
 	  computed :{
-			...mapGetters(['me']),
+			...mapGetters(['me','friend_list']),
 		  pubTime: function(){
 				return util.getTimeOfSpace(this.blog.blogSendTime	)
 		  },
 			isAuthor: function(){
-				return this.me.id == this.blog.sender.id
+				if(this.me.id && this.blog.sender.id)
+					return this.me.id == this.blog.sender.id
+				else false
 			},
 			images: function(){
 				var list = this.blog.blogImgs.split("|").map(img=>{return util.VAR().imgurl+img});
 				//console.log(list)
 				 return list 
+			},
+			isFriend:function(){
+				 var isFriend = false;
+				 for(var i = 0 ; i < this.friend_list;i++){
+						if(this.blog.sender.id == this.friend_list[i].id){
+							isFriend = true;
+						}
+				 }
+				 return isFriend||this.blog.sender.id == this.me.id;
 			}
 	  },
 		async mounted(){
 					//检查是否已经赞了
-					let islike = await req.islike(this.blog.blogId)
-					//console.log(islike)
-					this.isliked = islike.data.success	
+					if(this.me){
+						let islike = await req.islike(this.blog.blogId)
+						//console.log(islike)
+						this.isliked = islike.data.success	
+					}
+				
 						
 					//载入图片
 					CRUMINA.mediaPopups();
@@ -249,5 +287,37 @@
 		.is-operated-color{
 			color: #ff5e3a;
 		}
-	
+		
+		.hot{
+			position: relative;
+		}
+		.hot a:after{
+					background-color: red;
+					border-radius: 3px;
+					color: #fff;
+					content: "hot";
+					font-size: 10px;
+					line-height: 1;
+					padding: 1px 3px;
+					position: absolute;
+					right: -8px;
+					top: 10px;
+			}
+			
+			.new{
+				position: relative;
+			}
+			.new a:after{
+						background-color: red;
+						border-radius: 3px;
+						color: #fff;
+						content: "new";
+						font-size: 10px;
+						line-height: 1;
+						padding: 1px 3px;
+						position: absolute;
+						right: -8px;
+						top: 10px;
+				}
+			
 </style>

@@ -4,11 +4,11 @@
 	<div class="fixed-sidebar">
 		<div class="fixed-sidebar-left sidebar--small" id="sidebar-left">
 	
-			<a href="javaScript:void(0)" class="logo">
+			<router-link to="/index" class="logo">
 				<div class="img-wrap">
 					<img src="static/img/logo.png" alt="Olympus">
 				</div>
-			</a>
+			</router-link>
 	
 			<div class="mCustomScrollbar" data-mcs-theme="dark">
 				<ul class="left-menu">

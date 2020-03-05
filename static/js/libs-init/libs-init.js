@@ -267,12 +267,12 @@ CRUMINA.IsotopeSort = function () {
 	$containerSort.each(function () {
 		var $current = $(this);
 		var layout = ($current.data('layout').length) ? $current.data('layout') : 'masonry';
-		$current.isotope({
+		var result = $current.isotope({
 			itemSelector: '.sorting-item',
 			layoutMode: layout,
 			percentPosition: true
 		});
-
+		console.log(result)
 		$current.imagesLoaded().progress(function () {
 			$current.isotope('layout');
 		});
@@ -284,6 +284,7 @@ CRUMINA.IsotopeSort = function () {
 			$(this).parent().find('.active').removeClass('active');
 			$(this).addClass('active');
 			var filterValue = $(this).data('filter');
+			//console.log(filterValue)
 			if (typeof filterValue != "undefined") {
 				$current.isotope({filter: filterValue});
 				return false;
@@ -292,9 +293,9 @@ CRUMINA.IsotopeSort = function () {
 	});
 };
 
-$(document).ready(function () {
+/* $(document).ready(function () {
 	CRUMINA.IsotopeSort();
-});
+}); */
 
 /* -----------------------------
 	* End * Init Isotope sorting
