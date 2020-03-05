@@ -271,8 +271,8 @@ var websocketConnect = function(token){
 		//身份信息
 		const arg = '?Authorization=' +  encodeURI(token) + '&transport=websocket'
 		//接口地址url
-		//const url = protocol + '121.43.230.40:9658/chat/imserver/identify'+arg
-		const url = protocol + 'localhost:9658/chat/imserver/identify'+arg
+		const url = protocol + '121.43.230.40:9658/chat/imserver/identify'+arg
+		//const url = protocol + 'localhost:9658/chat/imserver/identify'+arg
 		//console.log(url);
 		//连接
 		var websock = new WebSocket(url);
