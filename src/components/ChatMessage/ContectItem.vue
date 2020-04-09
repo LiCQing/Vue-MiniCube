@@ -1,7 +1,7 @@
 <template>
 	<li @click.stop="chooseItem">
 		<div class="author-thumb">
-			<img :src="item.friend.cover" alt="author">
+			<img :src="util.VAR().imgurl + item.friend.cover" alt="author" class="avatar">
 		</div>
 		<div class="notification-event" >
 			<a href="javaScript:void(0);" class="h6 notification-friend">{{item.friend.nick||item.friend.username}}</a>

@@ -10,11 +10,14 @@
 			
 			<!-- Notification List -->
 			
-			<ul class="notification-list">
+			<ul v-if="lcoal_notice_list.length" class="notification-list">
 				
 				<NoticeItem v-for="(notice,key) in lcoal_notice_list"  :key="key" :notice="notice"/>
 			 
 			</ul>
+			<div v-else class="content-null">
+				<img src="../../assets/null.png" alt="">
+			</div>
 			<!-- ... end Notification List -->
 		
 		</div>

@@ -1,7 +1,7 @@
 <template>
 	<li>
 		<div class="author-thumb">
-			<img :src="notice.cover" alt="author">
+			<img :src="util.VAR().imgurl + notice.cover" alt="author" class="avatar">
 		</div>
 		<div class="notification-event">
 			<a href="#" class="h6 notification-friend">{{notice.operateUserNick}}</a> 

@@ -1,7 +1,7 @@
 <template>
 		<li :class="isHandler">
 			<div class="author-thumb">
-				<img :src="request.cover" alt="author">
+				<img :src="util.VAR().imgurl + request.cover" alt="author" class="avatar">
 			</div>
 			
 			<div v-if="request.handler=='a'"  class="notification-event">

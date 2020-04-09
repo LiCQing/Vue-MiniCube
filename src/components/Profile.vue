@@ -1,7 +1,7 @@
 <template>
 	<div class="page-has-left-panels page-has-right-panels">
 	
-	<LeftSidebar/>
+<!-- 	<LeftSidebar/> -->
 	<RightSidebar/>
 	<top-sidebar/>
 <!-- 	<TopResponsive/> -->
@@ -62,14 +62,14 @@
 					
 						<div class="ui-block-title">
 							<router-link to="/profile/notification"  class="h6 title">通知</router-link>
-							<a href="#" class="items-round-little bg-primary">8</a>
+							<!-- <a href="#" class="items-round-little bg-primary">8</a> -->
 						</div>
 						<div class="ui-block-title">
 							<router-link to="/profile/chat" class="h6 title">聊天 / 信息</router-link>
 						</div>
 						<div class="ui-block-title">
 							<router-link to="/profile/request" class="h6 title">好友请求</router-link>
-							<a href="#" class="items-round-little bg-blue">4</a>
+						<!-- 	<a href="#" class="items-round-little bg-blue">4</a> -->
 						</div>
 						<div class="ui-block-title ui-block-title-small">
 							<h6 class="title">收藏夹</h6>

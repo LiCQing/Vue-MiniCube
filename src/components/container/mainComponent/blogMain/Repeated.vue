@@ -4,7 +4,7 @@
 			   原微博已删除
 		</div>
 		   
-		<article @click="blogDetail" v-if="blog.blogStatus == 0" class="hentry post">
+		<article  @click="blogDetail" v-if="blog.blogStatus == 0" class="hentry post">
 		
 		
 				<div @click="lookUserIndex" style="cursor: pointer;" class="post__author author vcard inline-items">
@@ -77,6 +77,11 @@
 			}
 		},
 		async mounted(){
+			if(this.blog.sender){
+				this.blog.sender.cover = this.util.VAR().imgurl + this.blog.sender.cover 
+			}
+			
+			
 			/* let data =await	req.getBlogOfId(this.blogid)
 			var repeatedBlog = data.data.data
 			let user = await req.getUserInfo(repeatedBlog.userId)

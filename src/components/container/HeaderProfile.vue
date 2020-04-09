@@ -77,7 +77,7 @@
 					</div>
 					<div class="top-header-author">
 						<router-link to="/profile" class="author-thumb">
-							<img :src="user.cover" alt="author">
+							<img :src="util.VAR().imgurl + user.cover" alt="author"  class="avatar-big">
 						</router-link>
 						<div class="author-content">
 							<a href="javaScript:void(0)" class="h4 author-name">{{user.nick||user.username}}</a>

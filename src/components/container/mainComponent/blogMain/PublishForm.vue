@@ -11,7 +11,7 @@
 					<form>
 						<div class="author-thumb">
 							<a href="javaScript:void(0);" data-toggle="modal" data-target="#update-header-photo">
-								<img :src="me.cover" alt="author">
+								<img :src="me.cover" alt="author" class="avatar">
 							</a>
 						</div>
 						<div class="form-group with-icon label-floating is-empty">
@@ -431,6 +431,7 @@
 	.video-display video{
 		margin-left: 25%;
 		width: 50%;
+		max-height: 250px;
 	}
 	
 </style>

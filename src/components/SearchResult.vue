@@ -1,7 +1,7 @@
 <template>
 	<div class="page-has-left-panels page-has-right-panels">
 			<!-- <Loading/> -->
-			<LeftSidebar/>
+		<!-- 	<LeftSidebar/> -->
 			<RightSidebar/>
 			<top-sidebar/>
 		<!-- 	<TopResponsive/> -->

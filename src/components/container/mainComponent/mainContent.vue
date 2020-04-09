@@ -5,8 +5,13 @@
 		
 		<PublishForm v-if="home"/>
 		
-		<div id="newsfeed-items-grid">
+		<div v-if="blog_list.length" id="newsfeed-items-grid">
 			<BlogItem v-for="(blog,key) in blog_list" :blog="blog" :index="key" :key="key"/>
+		</div>
+		
+		<div v-else class="content-null">
+			<img src="../../../assets/null.png" />
+			<h2>空空如也</h2>
 		</div>
 		
 		
@@ -78,7 +83,7 @@
 					//获取某一个人的博客
 					var uid = this.$router.currentRoute.query.uid
 					req.getBlogOfSomeOne(uid).then(res=>{
-						console.log(res)
+						//console.log(res)
 							var list = res.data.data;
 							if(list)
 									that.blog_list = list
@@ -102,7 +107,12 @@
 			 PubSub.subscribe("publish_blog",  (msg,blog) =>{
 				 //调用api保存到后台
 				  req.publish_blog(blog).then(res=>{
-						 this.blog_list.unshift(res.data.data)
+						 let newBlog = res.data.data
+						 newBlog.sender = this.me
+						 newBlog.likeCount = 0
+						 newBlog.repeatCount=0
+						 newBlog.commentCount=0
+						 this.blog_list.unshift(newBlog)
 						 common.alertSuccessMsg("发布成功")
 					})
 				 

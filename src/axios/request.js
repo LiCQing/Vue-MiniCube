@@ -6,10 +6,10 @@ import { Message } from 'element-ui'
 
 // create an axios instance
 const service = axios.create({
-   baseURL: 'http://121.43.230.40:9658',
-  // baseURL: 'http://127.0.0.1:9658',
+   //baseURL: 'http://121.43.230.40:9658',
+   baseURL: 'http://'+common.VAR().ip+':9658',
 	 
-	 timeout: 25000
+	 timeout:25000
 })
 
 // 添加一个请求拦截器

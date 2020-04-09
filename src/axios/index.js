@@ -30,6 +30,7 @@ export default {
 			if(data.success){//登陆成功
 			store.commit("set_token",data.access_token)
 			store.commit("set_refresh_token",data.refresh_token)
+			data.user.cover = common.VAR().imgurl + data.user.cover
 			store.commit("set_me",data.user)
 			store.dispatch('conect_msg_server') //连接聊天服务
 /* 			store.dispatch('') */
@@ -142,6 +143,12 @@ export default {
 	async getBlogOfId(id){
 		let data =  await service.get("/blog/get/"+id)
 		return data
+	},
+	getListOfImg(id){
+		return service.get("/blog/list/img/"+id)
+	},
+	getListOfVideo(id){
+		return service.get("/blog/list/video/"+id)
 	},
 	//发送微博
 	 publish_blog(blog){

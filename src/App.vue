@@ -1,9 +1,6 @@
 <template>
 	<div>
     <router-view></router-view>
-		
-		
-		
 		<UpdateHeaderPhoto/>
 		<ChoosefromMyPhoto/>
 	</div>
@@ -38,17 +35,19 @@ export default {
 	},
   created() {
        //console.log( this.util.connectSocket());
-			 if(window.mySocket && window.mySocket.readyState == 1)
-					console.log("已经连接")
-				else
-				  this.conect_msg_server()
-					
-			//获取东西
-			//1.通知
-			this.request.getNoticeList()
-
-			//2.好友列表
-			this.request.getFriendList()
+			
+			if(this.util.getInfoFromLocal2Json("myinfo")){
+					 if(window.mySocket && window.mySocket.readyState == 1)
+									console.log("已经连接")
+								else
+								  this.conect_msg_server()
+							//获取东西
+							//1.通知
+							this.request.getNoticeList()
+							//2.好友列表
+							this.request.getFriendList()
+			}
+		
 			
 			
     },
@@ -62,12 +61,36 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
+	.notice-null{
+		text-align: center;
+	}
+	
+	.notice-null img{
+		width: 30%;
+	}
+	
+	.content-null{
+		text-align: center;
+		background-color: white;
+    padding: 30px;
+	}
+	
+	
+	.content-null img{
+		 width: 45%;
+	}
+	
+	.notice-null img{
+		width: 30%;
+	}
+	
+	.avatar{
+		height: 36px;
+	}
+	
+	.avatar-big{
+		height: 132px;
+	}
+	
 </style>

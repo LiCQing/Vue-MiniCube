@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 /*------------- #VARIABLES --------------*/
 /*------------- #TABLE OF CONTENTS --------------*/
 /*------------------------------------------------------------------
@@ -5261,7 +5261,7 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
 
 .chat-message-field .chat-message-item {
   float: left;
-  margin-top: 10px;
+ /* margin-top: 10px; */
   font-size: 13px; }
 
 .chat-message-field .notification-date {
@@ -6455,7 +6455,7 @@ ol ol li {
   overflow: hidden;
   position: relative; }
   .post-thumb img {
-    width: 100%;
+   /* width: 100%; */
     display: block; }
 
 .post__author {

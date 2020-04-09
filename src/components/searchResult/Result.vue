@@ -51,14 +51,14 @@
 					<div class="ui-block">
 						<div class="ui-block-title">
 							<h6 v-if="friendresult&&friendresult.length>0" class="title">共搜索到{{friendresult.length}}个“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
-							<h6 v-else class="title">未搜索到{{friendresult.length}}个“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
+							<h6 v-else class="title">未搜索到“<span class="c-primary">{{keyword}}</span>”相关用户</h6>
 						</div>
 		
 						<!-- 好友搜索结果 -->
 						<ul v-if="friendresult&&friendresult.length > 0" class="widget w-friend-pages-added notification-list friend-requests">
 							<li v-for="friend in friendresult"  class="inline-items">
 								<div class="author-thumb">
-									<img :src="friend.cover" alt="author">
+									<img :src="util.VAR().imgurl + friend.cover" alt="author" class="avatar">
 								</div>
 								<div class="notification-event">
 									<a href="#" class="h6 notification-friend">{{friend.nick || friend.username}}</a>

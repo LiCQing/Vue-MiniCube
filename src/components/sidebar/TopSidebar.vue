@@ -36,7 +36,10 @@
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
 							<ul class="notification-list friend-requests">
 								
-								<div v-if="!friend_request.length">暂无</div>
+								<div v-if="!friend_request.length" class="notice-null">
+									<!-- 没有好友请求 -->
+									<img src="../../assets/null.png" />
+								</div>
 								
 								<FriendRequestItem v-for="(request,key) in friend_request" :request="request" :ispage="false" :key = "key" :i="key"/>
 	
@@ -60,9 +63,15 @@
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
 							<ul class="notification-list chat-message">
+								
+								<div v-if="!recent_contacts.length" class="notice-null">
+									<!-- 没有好友请求 -->
+									<img src="../../assets/null.png" />
+								</div>
+								
 								<ContectItem v-for="(item,key) in recent_contacts" :item ="item" :index = "-1" :key="key"/>
 	
-	
+	<!-- 
 								<li class="chat-group">
 									<div class="author-thumb">
 										<img src="static/img/avatar11-sm.jpg" alt="author">
@@ -82,7 +91,7 @@
 									<div class="more">
 										<svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
 									</div>
-								</li>
+								</li> -->
 							</ul>
 						</div>
 	
@@ -104,7 +113,10 @@
 	
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
 							<ul class="notification-list"> 
-								<div v-if="!notice_list.length">暂无</div>
+								<div v-if="!notice_list.length" class="notice-null">
+									<!-- 没有好友请求 -->
+									<img src="../../assets/null.png" />
+								 </div>
 								<NoticeItem v-for="(notice,key) in notice_list" :key ="key" :notice="notice"/>
 							</ul>
 						</div>
@@ -300,4 +312,6 @@
 </script>
 
 <style>
+	
+
 </style>

@@ -89,7 +89,7 @@ const store = new Vuex.Store({
 		},
 
 		set_cover(state,url){
-			state.me.cover = url
+			state.me.cover = common.VAR().imgurl +   url
 			common.setJsonInfoToLoca("myinfo",state.me)
 		},
 		set_recent_contacts(state,list){
@@ -207,8 +207,8 @@ const store = new Vuex.Store({
 			context.commit("clear_login_info")
 			successMsg("退出成功")
 			setTimeout(()=>{	
-				vue_route.push("/login")
-			},1000) 
+				route.push("/login")
+			},500) 
 		},
 		//注册
 		register(context,user){
@@ -271,8 +271,8 @@ var websocketConnect = function(token){
 		//身份信息
 		const arg = '?Authorization=' +  encodeURI(token) + '&transport=websocket'
 		//接口地址url
-		const url = protocol + '121.43.230.40:9658/chat/imserver/identify'+arg
-		//const url = protocol + 'localhost:9658/chat/imserver/identify'+arg
+		//const url = protocol + '121.43.230.40:9658/chat/imserver/identify'+arg
+		const url = protocol + common.VAR().ip +  ':9658/chat/imserver/identify'+arg
 		//console.log(url);
 		//连接
 		var websock = new WebSocket(url);
@@ -306,6 +306,7 @@ var websocketonmessage = function (e) {
 			store.state.notice_list.push(JSON.parse(data.msg))
 			return ;
 		}else if(data.type == "request"){
+			store.state.friend_request.push(JSON.parse(data.msg))
 			return ;
 		}
 	/*  da = formatUnReadMsg(da)
@@ -321,6 +322,7 @@ var websocketonmessage = function (e) {
 		
 		
 		//把消息完整的传过去
+		data = JSON.parse(data.msg)
 		
 	  if(path.endsWith("chat")){ //打开了聊天界面，交给聊天组件处理
 			 			 PubSub.publish("re-msg",data)
@@ -328,8 +330,10 @@ var websocketonmessage = function (e) {
 		  //直接加入未读 
 			//开启通知
 			//successMsg(data.msg)
+			console.log("msg",data)
 			let user = getFriend(data.fromId)
 			var contect = {friend:user,msg:data.msg,sendTime:data.time,noreadcount:1}
+			console.log("contect",contect)
       store.commit("add_recent_contacts",contect)
 	  }
       
@@ -362,9 +366,10 @@ var getFriend = function(id){
 	}
 	//console.log(this_store)
 	var friendList = store.state.friend_list
+	console.log(friendList)
 	var friend = null
 	friendList.forEach((f)=>{
-		if(f.id == id){
+		if(f.id+"" == id || f.id == id){
 			friend = f;
 			return f;
 		}

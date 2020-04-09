@@ -4,12 +4,10 @@
 		
 		<div class="header-spacer"></div>
 		
-		<div class="container">
+		<div class="container"  v-loading="!ready">
 			<div class="row">
 				<div class="col col-lg-12 col-md-12 col-sm-12 col-12">
-					<div v-show="!ready">正在加载</div>
-					<div class="clients-grid" v-show="ready">
-
+					<div class="clients-grid" >
 						<ul class="cat-list-bg-style align-center sorting-menu">
 							<li class="cat-list__item active" data-filter="*"><a href="#" class="">综合广场</a></li>
 							<li class="cat-list__item" data-filter=".video"><a href="#" class="">视频广场</a></li>
@@ -18,7 +16,6 @@
 							<li class="cat-list__item" data-filter=".hot"><a href="#" class="">热门</a></li>
 							<li class="cat-list__item" data-filter=".tag"><a href="#" class="">标签</a></li>
 						</ul>
-
 						<div class="row sorting-container" id="clients-grid-1" data-layout="masonry">
 
 							<!-- <div ref="a" @click="get" class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 sorting-item recom picture">
@@ -35,8 +32,7 @@
 				</div>
 			</div>
 		</div>
-
-	
+		
 	</div>
 </template>
 
@@ -76,9 +72,39 @@
 						 
 			})
 			
+		},
+		mounted(){
+
+				// let imgArr = ['i.jpg', 'o.jpg', 'q.jpeg'];
+				// let imgArr = ['i.jpg', 'o.jpg'];
+				// let imgArr = ['i.jpg'];
+			/* 	new Swiper({
+					imgArr: imgArr,
+					imgWidth: 320,
+					aniTime: 1000,
+					intervalTime: 1500,
+					scale: 0.8,
+					autoplay: false,
+					gap: 0,
+			      	clsSuffix: '-card'
+				}).init();
+			
+			
+				new Swiper({
+					imgArr: imgArr,
+					imgWidth: 320,
+					aniTime: 1000,
+					intervalTime: 1500,
+					scale: 0.8,
+					autoplay: false,
+					gap: -200,
+			      	clsSuffix: '-stack'
+				}).init(); */
 		}
 	}
 </script>
 
-<style>
+<style scoped="scoped">
+	
+	
 </style>

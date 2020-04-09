@@ -6,7 +6,6 @@
 		<article class="hentry post ">
 		
 				<div @click="lookUserIndex"  style="cursor: pointer;"   class="post__author author vcard inline-items hot new" >
-					   
 					
 						<img :src="blog.sender.cover" alt="author"> 
 						
@@ -39,17 +38,10 @@
 				
 				<!-- 图片主题 -->
 				
-					
  				<div  v-if="blog.blogImgs"  class="post-thumb">
 					<div class="row">
 						<div  class="col-md-3 img3"  v-for="img in images">
-								<ul class="js-zoom-gallery">
-									<li>
-										<a :href="img">
-											<img :src="img" alt="photo">
-										</a>
-									</li>
-								</ul>
+								  <el-image  style="height: 140px" :src="img"  :preview-src-list="images"> </el-image>
 						</div>
 					</div>
 				</div>
@@ -163,7 +155,7 @@
 	import {mapGetters} from 'vuex'
 	
 	import req from '../../../../axios'
-	import util from '../../../../common'
+	//import util from '../../../../common'
 	
 	
 	export default {
@@ -202,13 +194,13 @@
 				if(this.isliked){
 					  let data = await req.unlikeBlog(this.blog.blogId);
 						if(data.data.success){
-							 util.alertSuccessMsg("取消点赞")
+							 this.util.alertSuccessMsg("取消点赞")
 							 this.blog.likeCount = this.blog.likeCount - 1
 						}
 				}else{
 					  let data = await req.likeBlog(this.blog.blogId);
 						if(data.data.success){
-							util.alertSuccessMsg("点赞成功")
+							this.util.alertSuccessMsg("点赞成功")
 							this.blog.likeCount = this.blog.likeCount + 1
 						}
 				}
@@ -241,7 +233,7 @@
 	  computed :{
 			...mapGetters(['me','friend_list']),
 		  pubTime: function(){
-				return util.getTimeOfSpace(this.blog.blogSendTime	)
+				return this.util.getTimeOfSpace(this.blog.blogSendTime	)
 		  },
 			isAuthor: function(){
 				if(this.me.id && this.blog.sender.id)
@@ -249,31 +241,37 @@
 				else false
 			},
 			images: function(){
-				var list = this.blog.blogImgs.split("|").map(img=>{return util.VAR().imgurl+img});
+				var list = this.blog.blogImgs.split("|").map(img=>{return this.util.VAR().imgurl+img});
 				//console.log(list)
 				 return list 
 			},
 			isFriend:function(){
 				 var isFriend = false;
-				 for(var i = 0 ; i < this.friend_list;i++){
+				 for(var i = 0 ; i < this.friend_list.length;i++){
 						if(this.blog.sender.id == this.friend_list[i].id){
 							isFriend = true;
+							break
 						}
 				 }
 				 return isFriend||this.blog.sender.id == this.me.id;
 			}
 	  },
 		async mounted(){
+			
+			
 					//检查是否已经赞了
-					if(this.me){
-						let islike = await req.islike(this.blog.blogId)
-						//console.log(islike)
-						this.isliked = islike.data.success	
-					}
-				
-						
+		/* 			if(this.util.getInfoFromLocal2Json("myinfo")){
+						if(this.me){
+							let islike = await req.islike(this.blog.blogId)
+							//console.log(islike)
+							this.isliked = islike.data.success	
+						}
+					} */
+					this.isliked =this.blog.isLike
+					
+					this.blog.sender.cover = this.util.VAR().imgurl + this.blog.sender.cover 
 					//载入图片
-					CRUMINA.mediaPopups();
+					//CRUMINA.mediaPopups();
 						 
 		}
 	}

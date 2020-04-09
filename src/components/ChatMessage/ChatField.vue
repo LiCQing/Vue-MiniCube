@@ -18,7 +18,7 @@
 					</span> 
 					<!-- 头像 -->
 					<div class="author-thumb">
-						<img :src="msg_item.sender.cover" alt="author">
+						<img :src="msg_item.sender.cover.indexOf('http') != -1?msg_item.sender.cover: (util.VAR().imgurl + msg_item.sender.cover)" alt="author" class="avatar">
 					</div>
 					<!-- 内容 -->
 					<div class="notification-event">
@@ -124,7 +124,7 @@
 	.my-message{
 		padding:10px;
 		border-radius:10px;
-		background:#408dffb3;
+		background:rgba(64,141,255,.85);
 		color:#fff
 	}
 	

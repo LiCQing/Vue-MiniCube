@@ -28,14 +28,14 @@
 					<h6>上传图片</h6>
 					<span>浏览</span>
 				 </a>
-	
+	<!-- 
 					<a href="#" class="upload-photo-item" data-toggle="modal" data-target="#choose-from-my-photo">
 	
 				<svg class="olymp-photos-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-photos-icon"></use></svg>
 	
 				<h6>从我的照片中选择</h6>
 				<span>Choose from your uploaded photos</span>
-			</a>
+			</a> -->
 				</div>
 			</div>
 		</div>
@@ -79,7 +79,7 @@
 					const reader = new FileReader();
 					reader.readAsDataURL(fileList[0]);
 					reader.onload = function (e) {
-						that.img = this.result
+						that.img =this.result
 					}
 				}
 	

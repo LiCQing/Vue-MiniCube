@@ -8,12 +8,16 @@
 		
 		<!-- Notification List Frien Requests -->
 		
-		<ul class="notification-list friend-requests">
+		<ul v-if="local_requst.length" class="notification-list friend-requests">
 			
  			<FriendRequestItem v-for="(item,key) in local_requst" :ispage="true" :request = "item" :i="key" :key ="key"/>  
 		
 			
 		</ul>
+		
+		<div v-else class="content-null">
+			<img src="../../assets/null.png" alt="">
+		</div>
 		
 		<!-- ... end Notification List Frien Requests -->
 	</div>

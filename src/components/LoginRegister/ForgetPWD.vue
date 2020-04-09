@@ -12,12 +12,11 @@
 				</div>
 	
 				<div class="modal-body">
-					<form  method="get">
-						<p>输入邮箱/手机号，点击‘发送验证码’. 你会收到一个验证码. 请使用它来重置你的密码.
+						<p>手机号，点击‘发送验证码’. 你会收到一个验证码. 请使用它来重置你的密码.
 						</p>
 						<div class="form-group label-floating">
-							<label class="control-label">邮箱/手机号</label>
-							<input class="form-control" placeholder="" type="email" value="james-spiegel@yourmail.com">
+							<label class="control-label">手机号</label>
+							<input class="form-control" placeholder=""  >
 						</div>
 						<button class="btn btn-purple btn-lg full-width">发送验证码</button>
 						<div class="form-group label-floating">
@@ -29,8 +28,6 @@
 							<input class="form-control" placeholder="" type="password" value="olympus">
 						</div>
 						<button class="btn btn-primary btn-lg full-width">修改密码</button>
-					</form>
-	
 				</div>
 			</div>
 		</div>

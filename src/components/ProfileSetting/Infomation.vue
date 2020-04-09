@@ -12,15 +12,19 @@
 				<div class="row">
 			
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-						<div class="form-group label-floating">
+			<!-- 			<div class="form-group label-floating">
 							<label class="control-label">用户名</label>
 							<input class="form-control" placeholder="" readonly="true" type="text" :value="me.username">
-						</div>
+						</div> -->
 			
 					<!-- 	<div class="form-group label-floating">
 							<label class="control-label">邮箱</label>
 							<input class="form-control" placeholder="" type="email" value="jspiegel@yourmail.com">
 						</div> -->
+						<div class="form-group label-floating " :class = "nick?'':'is-empty'">
+							<label class="control-label">昵称</label>
+							<input class="form-control" placeholder="" v-model="nick" type="text">
+						</div>
 			
 						<div class="form-group date-time-picker label-floating">
 							<label class="control-label">生日</label>
@@ -32,10 +36,7 @@
 					</div>
 			
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-						<div class="form-group label-floating " :class = "nick?'':'is-empty'">
-							<label class="control-label">昵称</label>
-							<input class="form-control" placeholder="" v-model="nick" type="text">
-						</div>
+				
 			
 					<!-- 	<div class="form-group label-floating">
 							<label class="control-label">社交主页</label>
@@ -63,8 +64,8 @@
 						<div class="form-group label-floating is-select">
 							<label class="control-label">省份</label>
 							<select class="selectpicker form-control">
-								<option value="CA">北京</option>
-								<option value="TE">上海</option>
+								<option value="CA">湖南</option>
+								<option value="TE">广东</option>
 							</select>
 						</div>
 					</div>
@@ -122,14 +123,13 @@
 							<input class="form-control" placeholder="" type="text" value="Democrat">
 						</div> -->
 					</div>
-					<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+<!-- 					<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 						<div class="form-group with-icon label-floating">
 							<label class="control-label">FaceBook账号</label>
 							<input class="form-control" type="text" value="www.facebook.com/james-spiegel95321">
 							<i class="fab fa-facebook-f c-facebook" aria-hidden="true"></i>
 						</div>
-					
-					</div>
+					</div> -->
 					<div class="col col-lg-6 col-md-6 col-sm-12 col-12 ">
 						<button type="button" class="btn btn-secondary btn-lg full-width">重置</button>
 					</div>

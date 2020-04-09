@@ -10,7 +10,7 @@
 		<div v-else>
 		
 			<div class="post__author author vcard inline-items" style="margin-bottom: 10px;">
-				<img :src="comment.userCover" alt="author">
+				<img :src="util.VAR().imgurl +  comment.userCover" alt="author">
 						
 				<div class="author-date">
 					<a class="h6 post__author-name fn" href="javaScript:void(0)">{{comment.userNick}}</a>

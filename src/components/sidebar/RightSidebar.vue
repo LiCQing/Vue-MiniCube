@@ -1,14 +1,14 @@
 <template>
 	<!-- Fixed Sidebar Right -->
 	<!-- 固定右侧 -->
-	<div :class="openCss" class="fixed-sidebar right">
+	<div v-show="friend_list.length" :class="openCss" class="fixed-sidebar right">
 		<div class="fixed-sidebar-right sidebar--small" id="sidebar-right">
 	
 			<div class="mCustomScrollbar" data-mcs-theme="dark">
 				<ul class="chat-users">
-					<li class="inline-items js-chat-open">
+					<li  v-for="(friend,index) in friend_list"  class="inline-items js-chat-open">
 						<div class="author-thumb">
-							<img alt="author" src="static/img/avatar67-sm.jpg" class="avatar">
+							<img alt="author" :src="util.VAR().imgurl + friend.cover"  class="avatar">
 							<span class="icon-status online"></span>
 						</div>
 					</li>
@@ -29,97 +29,17 @@
 		
 		<!-- 所有的好友 -->
 		<div class="fixed-sidebar-right sidebar--large" id="sidebar-right-1">
-	
 			<div class="mCustomScrollbar" data-mcs-theme="dark">
-	
-				<div class="ui-block-title ui-block-title-small">
-					<a href="javascript:void(0);" class="title">最近联系人</a>
-					<a href="javascript:void(0);">设置</a>
-				</div>
-	
-				<ul class="chat-users">
-					<li class="inline-items js-chat-open">
-	
-						<div class="author-thumb">
-							<img alt="author" src="static/img/avatar67-sm.jpg" class="avatar">
-							<span class="icon-status online"></span>
-						</div>
-	
-						<div class="author-status">
-							<a href="javascript:void(0);" class="h6 author-name">Carol Summers</a>
-							<span class="status">ONLINE</span>
-						</div>
-	
-						<div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-	
-							<ul class="more-icons">
-								<li>
-									<svg data-toggle="tooltip" data-placement="top" data-original-title="START CONVERSATION" class="olymp-comments-post-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
-								</li>
-	
-								<li>
-									<svg data-toggle="tooltip" data-placement="top" data-original-title="ADD TO CONVERSATION" class="olymp-add-to-conversation-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-add-to-conversation-icon"></use></svg>
-								</li>
-	
-								<li>
-									<svg data-toggle="tooltip" data-placement="top" data-original-title="BLOCK FROM CHAT" class="olymp-block-from-chat-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-block-from-chat-icon"></use></svg>
-								</li>
-							</ul>
-	
-						</div>
-	
-					</li>
-				</ul>
-	
-	
-				<div class="ui-block-title ui-block-title-small">
-					<a href="javascript:void(0);" class="title">朋友</a>
-					<a href="javascript:void(0);">设置</a>
-				</div>
-	
-				<ul class="chat-users">
-					<li class="inline-items js-chat-open">
-	
-						<div class="author-thumb">
-							<img alt="author" src="static/img/avatar64-sm.jpg" class="avatar">
-							<span class="icon-status online"></span>
-						</div>
-	
-						<div class="author-status">
-							<a href="javascript:void(0);" class="h6 author-name">Sarah Hetfield</a>
-							<span class="status">ONLINE</span>
-						</div>
-	
-						<div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-	
-							<ul class="more-icons">
-								<li>
-									<svg data-toggle="tooltip" data-placement="top" data-original-title="START CONVERSATION" class="olymp-comments-post-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
-								</li>
-	
-								<li>
-									<svg data-toggle="tooltip" data-placement="top" data-original-title="ADD TO CONVERSATION" class="olymp-add-to-conversation-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-add-to-conversation-icon"></use></svg>
-								</li>
-	
-								<li>
-									<svg data-toggle="tooltip" data-placement="top" data-original-title="BLOCK FROM CHAT" class="olymp-block-from-chat-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-block-from-chat-icon"></use></svg>
-								</li>
-							</ul>
-	
-						</div>
-					</li>
-				</ul>
-	
 	
 				<div class="ui-block-title ui-block-title-small">
 					<a href="javascript:void(0);" class="title">未分组好友</a>
 					<a href="javascript:void(0);">设置</a>
 				</div>
 	
-				<ul class="chat-users">
-					<li v-for="(friend,index) in friend_list" class="inline-items js-chat-open">
+				<ul v-if="friend_list.length" class="chat-users">
+					<li v-for="(friend,index) in friend_list_filtered" class="inline-items js-chat-open">
 						<div class="author-thumb">
-							<img alt="author" :src="friend.cover" class="avatar">
+							<img alt="author" :src="util.VAR().imgurl + friend.cover" class="avatar">
 							<span class="icon-status online"></span>
 						</div>
 	
@@ -143,12 +63,15 @@
 						</div>
 					</li>
 				</ul>
+				
+				<div v-show="!friend_list_filtered.length" class="content-null"><img src="../../assets/null.png" alt=""></div>
 	
 			</div>
 	
 			<div class="search-friend inline-items">
 				<form class="form-group" >
-					<input class="form-control" placeholder="Search Friends..." value="" type="text">
+					<input v-model="filterKey" class="form-control" placeholder="搜索朋友"  value="" type="text">
+					 <input type="text" style="display: none;"> <!--避免回车提交 -->
 				</form>
 	
 				<!-- <a href="29-YourAccount-AccountSettings.html" class="settings">
@@ -160,11 +83,10 @@
 				</a>
 			</div>
 	
-			<a  @click.stop='openChat(index)' href="javascript:void(0);"  class="olympus-chat inline-items ">
-	
+		<!-- 	<a  @click.stop='openChat()' href="javascript:void(0);"  class="olympus-chat inline-items ">
 				<h6 class="olympus-chat-title">OLYMPUS CHAT</h6>
 				<svg  class="olymp-chat---messages-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
-			</a>
+			</a> -->
 	
 		</div>
 	</div>
@@ -201,7 +123,8 @@
 		data(){
 			return {
 				openCss:"",
-				isOpenChat:false
+				isOpenChat:false,
+				filterKey:""
 			}
 		},
 		mounted: function(){
@@ -214,6 +137,19 @@
 			...mapGetters(['friend_list']),
 			name() {
 				return 1;//this.${2:data} 
+			},
+			friend_list_filtered(){
+				if(this.filterKey == "") return this.friend_list
+				return this.friend_list.filter(item=>{
+					var result = false
+					if(item.nick){
+						result = result || item.nick.indexOf(this.filterKey) != -1
+					}
+					if(item.username){
+						result = result || item.username.indexOf(this.filterKey) != -1
+					}
+					 return result
+				})
 			}
 		},
 		

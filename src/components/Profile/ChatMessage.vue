@@ -40,7 +40,13 @@
 				</div>
 				<div class="col col-xl-7 col-lg-6 col-md-12 col-sm-12 col-12 padding-l-0">		
 					<ChatField v-if="contact_index>=0"  :fieldmsg="fieldMsg" :nowfriend="contact_list[contact_index].friend" />
-					<div v-else style="height: 526px;border-left: 1px solid #e6ecf5;"> 请选择联系人	 </div>
+					
+					<div v-else style="height: 526px;border-left: 1px solid #e6ecf5;">
+						<div class="content-null">
+							<img src="../../assets/null.png" />
+							<h6>请选择联系人</h6>	
+						</div>
+					</div>
 				</div>
 			</div>
 		
@@ -73,7 +79,7 @@
 			changeItem(index){ //接收到index
 				//this.fieldMsg=[]
 				//从本地获取记录
-				this.fieldMsg = this.util.getChatHistory(this.contact_list[index].friend.id)
+				this.fieldMsg = this.util.getChatHistory(this.me.id +"_"+ this.contact_list[index].friend.id + "_chat_history")
 				this.contact_index = index //修改当前的显示人
 				
 				this.contact_list[index].noreadcount = 0
@@ -87,12 +93,12 @@
 			},
 			
 			saveToLocal(list){
-				 this.util.setJsonInfoToLoca("contact_list", this.contact_list)
+				 this.util.setJsonInfoToLoca("contact_list_"+this.me.id, this.contact_list)
 			}
 		},
 		mounted(){
 			//读取本地聊天记录
-			this.contact_list = this.util.getInfoFromLocal2Json("contact_list") || []
+			this.contact_list = this.util.getInfoFromLocal2Json("contact_list_"+this.me.id) || []
 			//合并最近的聊天记录
 			if(this.contact_list.length == 0){this.contact_list = this.recent_contacts }
 			else{
@@ -166,7 +172,7 @@
 				this.fieldMsg.push(field)
 				//保存更新到本地
 				//this.util.setJsonInfoToLoca("contact_list", this.contact_list)
-				this.util.saveChatHistory(user.id,field) //保存到本地
+				this.util.saveChatHistory( this.me.id +"_"+ user.id + "_chat_history",field) //保存到本地
 				this.saveToLocal()
 			})
 			
@@ -200,7 +206,7 @@
 							contect.sendTime = data.time
 							contect.noreadcount = (contect.noreadcount||0) + 1 //未读消息+1
 							this.contact_list.unshift(contect)
-							this.util.saveChatHistory(data.fromId,data) 
+							this.util.saveChatHistory( this.me.id +"_"+ data.fromId + "_chat_history",data) 
 							this.saveToLocal()
 							return ;
 						}
@@ -210,7 +216,7 @@
 					var contect = {friend:user,msg:data.msg,sendTime:data.time,noreadcount:1}
 					this.contact_list.unshift(contect)
 				}
-				this.util.saveChatHistory(data.fromId,data) 
+				this.util.saveChatHistory( this.me.id +"_"+ data.fromId + "_chat_history",data) 
 				this.saveToLocal()
 			})
 			

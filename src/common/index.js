@@ -4,14 +4,16 @@ export default {
 	//一些参数
 	VAR(){
 		var local = {
-			imgurl:"http://121.43.230.40"
+			imgurl:"http://121.43.230.40",
+			ip:"127.0.0.1"
 		}
 		
 		var server = {
-			imgurl:""
+			imgurl:"",
+			ip:"121.43.230.40",
 		}
 		
-		return local;
+		return server;
 	},
 	
 	//page对象参数
@@ -218,6 +220,7 @@ export default {
 		this.setJsonInfoToLoca(key,history)
 	},
 	getChatHistory(friendId){
+		
 		return this.getInfoFromLocal2Json(friendId + "chat") || []
 	},
 	clearChatHistory(friendId){
