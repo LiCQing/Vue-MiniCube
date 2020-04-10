@@ -299,7 +299,7 @@
 			},
 			isPlan:function(){
 				var space = (new Date().getTime() - new Date(this.blog.blogSendTime)) / 1000;
-				return space < 0 ? true :false;
+				return space <= 10 ? true :false;
 			},
 			images: function(){
 				var list = this.blog.blogImgs.split("|").map(img=>{return this.util.VAR().imgurl+img});

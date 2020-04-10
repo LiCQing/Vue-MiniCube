@@ -51,7 +51,8 @@
 					hasPre:false,
 					hasNext:true,
 					data:{}
-				}
+				},
+				
 		  }
 	  },
 	  methods : {
@@ -130,6 +131,11 @@
 			 	})
 			 	
 			 })
+		},
+		beforeDestroy(){
+			 PubSub.unsubscribe("publish_blog")
+			 PubSub.unsubscribe("del_blog")
+
 		}
 	}
 </script>

@@ -376,8 +376,11 @@
 					util.alertErrorMsg("未输入内容");
 					return ;
 				}
-				
+				if(this.sending){
+					return 
+				}
 				this.sending = true;
+				
 				
 				this.share_content.blogContent = this.$refs.inputdiv.innerHTML
 				//上传图片 填充信息
