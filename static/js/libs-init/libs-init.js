@@ -263,6 +263,7 @@ $(document).ready(function () {
 * ---------------------------*/
 
 CRUMINA.IsotopeSort = function () {
+	// console.log("index layout init start")
 	var $containerSort = $('.sorting-container');
 	$containerSort.each(function () {
 		var $current = $(this);
@@ -272,7 +273,7 @@ CRUMINA.IsotopeSort = function () {
 			layoutMode: layout,
 			percentPosition: true
 		});
-		console.log(result)
+		//console.log(result)
 		$current.imagesLoaded().progress(function () {
 			$current.isotope('layout');
 		});
@@ -291,6 +292,7 @@ CRUMINA.IsotopeSort = function () {
 			}
 		});
 	});
+	// console.log("index layout init end")
 };
 
 /* $(document).ready(function () {

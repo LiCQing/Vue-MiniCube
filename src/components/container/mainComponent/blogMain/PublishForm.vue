@@ -37,11 +37,22 @@
 							<svg @click="removeVideo" class="olymp-little-delete"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
 
 						</div>
+						
+						<div v-show="schedle"  class="schedle" >
+							发布日期
+							   <el-date-picker v-model="plan_time" type="datetime" 
+								 :picker-options="pickerOptions"
+								 format="yyyy-MM-dd HH时mm分"  value-format="yyyy-MM-dd HH:mm:00" placeholder="选择日期时间"> 
+								 </el-date-picker>
+						</div>
+				
 
 
 						
 						<div class="add-options-message" style="border-top: solid 1px #e6ecf5;">
 						
+							
+							
 							
 							<input @change="getFile" ref="fileInput" type = "file" multiple="multiple" style="display: none;"  accept="image/*"/>
 							
@@ -49,8 +60,7 @@
 							
 							
 							<!-- 选择按钮 -->
-							<a v-show="!hasVideo" @click="chooseFile" href="javaScript:void(0)" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
-							<!-- 	<svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"> -->
+							<a v-show="!hasVideo" @click="chooseFile" href="javaScript:void(0)" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="添加图片">
 								<svg class="olymp-camera-icon" >
 									<use xlink:href="static/svg-icons/sprites/icons.svg#olymp-camera-icon"></use>
 								</svg>
@@ -59,6 +69,13 @@
 							<a v-show="!hasImg" @click="chooseVideo" href="javaScript:void(0)"  class="options-message"  data-placement="top"   data-original-title="TAG YOUR FRIENDS">
 								<svg class="olymp-computer-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-computer-icon"></use></svg>
 							</a>
+							
+							<a  @click="schedle = !schedle" href="javaScript:void(0)"  class="options-message"  data-placement="top"   data-original-title="TAG YOUR FRIENDS">
+								<svg class="olymp-computer-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-calendar-icon"></use></svg>
+							</a>
+							
+							
+							
 		
 				<!-- 			<a href="javaScript:void(0)" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD LOCATION">
 								<svg class="olymp-small-pin-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-small-pin-icon"></use></svg>
@@ -66,7 +83,7 @@
 							</a> -->
 							
 							
-								<div class="options-message smile-block">
+							<div class="options-message smile-block">
 									<svg class="olymp-happy-sticker-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-happy-sticker-icon"></use></svg>
 							
 									<ul class="more-dropdown more-with-triangle triangle-bottom-right" style="right: -50px;">
@@ -208,11 +225,22 @@
 									</ul>
 								</div>
 								
+						
 							
-		
-							<button v-show="!sending" :disabled=" !this.share_content.blogContent && !hasVideo && !hasImg " type="button" @click="send" class="btn btn-primary btn-md-2">确认发送</button>
+							<button v-show="!sending" :disabled="!this.share_content.blogContent && !hasVideo && !hasImg " type="button" @click="send" class="btn btn-primary btn-md-2">确认发送</button>
 							<button v-show="sending" disabled type="button"  class="btn btn-md-2">正在发送...</button>
 							<!-- <button type="button"   class="btn btn-md-2 btn-border-think btn-transparent c-grey">预览</button> -->
+		
+							<el-dropdown @command="handleCommand" class="pub-type">
+								<span class="el-dropdown-link">
+									{{pub_type}}<i class="el-icon-arrow-down el-icon--right"></i>
+								</span>
+								<el-dropdown-menu slot="dropdown">
+									<el-dropdown-item command="公开">公开</el-dropdown-item>
+									<el-dropdown-item command="好友可见">好友可见</el-dropdown-item>
+									<el-dropdown-item command="自己可见">自己可见</el-dropdown-item>
+								</el-dropdown-menu>
+							</el-dropdown>
 		
 						</div>
 						
@@ -243,14 +271,23 @@
 					"blogImgs":null,
 					"blogVideo":null,
 					"blogRepeat":null,
+					"blogPubType":0,
 				},
 				ori_img:[],//存储源文件
 				imgs:[],//存储预览文件
 				video_url:null,
 				video:null,
 				
-				sending:false
-				
+				sending:false,
+				schedle:false,
+				plan_time:'',
+				pub_type:'公开',
+				pickerOptions:{
+          disabledDate(time) {
+             return time.getTime() < Date.now();   
+          }
+    	 },
+	
 			}
 		},
 		computed :{
@@ -266,10 +303,21 @@
 					return this.video != null
 				},
 				set(e){}
+			},
+			pubType:{
+				get(){
+					if(this.pub_type == "公开") return 0
+					if(this.pub_type == "好友可见") return 1
+					return 2
+				},
+				set(e){}
 			}
 		}
 		,
 		methods: {
+			handleCommand(command) {
+        this.pub_type = command
+      },
 			onSubmit() {
 				console.log('submit!');
 				this.$ajax.get('blog/get/1').then((res) => {
@@ -302,16 +350,6 @@
 				var len  = fileList.length
 				//console.log(len)
 				if(len > 0){
-					/* if(inputFile.type !== 'image/jpeg' && inputFile.type !== 'image/png' && inputFile.type !== 'image/gif'){
-						alert('不是有效的图片文件！');
-						return;
-					} */
-				/* 	this.imgInfo = Object.assign({}, this.imgInfo, {
-						name: inputFile.name,
-						size: inputFile.size,
-						lastModifiedDate: inputFile.lastModifiedDate.toLocaleString()
-					}) */		
-					
 					for(var i=0;i<len;i++){ 
 						const reader = new FileReader();
 						reader.readAsDataURL(fileList[i]);
@@ -359,6 +397,8 @@
 				}else{
 					 this.share_content.blogVideo = url
 				}
+				this.share_content.blogPubType = this.pubType //获取发表类型
+				if(this.schedle) this.share_content.blogSendTime = this.plan_time //获取预计发表时间
 				//清空当前的输入内容
 				this.$refs.inputdiv.innerHTML = ""
 				//console.log(this.share_content)
@@ -370,8 +410,10 @@
 				this.sending = false;
 				//清空存储
 				for(let key in this.share_content){
-					this.share_content[key]  = ''
+					this.share_content[key]  = null
 				}
+				this.pub_type = "公开"
+				this.schedle = false
 				this.video = null
 				this.ori_img = []
 				this.imgs = []
@@ -404,6 +446,18 @@
 </script>
 
 <style scope>
+	.pub-type{
+		float: right;
+		line-height: 43.6px;
+		margin-right: 15px;
+	}
+	
+	.schedle{
+		background-color: #f5f7fa;
+		font-size: 13px;
+		padding: 5px 0px 5px 15px;
+	}
+	
 	.img-display{
 		margin-left:15px;
 		margin-top:5px;

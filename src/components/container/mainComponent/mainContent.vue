@@ -70,14 +70,9 @@
 								this.blog_list.push.apply(this.blog_list,list)
 						}
 				})
-			}
-	  },
-	  computed :{
-				...mapGetters(['me']),
-				
-	 },
-	  mounted(){
-			  var that = this
+			},
+			init(){
+				var that = this
 				
 				if(!this.home){
 					//获取某一个人的博客
@@ -101,7 +96,15 @@
 					})
 					
 				}
+			}
+	  },
+	  computed :{
+				...mapGetters(['me']),
 				
+	 },
+	  mounted(){
+			 
+				this.init()
 				
 			 
 			 PubSub.subscribe("publish_blog",  (msg,blog) =>{
@@ -114,6 +117,7 @@
 						 newBlog.commentCount=0
 						 this.blog_list.unshift(newBlog)
 						 common.alertSuccessMsg("发布成功")
+						 //this.init()
 					})
 				 
 			 })

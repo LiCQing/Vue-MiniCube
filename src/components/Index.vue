@@ -12,9 +12,9 @@
 							<li class="cat-list__item active" data-filter="*"><a href="#" class="">综合广场</a></li>
 							<li class="cat-list__item" data-filter=".video"><a href="#" class="">视频广场</a></li>
 							<li class="cat-list__item" data-filter=".picture"><a href="#" class="">图片广场</a></li>
-							<li class="cat-list__item" data-filter=".recom"><a href="#" class="">推荐</a></li>
-							<li class="cat-list__item" data-filter=".hot"><a href="#" class="">热门</a></li>
-							<li class="cat-list__item" data-filter=".tag"><a href="#" class="">标签</a></li>
+							<li class="cat-list__item" data-filter=".day"><a href="#" class="">今日热门</a></li>
+							<li class="cat-list__item" data-filter=".week"><a href="#" class="">本周热门</a></li>
+							<li class="cat-list__item"  data-filter=".month"><a href="#" class="">本月热门</a></li>
 						</ul>
 						<div class="row sorting-container" id="clients-grid-1" data-layout="masonry">
 
@@ -22,8 +22,12 @@
 								 <BlogItem/>
 							</div> -->
 							
-							<div v-for="blog in hotblog"  :class="blog.blogImgs?'picture':blog.blogVideo?'video':''" class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 sorting-item">
+							<div v-for="blog in hotblog"  :class="itemclass(blog)" class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 sorting-item">
 									<BlogItem :blog="blog" :toblank='true' />
+							</div>
+							
+							<div v-if="!dayNum" class="hot-null day sorting-item col-md-12">
+								<img src="../assets/null.png" alt="">
 							</div>
  
 						</div>
@@ -46,65 +50,111 @@
 		data(){
 			return {
 				hotblog:[],
-				ready:false
+				ready:false,
+				dayNum:0,
+				weekNum:0,
+				monthNum:0
 			}
 		},
+		computed:{
+			
+		},
 	  methods : {
-		  get(e){
-			 /* console.log(e)
-			  var refs = this.$refs
-			  for(var key in refs){
-				  console.log(refs[key])
-				  if(refs[key].style.cssText.indexOf("left: 50%;")!=-1){
-					     console.log(refs[key].style.top)
-				  }
-			  } */
-			//this.$refs.a.style.cssText
-		  }
+		  itemclass(blog){
+			return (blog.blogImgs?'picture':blog.blogVideo?'video':'') + " " + blog.hot
+		  },
+		  addBlog(blog){
+			  let flag = true
+			  this.hotblog.some(item=>{
+				  if(item.blogId == blog.blogId){ item.hot += " " + blog.hot;  flag = false;  return true;  }
+			  })
+			  if(flag)
+				this.hotblog.push(blog)
+		  },
+		  init(){
+			  var  start = new Date().getTime()
+			  this.ready = false
+			  var postArr = []
+			  postArr.push(this.request.getHotBlog("day"))
+			  postArr.push(this.request.getHotBlog("week"))
+			  postArr.push(this.request.getHotBlog("month"))
+			  Promise.all(postArr).then(arr=>{
+				 arr.forEach(res=>{
+					 if(res.config.url.indexOf("day") != -1){
+						 res.data.data.forEach(item=>{
+						 	item.hot = "day"
+							this.dayNum++
+						 	this.addBlog(item)
+						 })
+					 }else  if(res.config.url.indexOf("week") != -1){
+						 res.data.data.forEach(item=>{
+						 	item.hot = "week"
+							this.weekNum++
+						 	this.addBlog(item)
+						 })
+					 }else{
+						 res.data.data.forEach(item=>{
+						 	item.hot = "month"
+							this.monthNum++
+						 	this.addBlog(item)
+						 })
+					 }
+				 })
+				 
+				 setTimeout(()=>{
+				 	CRUMINA.IsotopeSort() //js/libs-init/libs-init.js
+				 },1000)
+				 this.ready = true
+				 console.log(new Date().getTime() - start + " spend")
+			  })
+		/* 	  this.request.getHotBlog("day").then(res=>{
+			  		res.data.data.forEach(item=>{
+						item.hot = "day"
+						this.hotblog.push(item)
+					})
+			    this.request.getHotBlog("week").then(res=>{
+			    	res.data.data.forEach(item=>{
+			    		item.hot = "week"
+			    		this.hotblog.push(item)
+			    	})
+					
+					this.request.getHotBlog("month").then(res=>{
+						res.data.data.forEach(item=>{
+							item.hot = "month"
+							this.hotblog.push(item)
+						})
+						setTimeout(()=>{
+							this.ready = true
+							CRUMINA.IsotopeSort() //js/libs-init/libs-init.js
+						},1000)
+			  		
+					})
+				})
+			}) */
+		}
+		  
 	  },
 		created(){
-			this.request.getHotBlog("day").then(res=>{
+			/* this.request.getHotBlog("day").then(res=>{
 					this.hotblog = res.data.data
 					setTimeout(()=>{
 						this.ready = true
 						CRUMINA.IsotopeSort() //js/libs-init/libs-init.js
 					},1000)
 						 
-			})
+			}) */
 			
 		},
 		mounted(){
-
-				// let imgArr = ['i.jpg', 'o.jpg', 'q.jpeg'];
-				// let imgArr = ['i.jpg', 'o.jpg'];
-				// let imgArr = ['i.jpg'];
-			/* 	new Swiper({
-					imgArr: imgArr,
-					imgWidth: 320,
-					aniTime: 1000,
-					intervalTime: 1500,
-					scale: 0.8,
-					autoplay: false,
-					gap: 0,
-			      	clsSuffix: '-card'
-				}).init();
-			
-			
-				new Swiper({
-					imgArr: imgArr,
-					imgWidth: 320,
-					aniTime: 1000,
-					intervalTime: 1500,
-					scale: 0.8,
-					autoplay: false,
-					gap: -200,
-			      	clsSuffix: '-stack'
-				}).init(); */
+			this.init()
 		}
 	}
 </script>
 
 <style scoped="scoped">
 	
+	.hot-null{
+		text-align: center;
+	}
 	
 </style>

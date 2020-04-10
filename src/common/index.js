@@ -9,7 +9,7 @@ export default {
 		}
 		
 		var server = {
-			imgurl:"",
+			imgurl:"http://121.43.230.40",
 			ip:"121.43.230.40",
 		}
 		
@@ -144,7 +144,7 @@ export default {
 	getTimeOfSpace(num){
 		 if((num+"").length < 10) return "未知"
 		 
-		 var space = (new Date().getTime() - num) / 1000;
+		 var space = (new Date().getTime() - new Date(num).getTime()) / 1000;
 		 if(space < 60) return "刚刚"
 		 space =  space / 60
 		 if(space < 60) return Math.floor(space) + "分钟前"
@@ -152,6 +152,11 @@ export default {
 		 if(space < 24) return Math.floor(space) + "小时前"
 		 return this.getDateTimeOfNum(num)
 		 
+	},
+	isNew(num){
+		var space = (new Date().getTime() - num) / 1000;
+		return space <= 60 * 60 *24 * 2? true :false;
+		
 	},
 	
 	//--------------对象管理

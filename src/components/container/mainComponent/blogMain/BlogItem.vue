@@ -3,9 +3,14 @@
 		<div @click="blogDetail" class="ui-block" v-if="blog.sender">
 			
 		<!-- Post 显示一条post，但是会有不一样的格式  -->
-		<article class="hentry post ">
+		<article v-show="!isPlan" class="hentry post ">
+			
+			 <span v-if="isnew" class="new">new</span>
+			 <span v-if="blog.blogPubType != 0" class="pub-type">
+				  {{blog.blogPubType==1?"仅好友可见":"仅自己可见"}}
+			 </span>
 		
-				<div @click="lookUserIndex"  style="cursor: pointer;"   class="post__author author vcard inline-items hot new" >
+				<div @click="lookUserIndex"  style="cursor: pointer;"   class="post__author author vcard inline-items" >
 					
 						<img :src="blog.sender.cover" alt="author"> 
 						
@@ -129,7 +134,53 @@
 				</div>
 			
 		</article>
+		
+		<article v-if="isPlan" class="hentry post ">
+			
+				<div @click="lookUserIndex"  style="cursor: pointer;"   class="post__author author vcard inline-items" >
+					
+						<img :src="blog.sender.cover" alt="author"> 
 						
+						
+						<div class="author-date">
+							<a href="javaScropt:void(0)" class="h6 post__author-name fn">{{blog.sender.nick||blog.sender.username}}</a> 
+							<a href="javaScript:void(0)">定时微博</a> 
+							
+							<div class="post__date">
+								<time class="published" datetime="2017-03-24T18:18">
+									{{util.getTimeOfSpace(blog.blogCreateTime)}}		
+								</time>
+							</div>
+						</div>
+						
+						<!-- 发布者操作按钮 -->
+						<MoreOperation v-if="isAuthor" :index="index" :id="blog.blogId"/>
+				</div>
+		
+				<p v-html="blog.blogContent">  </p>
+				
+				<!-- 视频主题 -->
+				<VideoPost v-if="blog.blogVideo" :videourl="blog.blogVideo"/>
+				
+				<!-- 图片主题 -->
+				
+				<div  v-if="blog.blogImgs"  class="post-thumb">
+					<div class="row">
+						<div  class="col-md-3 img3"  v-for="img in images">
+									<el-image  style="height: 140px" :src="img"  :preview-src-list="images"> </el-image>
+						</div>
+					</div>
+				</div>
+				
+				<div class="post-additional-info inline-items ">
+					<i class="el-icon-time"></i>
+					预计发送时间：{{blog.blogSendTime}}
+					<div></div>
+				</div>
+				
+				
+				
+		</article>
 		<!-- .. end Post -->	
 
 		
@@ -240,6 +291,16 @@
 					return this.me.id == this.blog.sender.id
 				else false
 			},
+			isnew:function(){
+				var space = (new Date().getTime() - new Date(this.blog.blogSendTime)) / 1000;
+				return space <= 60 * 60 *24 * 2 && space > 0? true :false;
+				
+				return this.util.isNew(this.blog.blogSendTime	)
+			},
+			isPlan:function(){
+				var space = (new Date().getTime() - new Date(this.blog.blogSendTime)) / 1000;
+				return space < 0 ? true :false;
+			},
 			images: function(){
 				var list = this.blog.blogImgs.split("|").map(img=>{return this.util.VAR().imgurl+img});
 				//console.log(list)
@@ -257,7 +318,8 @@
 			}
 	  },
 		async mounted(){
-			
+		/* 	this.openComment = false
+			this.commentlist = null */
 			
 					//检查是否已经赞了
 		/* 			if(this.util.getInfoFromLocal2Json("myinfo")){
@@ -268,8 +330,8 @@
 						}
 					} */
 					this.isliked =this.blog.isLike
-					
-					this.blog.sender.cover = this.util.VAR().imgurl + this.blog.sender.cover 
+					if(this.blog.sender)
+						this.blog.sender.cover = this.util.VAR().imgurl + this.blog.sender.cover 
 					//载入图片
 					//CRUMINA.mediaPopups();
 						 
@@ -278,6 +340,8 @@
 </script>
 
 <style scoped>
+	
+	
 		.is-operated{
 			background: #ff5e3a;
 		}
@@ -286,36 +350,28 @@
 			color: #ff5e3a;
 		}
 		
-		.hot{
-			position: relative;
-		}
-		.hot a:after{
-					background-color: red;
-					border-radius: 3px;
-					color: #fff;
-					content: "hot";
-					font-size: 10px;
-					line-height: 1;
-					padding: 1px 3px;
-					position: absolute;
-					right: -8px;
-					top: 10px;
-			}
-			
-			.new{
-				position: relative;
-			}
-			.new a:after{
-						background-color: red;
+	.pub-type{
+		background-color: rgba(64,158,255,.84);
+		border-radius: 3px;
+		color: #fff;
+		font-size: 10px;
+		line-height: 2;
+		padding: 1px 3px;
+		position: absolute;
+		right: 38px;
+		top: 8px;
+		
+	}
+			.new {
+						background-color: rgba(255,94,58,.78);
 						border-radius: 3px;
 						color: #fff;
-						content: "new";
 						font-size: 10px;
-						line-height: 1;
+						line-height: 2;
 						padding: 1px 3px;
 						position: absolute;
-						right: -8px;
-						top: 10px;
+					  right: 20px;
+						top: 8px;
 				}
 			
 </style>
