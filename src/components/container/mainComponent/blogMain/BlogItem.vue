@@ -232,7 +232,7 @@
 	  },
 	  methods: {
 			lookUserIndex(){
-				  window.open("http://localhost:8080/#/pindex?uid="+this.blog.sender.id)
+				  window.open("http://" + this.util.VAR().ip + ":8080/#/pindex?uid="+this.blog.sender.id)
 			},
 			addFriend(){
 				
@@ -240,7 +240,7 @@
 			//打开评论区
 			async open(){	
 				if(this.toblank){
-					window.open("http://localhost:8080/#/detail?bid="+this.blog.blogId)
+					window.open("http://" + this.util.VAR().ip + ":8080/#/detail?bid="+this.blog.blogId)
 					return;
 				}
 				if(!this.openComment){
