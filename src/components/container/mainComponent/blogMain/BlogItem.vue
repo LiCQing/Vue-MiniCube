@@ -4,11 +4,20 @@
 			
 		<!-- Post 显示一条post，但是会有不一样的格式  -->
 		<article v-show="!isPlan" class="hentry post ">
+		   <div class="tip-icon">
+				 
+				 <span v-if="blog.blogPubType != 0" class="pub-type-show">
+				 {{blog.blogPubType==1?"仅好友可见":"仅自己可见"}}
+				 </span>
+				 
+				 <span v-if="isnew" class="new">new</span>
+				 
+				 <span v-if="blog.hot" class="hot">
+				 {{blog.hotScore}} <i class="el-icon-sunny"></i>
+				 </span>
+				 
+			 </div>
 			
-			 <span v-if="isnew" class="new">new</span>
-			 <span v-if="blog.blogPubType != 0" class="pub-type">
-				  {{blog.blogPubType==1?"仅好友可见":"仅自己可见"}}
-			 </span>
 		
 				<div @click="lookUserIndex"  style="cursor: pointer;"   class="post__author author vcard inline-items" >
 					
@@ -350,28 +359,32 @@
 			color: #ff5e3a;
 		}
 		
-	.pub-type{
+	.pub-type-show{
 		background-color: rgba(64,158,255,.84);
-		border-radius: 3px;
+	}
+	.new {
+			background-color: rgba(255,94,58,.78);
+	}
+	.tip-icon{
+		position: absolute;
+		right: 15px;
+		top: 8px;
 		color: #fff;
 		font-size: 10px;
 		line-height: 2;
-		padding: 1px 3px;
-		position: absolute;
-		right: 38px;
-		top: 8px;
-		
 	}
-			.new {
-						background-color: rgba(255,94,58,.78);
-						border-radius: 3px;
-						color: #fff;
-						font-size: 10px;
-						line-height: 2;
-						padding: 1px 3px;
-						position: absolute;
-					  right: 20px;
-						top: 8px;
-				}
+	.tip-icon>*{
+		border-radius: 3px;
+		padding: 3px 5px;
+		margin-right: 5px;
+	}
+	.hot{
+		/* background-color: rgba(255,0,0,.78); */
+		color: rgba(255,0,0,.78);
+	}
+	
+	.hot i{
+		font-size: 13px;
+	}
 			
 </style>

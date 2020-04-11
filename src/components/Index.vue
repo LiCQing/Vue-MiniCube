@@ -9,7 +9,7 @@
 				<div class="col col-lg-12 col-md-12 col-sm-12 col-12">
 					<div class="clients-grid" >
 						<ul class="cat-list-bg-style align-center sorting-menu">
-							<li class="cat-list__item active" data-filter="*"><a href="#" class="">综合广场</a></li>
+							<li class="cat-list__item active" data-filter=".rand"><a href="#" class="">综合广场</a></li>
 							<li class="cat-list__item" data-filter=".video"><a href="#" class="">视频广场</a></li>
 							<li class="cat-list__item" data-filter=".picture"><a href="#" class="">图片广场</a></li>
 							<li class="cat-list__item" data-filter=".day"><a href="#" class="">今日热门</a></li>
@@ -26,10 +26,6 @@
 									<BlogItem :blog="blog" :toblank='true' />
 							</div>
 							
-							<div v-if="!dayNum" class="hot-null day sorting-item col-md-12">
-								<img src="../assets/null.png" alt="">
-							</div>
- 
 						</div>
 
 					</div>
@@ -53,7 +49,9 @@
 				ready:false,
 				dayNum:0,
 				weekNum:0,
-				monthNum:0
+				monthNum:0,
+				imgMul:{},
+				videoMul:{}
 			}
 		},
 		computed:{
@@ -61,15 +59,29 @@
 		},
 	  methods : {
 		  itemclass(blog){
-			return (blog.blogImgs?'picture':blog.blogVideo?'video':'') + " " + blog.hot
+			var cla = ""
+			if( blog.blogImgs && !this.imgMul[blog.blogId]){
+				cla += ' picture '
+				this.imgMul[blog.blogId] = true
+			}else if(blog.blogVideo && !this.videoMul[blog.blogId]){
+				cla +=' video '
+				this.videoMul[blog.blogId] = true
+			}
+			return   cla + blog.hot +" " + (blog.rand?"rand":"")
 		  },
 		  addBlog(blog){
 			  let flag = true
-			  this.hotblog.some(item=>{
+	/* 		  this.hotblog.some(item=>{
 				  if(item.blogId == blog.blogId){ item.hot += " " + blog.hot;  flag = false;  return true;  }
-			  })
+			  }) */
+			  blog.rand = Math.floor(Math.random() * 10) < 5
 			  if(flag)
 				this.hotblog.push(blog)
+		  },
+		  sortByScore(arr){
+			  return arr.sort((a,b)=>{
+				  return b.hotScore - a.hotScore;
+			  })
 		  },
 		  init(){
 			  var  start = new Date().getTime()
@@ -81,19 +93,19 @@
 			  Promise.all(postArr).then(arr=>{
 				 arr.forEach(res=>{
 					 if(res.config.url.indexOf("day") != -1){
-						 res.data.data.forEach(item=>{
+						 this.sortByScore(res.data.data).forEach(item=>{
 						 	item.hot = "day"
 							this.dayNum++
 						 	this.addBlog(item)
 						 })
 					 }else  if(res.config.url.indexOf("week") != -1){
-						 res.data.data.forEach(item=>{
+						 this.sortByScore(res.data.data).forEach(item=>{
 						 	item.hot = "week"
 							this.weekNum++
 						 	this.addBlog(item)
 						 })
 					 }else{
-						 res.data.data.forEach(item=>{
+						 this.sortByScore(res.data.data).forEach(item=>{
 						 	item.hot = "month"
 							this.monthNum++
 						 	this.addBlog(item)
