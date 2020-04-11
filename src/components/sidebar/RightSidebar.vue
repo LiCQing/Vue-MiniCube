@@ -6,8 +6,8 @@
 	
 			<div class="mCustomScrollbar" data-mcs-theme="dark">
 				<ul class="chat-users">
-					<li  v-for="(friend,index) in friend_list"  class="inline-items js-chat-open">
-						<div class="author-thumb">
+					<li  v-for="(friend,index) in friend_list"   class="inline-items js-chat-open">
+						<div @click="startChat(index)" class="author-thumb">
 							<img alt="author" :src="util.VAR().imgurl + friend.cover"  class="avatar">
 							<span class="icon-status online"></span>
 						</div>
@@ -53,10 +53,10 @@
 								<li @click="startChat(index)"> 
 									<svg data-toggle="tooltip" data-placement="top" data-original-title="START CONVERSATION" class="olymp-comments-post-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
 								</li>
-								<li>
-									<svg data-toggle="tooltip" data-placement="top" data-original-title="ADD TO CONVERSATION" class="olymp-add-to-conversation-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-add-to-conversation-icon"></use></svg>
+								<li @click="lookUserIndex(friend)">
+									<svg data-toggle="tooltip" data-placement="top" data-original-title="ADD TO CONVERSATION" class="olymp-add-to-conversation-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-home-icon"></use></svg>
 								</li>
-								<li>
+								<li @click="delFriend(index)">
 									<svg data-toggle="tooltip" data-placement="top" data-original-title="BLOCK FROM CHAT" class="olymp-block-from-chat-icon"><use xlink:href="static/svg-icons/sprites/icons.svg#olymp-block-from-chat-icon"></use></svg>
 								</li>
 							</ul>
@@ -101,8 +101,15 @@
 	
 	export default{ 
 		methods : {
+			...mapActions(['removeFriend']),
+			lookUserIndex(friend){
+					window.open("http://localhost:8080/#/pindex?uid="+friend.id)
+			},
 			openFriend(css){
 				this.openCss=css
+			},
+			delFriend(index){
+				this.removeFriend(index)
 			},
 			openChat(){
 				 var css = this.isOpenChat?'':'open-chat'

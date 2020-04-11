@@ -123,6 +123,9 @@ export default {
 				console.log(res)
 			})
 	},
+	removeFriend(id){
+		return service.get("/friend/del/"+id);
+	},
 	
 	
 	//---------------微博相关

@@ -87,7 +87,12 @@ const store = new Vuex.Store({
 		set_friend_list(state,list){
 			state.friend_list = list
 		},
-
+		remove_friend:function(state,index){
+			request.removeFriend(state.friend_list[index].id).then(res=>{
+					state.friend_list.splice(index,1)
+					successMsg("删除成功")
+			})
+		},
 		set_cover(state,url){
 			state.me.cover = common.VAR().imgurl +   url
 			common.setJsonInfoToLoca("myinfo",state.me)
@@ -220,6 +225,10 @@ const store = new Vuex.Store({
 		//好友处理
 		removeRequest(context,value){
 			 context.commit("remove_friend_req",value)
+		},
+		//删除朋友
+		removeFriend(context,index){
+			context.commit("remove_friend",index)
 		},
 		//--------------微博相关
 	
